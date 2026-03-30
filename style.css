@@ -53,7 +53,6 @@ body {
 /* estilização dos campos de entrada*/
 .input-group {
     text-align: left;
-    margin-bottom: 20px;
 }
 
 .input-group label {
@@ -68,6 +67,7 @@ body {
     position: relative;
     display: flex;
     align-items: center;
+    padding-bottom: 20px;
 }
 
 /* icone dentro do wrapper*/
@@ -109,6 +109,7 @@ body {
     margin-bottom: 25px;
 }
 
+
 .forgot-password a {
     color: #888;
     font-size: 0.8rem;
@@ -119,6 +120,7 @@ body {
 .forgot-password a:hover {
     color: #fff; /* fica branco ao passar o mouse*/
 }
+
 
 /* botão de entrar*/
 .btn-entrar {
