@@ -1,0 +1,132 @@
+@charset "UTF-8";
+
+/* Reset básico */
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #000;
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ======== CABEÇALHO ======== */
+.pdv-header {
+    background-color: #111;
+    border-bottom: 3px solid #370504;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-texto {
+    font-size: 1.8rem;
+    font-weight: 900px;
+    letter-spacing: 2px;
+}
+
+.logo-texto span {
+    color: #ff9900;
+    font-weight: normal;
+}
+
+.info-operador {
+    font-size: 1.1rem;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.status-caixa {
+    background-color: #0a2a0a;
+    color: #00ff00;
+    padding: 5px 15px;
+    border-radius: 20px;
+    border: 1px solid #00ff00;
+    font-weight: bold;
+}
+
+/* ======= CONTAINER PRINCIPAL ======= */
+.pdv-container {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* ========= LADO ESQUERDO ========== */
+.painel-esquerdo {
+    flex: 2; /* ocupa 2/3 da tela */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.area-leitor {
+    background-color: #111;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #222;
+}
+
+.area-leitor label {
+    display: block;
+    color: #ff9900;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.area-leitor input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.8rem;
+    background-color: #000;
+    border: 2px solid #555;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.area-leitor input:focus {
+    outline: none;
+    border-color: #ff9900;
+    box-shadow: 0px 0px 15px rgba(255, 153, 0, 0.3);
+}
+
+/* Tabela Cupom Fiscal */
+.area-cupom {
+    background-color: #0a0a0a;
+    flex: 1;
+    border-radius: 8px;
+    border: 1px solid #222;
+    overflow-y: auto;
+}
+
+.tabela-itens th {
+    background-color: #1a1a1a;
+    color: #aaa;
+    text-align: left;
+    padding: 15px;
+    border-bottom: 2px solid #333;
+    font-size: 0.9rem;
+}
+
+.tabela-itens td {
+    padding: 15px;
+    border-bottom: 1px solid #111;
+    font-size: 1.1rem;
+}
+
+.tabela-itens tbody tr:hover {
+    background-color: #111;
+}
