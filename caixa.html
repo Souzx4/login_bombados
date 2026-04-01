@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caixa</title>
+    <link rel="stylesheet" href="caixa.css">
+</head>
+<body>
+    <header class="pdv-header">
+        <div class="logo-texto">
+            BOMBADOS <span>PDV</span>
+        </div>
+        <div class="info-operador">
+            <span>Operador(a): <strong>Lauanda</strong></span>
+            <span class="status-caixa">🟢 CAIXA LIVRE</span>
+        </div>
+    </header>
+
+    <main class="pdv-container">
+        <section class="painel-esquerdo">
+
+            <div class="area-leitor">
+                <label for="codigoBarras">CÓDIGO DE BARRAS / PESQUISA (F2) </label>
+                <input type="text" id="codigoBarras" placeholder="Passe o leitor no produto..." autofocus>
+            </div>
+
+            <div class="area-cupom">
+                <table class="tabela-itens">
+                    <thead>
+                        <tr>
+                            <th>ITEM</th>
+                            <th>DESCRIÇÃO DO PRODUTO</th>
+                            <th>QUANTIDADE</th>
+                            <th>VL. UNIDADE</th>
+                            <th>SUBTOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>Whey Protein Isolado Integralmédica 900g</td>
+                            <td>1</td>
+                            <td>R$ 189,90</td>
+                            <td>R$ 189,90</td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>Meia Antiderrapante</td>
+                            <td>2</td>
+                            <td>R$ 35,00</td>
+                            <td>R$ 70,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
