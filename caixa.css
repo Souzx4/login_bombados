@@ -130,3 +130,37 @@ body {
 .tabela-itens tbody tr:hover {
     background-color: #111;
 }
+
+/* ========== LADO DIREITO ========== */
+.painel-direito {
+    flex: 1; /* Ocupa 1/3 da tela */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Totalizador */
+.area-total {
+    background-color: #111;
+    padding: 30px 20px;
+    border-radius: 8px;
+    border: 2px solid #370504;
+    text-align: center;
+    box-shadow: 0px 5px 20px rgba(55, 5, 4, 0.6);
+}
+
+.area-total h2 {
+    color: #ccc;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.valor-gigante {
+    color: #ff9900;
+    font-size: 3.5rem; /* numero grandão */
+    font-weight: 900px;
+}
+
+/* botão de pagamento */
+
