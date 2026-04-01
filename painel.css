@@ -1,0 +1,223 @@
+/* reset básico */
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* fundo escuro total para a pagina*/
+body {
+    background-color: #000;
+    color: #fff;
+    height: 100vh;
+    overflow: hidden;
+    /* evita barra de rolagem geral*/
+}
+
+/* Layout principal*/
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* ========= MENU LATERAL ========== */
+.sidebar {
+    width: 260px;
+    background-color: #0a0a0a;
+    border-right: 2px solid #370504;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0px;
+}
+
+.logo-area {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #222;
+    margin-bottom: 20px;
+}
+
+.logo-area img {
+    max-width: 140px;
+}
+
+.menu {
+    flex: 1;
+    /* faz o menu empurrar o botão de sair lá para o final */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0px 15px;
+}
+
+.menu-item {
+    text-decoration: none;
+    color: #aaa;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+/* Efeito ao passar p mouse */
+.menu-item:hover {
+    background-color: #111;
+    color: #fff;
+    border-color: #370504;
+}
+
+/* Item selecionado no momento (Dashboard) */
+.menu-item.active {
+    background-color: #370504;
+    color: #fff;
+    border-left: 4px solid #ff9900;
+}
+
+.logout-area {
+    padding: 0px 15px;
+}
+
+.btn-sair {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #222;
+    padding: 12px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.btn-sair:hover {
+    background-color: #ff3333;
+}
+
+/* ========= Conteudo principal ========== */
+.main-content {
+    flex: 1;
+    background-color: #050505;
+    padding: 30px;
+    overflow-y: auto;
+    /* permite rodar apenas o conteúdo */
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #222;
+}
+
+.topbar h2 {
+    color: #eee;
+    font-weight: 600px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #111;
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #370504;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    background-color: #00ff00;
+    /* verde para online */
+    border-radius: 50%;
+}
+
+/* ========== CARDS DE RESUMO ========== */
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    /* responsivo */
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.card {
+    background-color: #111;
+    padding: 25px;
+    border-radius: 12px;
+    border-bottom: 3px solid #370504;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    /* efeito de elevação ao passar o mouse */
+    box-shadow: 0px 8px 25px rgba(55, 5, 4, 0.4);
+    /* brilho leve de vinho */
+}
+
+.card h3 {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.card-value.laranja {
+    color: #ff9900;
+    /* destaque para o dinheiro */
+}
+
+.card-info {
+    font-size: 0.8rem;
+    color: #555;
+}
+
+/* Card especial para chamar atenção se o estoque estiver baixo */
+.card.alerta-estoque {
+    border-bottom: 3px solid #ff9900;
+}
+
+/* ========  ÁREA DE TABELA =========== */
+
+.recent-activity {
+    background-color: #111;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #222;
+}
+
+.recent-activity h3 {
+    margin-bottom: 20px;
+    color: #ccc;
+}
+
+.table-container {
+    background-color: #0a0a0a;
+    padding: 40px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px dashed #370504;
+}
+
+.placeholder-text {
+    color: #666;
+    font-style: italic;
+}

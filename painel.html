@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin</title>
+    <link rel="stylesheet" href="painel.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+
+        <aside class="sidebar">
+            <div class="logo-area">
+                <img src="img/" alt="Bombado Logo">
+            </div>
+
+            <nav class="menu">
+                <a href="#" class="menu-item active"><span>📊</span> Dashboard</a>
+                <a href="#" class="menu-item"><span>📦</span> Estoque & Produtos</a>
+                <a href="#" class="menu-item"><span>💰</span> Vendas & Caixa</a>
+                <a href="#" class="menu-item"><span>👥</span> Usuários</a>
+                <a href="#" class="menu-item"><span>⚙️</span> Configurações</a>
+            </nav>
+
+            <div class="logout-area">
+                <a href="login.html" class="btn-sair">Sair do Sistema</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+                <h2>Visão Geral Do Sistema</h2>
+                <div class="user-profile">
+                    <span class="status-dot"></span>
+                    <p>Olá, <strong>Junior</strong></p>
+                </div>
+            </header>
+
+            <section class="cards-grid">
+
+                <div class="card">
+                    <h3>Vendas Hoje</h3>
+                    <p class="card-value laranja">R$ 1.250,00</p>
+                    <span class="card-info">12% em relação a ontem</span>
+                </div>
+
+                <div class="card">
+                    <h3>Produtos no Estoque</h3>
+                    <p class="card-value">1.240</p>
+                    <span class="card-info">Itens registrados</span>
+                </div>
+
+                <div class="card alerta-estoque">
+                    <h3>Estoque Baixo</h3>
+                    <p class="card-value">5</p>
+                    <span class="card-info">Produtos precisam de reposição</span>
+                </div>
+
+                <div class="card">
+                    <h3>Caixa Atual</h3>
+                    <p class="card-value">Aberto</p>
+                    <span class="card-info">Operador: Lauanda</span>
+                </div>
+
+            </section>
+
+            <section class="recent-activity">
+                <h3>Últimas Vendas Registradas</h3>
+                <div class="table-container">
+                    <p class="placeholder-text">A tabela de vendas será conectada ao JAVA (vendaADAO) em breve</p>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>
