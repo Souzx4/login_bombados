@@ -40,7 +40,7 @@ inputCodigo.addEventListener('keypress', async function (event) {
                 novaLinha.innerHTML = `
                     <td>00${contadorItens}</td>
                     <td>${produto.nome}</td>
-                    <td>${quantidadeBipada}<td>
+                    <td>${quantidadeBipada}</td>
                     <td>R$ ${produto.precoVenda.toFixed(2).replace('.', ',')}</td>
                     <td>R$ ${subtotal.toFixed(2).replace('.', ',')}</td>
                 `;
@@ -63,5 +63,43 @@ inputCodigo.addEventListener('keypress', async function (event) {
             console.error(erro);
             alert('Erro ao conectar com o servidor. Verifique se o backend está rodando e tente novamente.');
         }
+    }
+});
+
+// ==========================================
+// FINALIZAR COMPRA
+// ==========================================
+
+const btnFinalizar = document.querySelector('.btn-finalizar');
+
+btnFinalizar.addEventListener('click', async function () {
+
+    // 1. verifica se tem algo no carrinho
+    if (totalCompra === 0) {
+        alert('O carrinho está vazio! coloque um produto antes de finalizar.')
+        return;
+    }
+
+    // 2. empacotando os dados da venda 
+    const dadosVenda = new URLSearchParams();
+    dadosVenda.append('total', totalCompra);
+    dadosVenda.append('formaPagamento', 'Dinheiro');
+
+    try {
+        // 3. manda para a rota do java
+        const resposta = await fetch('http://localhost:8080/api/vendas', {
+            method: 'POST',
+            body: dadosVenda
+        });
+
+        if (resposta.ok) {
+            alert('Compra finalizada com sucesso!');
+            // regarrega o caixa para o proximo cliente
+            window.location.reload();
+        } else {
+            alert('Erro ao finalizar a compra');
+        }
+    } catch (erro) {
+        alert('Erro de conexão com o servidor');
     }
 });
