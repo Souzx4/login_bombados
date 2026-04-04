@@ -38,21 +38,8 @@
                             <th>SUBTOTAL</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>001</td>
-                            <td>Whey Protein Isolado Integralmédica 900g</td>
-                            <td>1</td>
-                            <td>R$ 189,90</td>
-                            <td>R$ 189,90</td>
-                        </tr>
-                        <tr>
-                            <td>002</td>
-                            <td>Meia Antiderrapante</td>
-                            <td>2</td>
-                            <td>R$ 35,00</td>
-                            <td>R$ 70,00</td>
-                        </tr>
+                    <tbody id="tabela-itens-body">
+
                     </tbody>
                 </table>
             </div>
@@ -62,7 +49,7 @@
 
             <div class="area-total">
                 <h2>TOTAL DA COMPRA</h2>
-                <div class="valor-gigante">R$ 259,90</div>
+                <div class="valor-gigante" id="valor-total">R$ 0,00</div>
             </div>
 
             <div class="area-pagamento">
@@ -81,6 +68,7 @@
             </div>
         </aside>
     </main>
+    <script src="caixa.js"></script>
 </body>
 
 </html>
