@@ -6,8 +6,11 @@ const displayTotal = document.getElementById('valor-total');
 // Variáveis para controlar a venda
 let totalCompra = 0.0;
 let contadorItens = 0;
+let carrinho = []; // A nossa lista vazia no começo
 
-// Fica escutando cada tecla que a Lauanda aperta nesse campo
+// ==========================================
+// 1. ESCUTAR O LEITOR DE CÓDIGO DE BARRAS
+// ==========================================
 inputCodigo.addEventListener('keypress', async function (event) {
 
     // Verifica se a tecla apertada foi o "Enter" ou bipou
@@ -29,6 +32,15 @@ inputCodigo.addEventListener('keypress', async function (event) {
                 contadorItens++; // aumenta o numero de itens na lista
                 const quantidadeBipada = 1; // por padrao, cada bip é uma unidade
                 const subtotal = produto.precoVenda * quantidadeBipada; // calcula o subtotal desse item
+
+                // =========================================================
+                // Adiciona o produto na nossa lista de compras na hora do bip!
+                carrinho.push({
+                    idProduto: produto.id,
+                    quantidade: quantidadeBipada,
+                    subtotal: subtotal
+                });
+                // =========================================================
 
                 // soma no valor total da compra
                 totalCompra += subtotal;
@@ -66,10 +78,10 @@ inputCodigo.addEventListener('keypress', async function (event) {
     }
 });
 
-// ==========================================
-// FINALIZAR COMPRA
-// ==========================================
 
+// ==========================================
+// 2. FINALIZAR COMPRA
+// ==========================================
 const btnFinalizar = document.querySelector('.btn-finalizar');
 
 btnFinalizar.addEventListener('click', async function () {
@@ -85,6 +97,9 @@ btnFinalizar.addEventListener('click', async function () {
     dadosVenda.append('total', totalCompra);
     dadosVenda.append('formaPagamento', 'Dinheiro');
 
+    // Transforma o nosso carrinho em um texto e manda pro Java!
+    dadosVenda.append('itens', JSON.stringify(carrinho));
+
     try {
         // 3. manda para a rota do java
         const resposta = await fetch('http://localhost:8080/api/vendas', {
@@ -93,13 +108,13 @@ btnFinalizar.addEventListener('click', async function () {
         });
 
         if (resposta.ok) {
+            // Se deu ok, só avisa e recarrega!
             alert('Compra finalizada com sucesso!');
-            // regarrega o caixa para o proximo cliente
             window.location.reload();
         } else {
-            alert('Erro ao finalizar a compra');
+            alert('Erro ao finalizar a compra no Servidor.');
         }
     } catch (erro) {
-        alert('Erro de conexão com o servidor');
+        alert('Erro de conexão com o servidor (O Java parou de rodar?).');
     }
 });
