@@ -127,7 +127,7 @@ btnFinalizar.addEventListener('click', async function () {
 // Função para mudar o tipo de pagamento e avisar a Lauanda na tela
 function selecionarPagamento(tipo, nomeExibicao) {
     formaPagamentoAtual = tipo;
-    btnFinalizar.innerText = `Finalizar ${nomeExibicao}`;
+    btnFinalizar.innerText = `Finalizar no ${nomeExibicao}`;
     // Um efeitinho visual rápido para ela saber que clicou:
     console.log("Pagamento alterado para " + tipo);
 }
