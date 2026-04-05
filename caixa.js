@@ -7,6 +7,7 @@ const displayTotal = document.getElementById('valor-total');
 let totalCompra = 0.0;
 let contadorItens = 0;
 let carrinho = []; // A nossa lista vazia no começo
+let formaPagamentoAtual = 'Dinheiro'; // valor padrão, pode ser alterado pelos botões de pagamento
 
 // ==========================================
 // 1. ESCUTAR O LEITOR DE CÓDIGO DE BARRAS
@@ -95,7 +96,7 @@ btnFinalizar.addEventListener('click', async function () {
     // 2. empacotando os dados da venda 
     const dadosVenda = new URLSearchParams();
     dadosVenda.append('total', totalCompra);
-    dadosVenda.append('formaPagamento', 'Dinheiro');
+    dadosVenda.append('formaPagamento', formaPagamentoAtual);
 
     // Transforma o nosso carrinho em um texto e manda pro Java!
     dadosVenda.append('itens', JSON.stringify(carrinho));
@@ -116,5 +117,40 @@ btnFinalizar.addEventListener('click', async function () {
         }
     } catch (erro) {
         alert('Erro de conexão com o servidor (O Java parou de rodar?).');
+    }
+});
+
+// ==========================================
+// 3. ESCOLHER FORMA DE PAGAMENTO
+// ==========================================
+
+// Função para mudar o tipo de pagamento e avisar a Lauanda na tela
+function selecionarPagamento(tipo, nomeExibicao) {
+    formaPagamentoAtual = tipo;
+    btnFinalizar.innerText = `Finalizar ${nomeExibicao}`;
+    // Um efeitinho visual rápido para ela saber que clicou:
+    console.log("Pagamento alterado para " + tipo);
+}
+
+// Escuta os cliques do mouse nos botões
+document.getElementById('btn-dinheiro').addEventListener('click', () => selecionarPagamento('Dinheiro', 'DINHEIRO'));
+document.getElementById('btn-cartao').addEventListener('click', () => selecionarPagamento('Cartao', 'CARTÃO'));
+document.getElementById('btn-pix').addEventListener('click', () => selecionarPagamento('Pix', 'PIX'));
+document.getElementById('btn-fiado').addEventListener('click', () => selecionarPagamento('Fiado', 'FIADO'));
+
+// escuta as teclas f3, f4, f5 e f6 do teclado (agilidade maxima)
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'F3') {
+        event.preventDefault();
+        selecionarPagamento('Dinheiro', 'DINHEIRO');
+    } else if (event.key === 'F4') {
+        event.preventDefault();
+        selecionarPagamento('Cartao', 'CARTAO');
+    } else if (event.key === 'F5') {
+        event.preventDefault();
+        selecionarPagamento('Pix', 'PIX');
+    } else if (event.key === 'F6') {
+        event.preventDefault();
+        selecionarPagamento('Fiado', 'FIADO');
     }
 });
