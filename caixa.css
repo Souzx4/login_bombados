@@ -250,3 +250,74 @@ body {
 .btn-cancelar:hover {
     background-color: #330000;
 }
+
+/* ==========================================
+   JANELA DE PESQUISA (MODAL)
+   ========================================== */
+
+.modal-oculto {
+    display: none;
+    /* Esconde o modal por padrão */
+    position: fixed;
+    z-index: 999;
+    /* fica por cima de tudo */
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+.modal-conteudo {
+    background-color: #121212;
+    margin: 5% auto;
+    /* centraliza na tela */
+    padding: 20px;
+    border: 2px solid #ff9900;
+    border-radius: 8px;
+    width: 70%;
+    color: white;
+    box-shadow: 0px 0px 20px rgba(255, 153, 0, 0.4);
+}
+
+.model-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.btn-fechar {
+    cursor: pointer;
+    color: #ff4444;
+    font-weight: bold;
+}
+
+#input-pesquisa-nome {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    background-color: #222;
+    border: 1px solid #444;
+    color: white;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.tabela-pesquisa {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabela-pesquisa th,
+.tabela-pesquisa td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1 px solid #333;
+}
+
+/* Efeito de brilho quando a Lauanda passar o mouse no produto */
+.tabela-pesquisa tr:hover {
+    background-color: #2a2a2a;
+    cursor: pointer;
+}

@@ -49,13 +49,13 @@
 
                 <div class="card">
                     <h3>Produtos no Estoque</h3>
-                    <p class="card-value">1.240</p>
+                    <p class="card-value" id="total-produtos">0</p>
                     <span class="card-info">Itens registrados</span>
                 </div>
 
                 <div class="card alerta-estoque">
                     <h3>Estoque Baixo</h3>
-                    <p class="card-value">5</p>
+                    <p class="card-value" id="valor-estoque-baixo">0</p>
                     <span class="card-info">Produtos precisam de reposição</span>
                 </div>
 
@@ -70,7 +70,19 @@
             <section class="recent-activity">
                 <h3>Últimas Vendas Registradas</h3>
                 <div class="table-container">
-                    <p class="placeholder-text">A tabela de vendas será conectada ao JAVA (vendaADAO) em breve</p>
+                    <table class="tabela-pesquisa" style="width: 100%; text-align: left; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid #333;">
+                                <th style="padding: 10px;">CÓDIGO</th>
+                                <th style="padding: 10px;">DATA E HORA</th>
+                                <th style="padding: 10px;">PAGAMENTO</th>
+                                <th style="padding: 10px;">TOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-ultimas-vendas">
+
+                        </tbody>
+                    </table>
                 </div>
             </section>
         </main>

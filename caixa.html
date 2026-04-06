@@ -68,6 +68,30 @@
             </div>
         </aside>
     </main>
+    <div id="modal-pesquisa" class="modal-oculto">
+        <div class="modal-conteudo">
+            <div class="modal-header">
+                <h2>🔎 Pesquisar Produto</h2>
+                <span class="btn-fechar" id="fechar-modal">❌ (Esc)</span>
+            </div>
+
+            <input type="text" id="input-pesquisa-nome" placeholder="Digite o nome do Produto..." autocomplete="off">
+
+            <div class="tabela-pesquisa-container">
+                <table class="tabela-pesquisa">
+                    <thead>
+                        <tr>
+                            <th>CÓDIGO</th>
+                            <th>PRODUTO</th>
+                            <th>ESTOQUE</th>
+                            <th>PREÇO</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultado-pesquisa-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <script src="caixa.js"></script>
 </body>
 

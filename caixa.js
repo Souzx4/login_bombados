@@ -154,3 +154,118 @@ document.addEventListener('keydown', function (event) {
         selecionarPagamento('Fiado', 'FIADO');
     }
 });
+
+// ==========================================
+// 4. JANELA DE PESQUISA DE PRODUTOS (F2)
+// ==========================================
+const modalPesquisa = document.getElementById('modal-pesquisa');
+const inputPesquisaNome = document.getElementById('input-pesquisa-nome');
+const btnFecharModal = document.getElementById('fechar-modal');
+
+// Escutando as teclas do teclado na tela inteira
+document.addEventListener('keydown', function (event) {
+
+    // Se apertar F2, abre a janela de pesquisa
+    if (event.key === 'F2') {
+        event.preventDefault();
+        modalPesquisa.style.display = 'block';
+        inputPesquisaNome.focus();
+    }
+
+    // Se apertar Esc, fecha a janela
+    if (event.key === 'Escape') {
+        modalPesquisa.style.display = 'none';
+        inputPesquisaNome.value = '';
+        inputCodigo.focus();
+    }
+});
+
+// fecha também pelo "X" também
+btnFecharModal.addEventListener('click', function () {
+    modalPesquisa.style.display = 'none';
+    inputPesquisaNome.value = '';
+    inputCodigo.focus();
+});
+
+// =========================================================
+// LÓGICA DE BUSCA E SELEÇÃO NO MODAL
+// =========================================================
+const tbodyPesquisa = document.getElementById('resultado-pesquisa-body');
+
+// Fica "escutando" o que a pessoa digita na barra do modal
+inputPesquisaNome.addEventListener('input', async function () {
+    const termo = inputPesquisaNome.value.trim();
+
+    // Se ela apagar tudo, limpa a tabela para não focar confuso
+    if (termo.length === 0) {
+        tbodyPesquisa.innerHTML = '';
+        return;
+    }
+
+    try {
+        // liga para o nosso java passando o texto
+        const resposta = await fetch(`http://localhost:8080/api/produtos/pesquisa/nome?nome=${termo}`);
+
+        if (resposta.ok) {
+            const produtos = await resposta.json();
+            tbodyPesquisa.innerHTML = ''; // limpa os resultados antigos
+
+            // desenha uma linha para cada produto encontrado
+            produtos.forEach(produto => {
+                const linha = document.createElement('tr');
+
+                // o que acontece se ela clicar na linha?
+                linha.onclick = function () {
+                    adicionarProdutoNoCaixa(produto); // joga no carrinho
+                };
+
+                linha.innerHTML = `
+                    <td>00${produto.id}</td>
+                    <td><strong>${produto.nome}</strong></td>
+                    <td>✅ Disp.</td>
+                    <td>R$ ${produto.precoVenda.toFixed(2).replace('.', ',')}</td>
+                `;
+                tbodyPesquisa.appendChild(linha);
+            });
+        }
+    } catch (erro) {
+        console.error("Erro na pesquisa: ", erro);
+    }
+});
+
+// Função que pega o produto clicado, fecha o modal e joga ele na tela de vendas!
+function adicionarProdutoNoCaixa(produto) {
+    // 1. fecha e limpa o modal
+    modalPesquisa.style.display = 'none';
+    inputPesquisaNome.value = '';
+    tbodyPesquisa.innerHTML = '';
+
+    // 2. adiciona no carrinho de compras
+    contadorItens++;
+    const quantidadeBipada = 1;
+    const subtotal = produto.precoVenda * quantidadeBipada;
+
+    carrinho.push({
+        idProduto: produto.id,
+        quantidade: quantidadeBipada,
+        subtotal: subtotal
+    });
+
+    totalCompra += subtotal;
+
+    // 3. desenha na tela do caixa
+    const novaLinha = document.createElement('tr');
+    novaLinha.innerHTML = `
+        <td>00${contadorItens}</td>
+        <td>${produto.nome}</td>
+        <td>${quantidadeBipada}</td>
+        <td>R$ ${produto.precoVenda.toFixed(2).replace('.', ',')}</td>
+        <td>R$ ${subtotal.toFixed(2).replace('.', ',')}</td>
+    `;
+    tbodyItens.appendChild(novaLinha);
+    displayTotal.innerText = `R$ ${totalCompra.toFixed(2).replace('.', ',')}`;
+
+    // 4. foca no leitor de volta para ela continuar a trabalhar
+    inputCodigo.focus();
+}
+
