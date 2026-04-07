@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque</title>
+    <link rel="stylesheet" href="painel.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="img/logo1.png" alt="Logo da empresa"
+                    style="max-width: 150px; margin-bottom: 20px; display: flex; margin-left: auto; margin-right: auto;">
+            </div>
+
+            <nav class="menu">
+                <a href="painel.html" class="menu-item">📊 Dashboard</a>
+                <a href="estoque.html" class="menu-item active" style="color: #ff9900;">📦 Estoque & Produtos</a>
+                <a href="caixa.html" class="menu-item">💰 Vendas & Caixa</a>
+                <a href="#" class="menu-item">👥 Usuários</a>
+                <a href="#" class="menu-item">⚙️ Configurações</a>
+            </nav>
+
+            <div class="logout-area">
+                <a href="#" class="btn-sair">Sair do Sistema</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div class="title">
+                    <h2>Gestão de Estoque</h2>
+                </div>
+                <div class="user-info">
+                    <span class="status-dot"></span>
+                    <span>Olá, <strong>Junior</strong></span>
+                </div>
+            </header>
+
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px; margin-bottom: 20px;">
+                <h3 style style="color: white;">Lista de Produtos Cadastrados</h3>
+                <button id="btn-novo-produto"
+                    style="background-color: #ff9900; color: #121212; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 16px;">+
+                    Novo Produto</button>
+            </div>
+
+            <section class="table-container"
+                style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #333;">
+                <table style="width: 100%; text-align: left; border-collapse: collapse; color: white;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #ff9900;">
+                            <th style="padding: 15px 10px;">ID</th>
+                            <th style="padding: 15px 10px;">CÓDIGO</th>
+                            <th style="padding: 15px 10px;">PRODUTO (SABOR/TAMANHO)</th>
+                            <th style="padding: 15px 10px;">CATEGORIA</th>
+                            <th style="padding: 15px 10px;">CUSTO</th>
+                            <th style="padding: 15px 10px;">VENDA</th>
+                            <th style="padding: 15px 10px;" text-align="center">AÇÕES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-estoque-body">
+
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <div id="modal-produto"
+        style="display: none; position: fixed; z-index: 1000; left: 0px; top: 0px; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8);">
+        <div
+            style="background-color: #1a1a1a; margin: 5% auto; padding: 30px; border: 1px solid #ff9900; border-radius: 8px; width: 50%; color: white;">
+
+            <div style="display: flex;">
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="estoque.js"></script>
+</body>
+
+</html>

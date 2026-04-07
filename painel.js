@@ -1,22 +1,39 @@
 // Função que vai buscar o dinheiro no Java
 async function carregarFaturamento() {
     try {
-        // 1. O painel "liga" para a nossa nova rota na porta 8080
-        const resposta = await fetch('http://localhost:8080/api/faturamento');
+        // 1. Liga pro Java e pede os dois valores ao mesmo tempo!
+        const respHoje = await fetch('http://localhost:8080/api/faturamento');
+        const respOntem = await fetch('http://localhost:8080/api/faturamento/ontem');
 
-        if (resposta.ok) {
-            // 2. Pega a resposta do Java (ex: "279.80")
-            const valorTexto = await resposta.text();
-            const valorNumerico = parseFloat(valorTexto);
+        if (respHoje.ok && respOntem.ok) {
+
+            //2. Pega as respostas e já converte para número (se vier vazio, vira 0)
+            const valorHoje = parseFloat(await respHoje.text()) || 0;
+            const valorOntem = parseFloat(await respOntem.text()) || 0;
 
             // 3. O JavaScript formata para o padrão do Brasil
-            const valorFormatado = valorNumerico.toLocaleString('pt-br', {
-                style: 'currency',
-                currency: 'BRL'
-            });
-
-            // 4. Exibe o valor formatado no elemento HTML
+            const valorFormatado = valorHoje.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
             document.getElementById('faturamento-total').innerText = valorFormatado;
+
+            // 3. A LÓGICA DO KPI (A Porcentagem)
+            let kpiSpan = document.getElementById('kpi-faturamento');
+            let porcentagem = 0;
+
+            //4. matematica basica ((Hoje - ontem) / ontem) * 100
+            if (valorOntem > 0) {
+                porcentagem = ((valorHoje - valorOntem) / valorOntem) * 100;
+            } else if (valorOntem === 0 && valorHoje > 0) {
+                porcentagem = 100;
+            }
+
+            // 5. Pinta de verde, vermelho ou cinza
+            if (porcentagem > 0) {
+                kpiSpan.innerHTML = `🟢 <span style="color: #4CAF50; font-weight: bold;">+${porcentagem.toFixed(1).replace('.', ',')}%</span> em relação a ontem`;
+            } else if (porcentagem < 0) {
+                kpiSpan.innerHTML = `🔴 <span style="color: #f44336; font-weight: bold;">${porcentagem.toFixed(1).replace('.', ',')}%</span> em relação a ontem`;
+            } else {
+                kpiSpan.innerHTML = `⚪ <span style="color: #999; font-weight: bold;">0%</span> em relação a ontem`;
+            }
         }
     } catch (erro) {
         console.error('Erro ao carregar o faturamento: ', erro);
