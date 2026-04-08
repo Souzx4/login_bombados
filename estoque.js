@@ -15,7 +15,7 @@ async function carregarTodosProdutos() {
                 const linha = document.createElement('tr');
                 linha.style.borderBottom = '1px solid #333'; // Adiciona borda inferior
 
-                // usabdo o toFixed(2) para deixar o dinheiro certinho
+                // usando o toFixed(2) para deixar o dinheiro certinho
                 linha.innerHTML = `
                     <td style="padding: 12px 10px; color: #ff9900; font-weight: bold;">00${produto.id}</td>
                     <td style="padding: 12px 10px;">${produto.codigoBarras}</td>
@@ -29,7 +29,7 @@ async function carregarTodosProdutos() {
                     </td>
                 `;
 
-                // adiciona a linha pronta da tabela html]
+                // adiciona a linha pronta da tabela html
                 tbody.appendChild(linha);
             });
         }
@@ -40,3 +40,61 @@ async function carregarTodosProdutos() {
 
 // inicia a função assim que a tela abre
 carregarTodosProdutos();
+
+// =================================================
+// LÓGICA DO MODAL DE CADASTRAR PRODUTO
+// =================================================
+const modalProduto = document.getElementById('modal-produto');
+const btnAbrirModal = document.getElementById('btn-novo-produto');
+const btnFecharModal = document.getElementById('fechar-modal-produto');
+const formNovoProduto = document.getElementById('form-novo-produto');
+
+// abre a janela
+btnAbrirModal.addEventListener('click', () => {
+    modalProduto.style.display = 'block';
+});
+
+// fecha a janela
+btnFecharModal.addEventListener('click', () => {
+    modalProduto.style.display = 'none';
+});
+
+// quando clicar em salvar o produto
+formNovoProduto.addEventListener('submit', async function (event) {
+    event.preventDefault(); // Evita o envio tradicional do formulário 
+
+    // Empacota os dados digitados na tela (COM OS NOMES IGUAIS AO HTML)
+    const novoProduto = {
+        nome: document.getElementById('cad-nome').value,
+        codigoBarras: document.getElementById('cad-codigo').value,
+        categoria: document.getElementById('cad-categoria').value,
+        sabor: document.getElementById('cad-sabor').value,
+        tamanhoPeso: document.getElementById('cad-tamanho').value,
+        precoCusto: parseFloat(document.getElementById('cad-custo').value),
+        precoVenda: parseFloat(document.getElementById('cad-venda').value),
+        estoqueMinimo: parseInt(document.getElementById('cad-estoque-minimo').value)
+    };
+
+    try {
+        // Envia o pacote pro java (via POST)
+        const resposta = await fetch('http://localhost:8080/api/produto', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(novoProduto)
+        });
+
+        if (resposta.ok) {
+            alert('Produto cadastrado com sucesso!');
+            modalProduto.style.display = 'none'; // fecha o modal
+            formNovoProduto.reset(); // limpa os campos do formulário
+            carregarTodosProdutos(); // recarrega a tabela para mostrar o novo produto  
+        } else {
+            alert('Erro ao cadastrar produto. Verifique os dados e tente novamente.');
+        }
+    } catch (erro) {
+        console.error("Erro na conexão: " + erro);
+        alert('Erro de conexão com o servidor. Tente novamente mais tarde.');
+    }
+});
