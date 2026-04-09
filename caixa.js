@@ -1,3 +1,12 @@
+// ==========================================
+// IDENTIFICAÇÃO DO OPERADOR (LOCALSTORAGE)
+// ==========================================
+let operadorLogado = localStorage.getItem('usuarioLogado');
+if (!operadorLogado) {
+    operadorLogado = 'Lauanda';
+}
+document.getElementById('nome-operador').innerText = operadorLogado;
+
 // Pega o campo onde a pessoa digita o ID (ou bipa o leitor)
 const inputCodigo = document.getElementById('codigoBarras');
 const tbodyItens = document.getElementById('tabela-itens-body');
@@ -93,10 +102,14 @@ btnFinalizar.addEventListener('click', async function () {
         return;
     }
 
+    const nomeCliente = document.getElementById('nome-cliente').value.trim();
+
     // 2. empacotando os dados da venda 
     const dadosVenda = new URLSearchParams();
     dadosVenda.append('total', totalCompra);
     dadosVenda.append('formaPagamento', formaPagamentoAtual);
+
+    dadosVenda.append('cliente', nomeCliente); // adiciona o nome do cliente
 
     // Transforma o nosso carrinho em um texto e manda pro Java!
     dadosVenda.append('itens', JSON.stringify(carrinho));
@@ -111,6 +124,9 @@ btnFinalizar.addEventListener('click', async function () {
         if (resposta.ok) {
             // Se deu ok, só avisa e recarrega!
             alert('Compra finalizada com sucesso!');
+
+            document.getElementById('nome-cliente').value = '';
+
             window.location.reload();
         } else {
             alert('Erro ao finalizar a compra no Servidor.');
@@ -174,9 +190,14 @@ document.addEventListener('keydown', function (event) {
 
     // Se apertar Esc, fecha a janela
     if (event.key === 'Escape') {
-        modalPesquisa.style.display = 'none';
-        inputPesquisaNome.value = '';
-        inputCodigo.focus();
+        if (modalPesquisa.style.display === 'block') {
+            modalPesquisa.style.display = 'none';
+            inputPesquisaNome.value = '';
+            inputCodigo.focus();
+        } else {
+            // se a tela de pesquisa estiver fechada, cancela a compra
+            cancelarCompra();
+        }
     }
 });
 
@@ -269,3 +290,38 @@ function adicionarProdutoNoCaixa(produto) {
     inputCodigo.focus();
 }
 
+// ==========================================
+// 5. FUNÇÃO PARA CANCELAR A COMPRA
+// ==========================================
+function cancelarCompra() {
+    // se o carrinho estiver vazio, não precisa cancelar, só avisa
+    if (totalCompra === 0) return;
+
+    // pergunta de segurança para não apagar sem querer
+    if (confirm('⚠️ Tem certeza que deseja cancelar esta compra e limpar a tela?')) {
+
+        // 1. zera a memoria do javaScript
+        carrinho = [];
+        totalCompra = 0.0;
+        contadorItens = 0;
+
+        // 2. limpa a tabela e o valores visiveis
+        tbodyItens.innerHTML = '';
+        displayTotal.innerText = 'R$ 0,00';
+
+        // 3. limpa o nome do cliente
+        const campoCliente = document.getElementById('nome-cliente');
+        if (campoCliente) {
+            campoCliente.value = '';
+        }
+
+        // 4. volta o botao pro padrao de pagamento
+        selecionarPagamento('Dinheiro', 'DINHEIRO');
+
+        // 5. devolve o cursor piscando no leitor
+        inputCodigo.focus();
+    }
+}
+
+// escuta o clique no botão vermelho
+document.getElementById('botao-cancelar').addEventListener('click', cancelarCompra);

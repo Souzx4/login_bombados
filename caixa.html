@@ -14,7 +14,7 @@
             <span>BOMBADO</span> Esportes & Suplementos 🏆💪
         </div>
         <div class="info-operador">
-            <span>Operador(a): <strong>Lauanda</strong></span>
+            <span>Operador(a): <strong id="nome-operador">Lauanda</strong></span>
             <span class="status-caixa">🟢 CAIXA LIVRE</span>
         </div>
     </header>
@@ -62,9 +62,14 @@
                 </div>
             </div>
 
+            <div class="areaDoCliente">
+                <label class="nomeDoCliente">👤 Nome do Cliente:</label>
+                <input type="text" class="btnNome" id="nome-cliente" autocomplete="off">
+            </div>
+
             <div class="area-acoes">
                 <button class="btn-finalizar">✅ Finalizar Compra (Enter)</button>
-                <button class="btn-cancelar">❌ Cancelar Compra (Esc)</button>
+                <button class="btn-cancelar" id="botao-cancelar">❌ Cancelar Compra (Esc)</button>
             </div>
         </aside>
     </main>
