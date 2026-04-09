@@ -70,42 +70,107 @@ btnFecharModal.addEventListener('click', () => {
     modalProduto.style.display = 'none';
 });
 
-// quando clicar em salvar o produto
-formNovoProduto.addEventListener('submit', async function (event) {
-    event.preventDefault(); // Evita o envio tradicional do formulário 
 
-    // Empacota os dados digitados na tela (COM OS NOMES IGUAIS AO HTML)
-    const novoProduto = {
+// =================================================
+// FUNÇÃO: PREPARAR A JANELA PARA EDIÇÃO
+// =================================================
+function prepararEdicao(id){
+    // acha o produto na nossa lista usando o id
+    const produto = listaDeProdutos.find(p => p.id === id);
+
+    if (produto){
+        produtoEditandoId = produto.id;
+        if(tituloModal) tituloModal.innerText = `Editar Produto: ${produto.nome}`;
+
+        // Preenche as caixinhas da tela com os dados do banco
+        document.getElementById('cad-nome').value = produto.nome;
+        document.getElementById('cad-codigo').value = produto.codigoBarras;
+        document.getElementById('cad-categoria').value = produto.categoria;
+        document.getElementById('cad-sabor').value = produto.sabor;
+        document.getElementById('cad-tamanho').value = produto.tamanhoPeso;
+        document.getElementById('cad-custo').value = produto.precoCusto;
+        document.getElementById('cad-venda').value = produto.precoVenda;
+        document.getElementById('cad-estoque-minimo').value = produto.estoqueMinimo;
+
+        // abre a janela
+        modalProduto.style.display = 'block';
+
+    }
+}
+
+// =================================================
+// FUNÇÃO: EXCLUIR PRODUTO
+// =================================================
+
+async function excluirProduto(id, nomeProduto) {
+    // pergunta de segurança para não apagar sem querer
+    if (confirm(`⚠️ Tem certeza que deseja excluir DEFINITIVAMENTE o produto:\n${nomeProduto}?`)){
+        try {
+            const resposta = await fetch(`http://localhost:8080/api/produto/${id}`,{
+                method: 'DELETE'
+            });
+
+            if (resposta.ok){
+                alert('Produto excluido com sucesso!');
+                carregarTodosProdutos();
+            } else {
+                alert('Erro ao excluir o produto, tente novamente.');
+            }
+        } catch (erro){
+            alert('Erro de conexão com o servidor.');
+        }
+    }   
+}
+
+// =================================================
+// SALVAR O PRODUTO (Decide se vai CRIAR ou ATUALIZAR)
+// =================================================
+formNovoProduto.addEventListener('submit', async function (event) {
+    event.preventDefault(); // evita o envio tradicional do formulario
+
+    // empacota os dados digitados na tela
+    const dadosProduto = {
         nome: document.getElementById('cad-nome').value,
         codigoBarras: document.getElementById('cad-codigo').value,
         categoria: document.getElementById('cad-categoria').value,
         sabor: document.getElementById('cad-sabor').value,
         tamanhoPeso: document.getElementById('cad-tamanho').value,
-        precoCusto: parseFloat(document.getElementById('cad-custo').value),
-        precoVenda: parseFloat(document.getElementById('cad-venda').value),
-        estoqueMinimo: parseInt(document.getElementById('cad-estoque-minimo').value)
+        precoCusto: document.getElementById('cad-custo').value,
+        precoVenda: document.getElementById('cad-venda').value,
+        estoqueMinimo: document.getElementById('cad-estoque-minimo').value
     };
 
     try {
-        // Envia o pacote pro java (via POST)
-        const resposta = await fetch('http://localhost:8080/api/produto', {
-            method: 'POST',
+        let url = 'http://localhost:8080/api/produto';
+        let metodoHTTP = 'POST'; // cadastrar (novo)
+
+        // se o produtoEditandoId não for null, significa que é uma edição!
+        if (produtoEditandoId !== null){
+            url = `http://localhost:8080/api/produto/${produtoEditandoId}`;
+            metodoHTTP = 'PUT'; // atualiza o editar
+        }
+
+        // envia o pacote para o java
+        const resposta = await fetch(url, {
+            method: metodoHTTP,
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(novoProduto)
+            body: JSON.stringify(dadosProduto)
         });
 
-        if (resposta.ok) {
-            alert('Produto cadastrado com sucesso!');
+        if (resposta.ok){
+            // mostra o alerta certo dependendo do que ele fez
+            alert(produtoEditandoId === null ? 'Produto cadastrado com sucesso!' : 'Produto atualizado com sucesso!');
+
             modalProduto.style.display = 'none'; // fecha o modal
-            formNovoProduto.reset(); // limpa os campos do formulário
-            carregarTodosProdutos(); // recarrega a tabela para mostrar o novo produto  
+            formNovoProduto.reset(); // limpa os campos do formulario
+            carregarTodosProdutos(); // recarrega a tabela para mostar o resultado
         } else {
-            alert('Erro ao cadastrar produto. Verifique os dados e tente novamente.');
+            alert('Erro ao salvar produto, verifique os dados e tente novamente.');
         }
-    } catch (erro) {
+    } catch (erro){
         console.error("Erro na conexão: " + erro);
-        alert('Erro de conexão com o servidor. Tente novamente mais tarde.');
+        alert('Erro de conexão com o servidor, tente novamente mais tarde.');
     }
 });
