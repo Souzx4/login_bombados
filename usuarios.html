@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão</title>
+    <link rel="stylesheet" href="painel.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="img/logo1.png" alt="Logo da empresa"
+                    style="max-width: 150px; margin-bottom: 20px; display: flex; margin-left: auto; margin-right: auto;">
+            </div>
+
+            <nav class="menu">
+                <a href="painel.html" class="menu-item">📊 Dashboard</a>
+                <a href="estoque.html" class="menu-item">📦 Estoque & Produtos</a>
+                <a href="caixa.html" class="menu-item">💵 Caixa</a>
+                <a href="vendas.html" class="menu-item">💰 Histórico de Vendas</a>
+                <a href="usuarios.html" class="menu-item active" style="color: #ff9900;">👥 Usuários</a>
+                <a href="#" class="menu-item">⚙️ Configurações</a>
+            </nav>
+
+            <div class="logout-area">
+                <a href="index.html" class="btn-sair">Sair do Sistema</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div class="title">
+                    <h2>Gestão de Usuários (RH)</h2>
+                    <p style="color: #aaa; font-size: 14px;">Gerencie quem tem acesso ao sistema da loja.</p>
+                </div>
+
+            </header>
+
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 20px; margin-top: 20px;">
+                <button id="btn-novo-usuario"
+                    style="background-color: #ff9900; color: #1a1a1a; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">+
+                    Novo Usuário</button>
+            </div>
+
+            <section class="table-container"
+                style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #333;">
+                <table style="width: 100%; text-align: left; border-collapse: collapse; color: white;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #ff9900;">
+                            <th style="padding: 15px 10px;">ID</th>
+                            <th style="padding: 15px 10px;">USUÁRIOS</th>
+                            <th style="padding: 15px 10px;">LOGIN</th>
+                            <th style="padding: 15px 10px;">NÍVEL DE ACESSO</th>
+                            <th style="padding: 15px 10px; text-align: center;">AÇÕES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-usuarios-body">
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <div id="modal-usuario"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000;">
+        <div
+            style="background: #1a1a1a; width: 400px; margin: 10% auto; padding: 20px; border-radius: 8px; border: 2px solid #ff9900; color: white; position: relative;">
+            <span id="fechar-modal-usuario"
+                style="position: absolute; right: 20px; top: 15px; font-size: 20px; cursor: pointer; color: #aaa;">&times;</span>
+            <h3 style="color: #ff9900; margin-bottom: 20px;">Cadastrar Novo Usuário</h3>
+
+            <form id="form-novo-usuario">
+                <div style="margin-bottom: 15px;">
+                    <label>Nome Completo:</label>
+                    <input type="text" id="cad-usuario-nome" required
+                        style="width: 100%; padding: 8px; margin-top: 5px; background: #222; border: 1px solid #444; color: white;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label>Login de Acesso:</label>
+                    <input type="text" id="cad-usuario-login" required
+                        style="width: 100%; padding: 8px; margin-top: 5px; background: #222; border: 1px solid #444; color: white;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label>Senha:</label>
+                    <input type="password" id="cad-usuario-senha" required
+                        style="width: 100%; padding: 8px; margin-top: 5px; background: #222; border: 1px solid #444; color: white;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label>Nível de Acesso (Cargo):</label>
+                    <select id="cad-usuario-nivel" required
+                        style="width: 100%; padding: 8px; margin-top: 5px; background: #222; border: 1px solid #444; color: white;">
+                        <option value="ATENDENTE">Operador de Caixa (Atendente)</option>
+                        <option value="ADMIN">Gerente (Acesso Total)</option>
+                    </select>
+                </div>
+
+                <button type="submit"
+                    style="width: 100%; background: #4CAF50; color: white; padding: 10px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">💾
+                    Salvar Usuário</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="usuarios.js"></script>
+</body>
+
+</html>

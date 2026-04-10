@@ -61,7 +61,7 @@ const tituloModal = document.querySelector('#modal-produto h3');
 btnAbrirModal.addEventListener('click', () => {
     produtoEditandoId = null; // Avisa o sistema que é um cadastro NOVO
     formNovoProduto.reset(); // Limpa os campos
-    if(tituloModal) tituloModal.innerText = 'Cadastrar Novo Produto'; // Muda o título
+    if (tituloModal) tituloModal.innerText = 'Cadastrar Novo Produto'; // Muda o título
     modalProduto.style.display = 'block';
 });
 
@@ -74,13 +74,13 @@ btnFecharModal.addEventListener('click', () => {
 // =================================================
 // FUNÇÃO: PREPARAR A JANELA PARA EDIÇÃO
 // =================================================
-function prepararEdicao(id){
+function prepararEdicao(id) {
     // acha o produto na nossa lista usando o id
     const produto = listaDeProdutos.find(p => p.id === id);
 
-    if (produto){
+    if (produto) {
         produtoEditandoId = produto.id;
-        if(tituloModal) tituloModal.innerText = `Editar Produto: ${produto.nome}`;
+        if (tituloModal) tituloModal.innerText = `Editar Produto: ${produto.nome}`;
 
         // Preenche as caixinhas da tela com os dados do banco
         document.getElementById('cad-nome').value = produto.nome;
@@ -104,22 +104,22 @@ function prepararEdicao(id){
 
 async function excluirProduto(id, nomeProduto) {
     // pergunta de segurança para não apagar sem querer
-    if (confirm(`⚠️ Tem certeza que deseja excluir DEFINITIVAMENTE o produto:\n${nomeProduto}?`)){
+    if (confirm(`⚠️ Tem certeza que deseja excluir DEFINITIVAMENTE o produto:\n${nomeProduto}?`)) {
         try {
-            const resposta = await fetch(`http://localhost:8080/api/produto/${id}`,{
+            const resposta = await fetch(`http://localhost:8080/api/produtos/${id}`, {
                 method: 'DELETE'
             });
 
-            if (resposta.ok){
+            if (resposta.ok) {
                 alert('Produto excluido com sucesso!');
                 carregarTodosProdutos();
             } else {
                 alert('Erro ao excluir o produto, tente novamente.');
             }
-        } catch (erro){
+        } catch (erro) {
             alert('Erro de conexão com o servidor.');
         }
-    }   
+    }
 }
 
 // =================================================
@@ -137,16 +137,17 @@ formNovoProduto.addEventListener('submit', async function (event) {
         tamanhoPeso: document.getElementById('cad-tamanho').value,
         precoCusto: document.getElementById('cad-custo').value,
         precoVenda: document.getElementById('cad-venda').value,
-        estoqueMinimo: document.getElementById('cad-estoque-minimo').value
+        estoqueMinimo: document.getElementById('cad-estoque-minimo').value,
+        qtd_estoque: document.getElementById('cad-quantidade').value
     };
 
     try {
-        let url = 'http://localhost:8080/api/produto';
+        let url = 'http://localhost:8080/api/produtos';
         let metodoHTTP = 'POST'; // cadastrar (novo)
 
         // se o produtoEditandoId não for null, significa que é uma edição!
-        if (produtoEditandoId !== null){
-            url = `http://localhost:8080/api/produto/${produtoEditandoId}`;
+        if (produtoEditandoId !== null) {
+            url = `http://localhost:8080/api/produtos/${produtoEditandoId}`;
             metodoHTTP = 'PUT'; // atualiza o editar
         }
 
@@ -159,7 +160,7 @@ formNovoProduto.addEventListener('submit', async function (event) {
             body: JSON.stringify(dadosProduto)
         });
 
-        if (resposta.ok){
+        if (resposta.ok) {
             // mostra o alerta certo dependendo do que ele fez
             alert(produtoEditandoId === null ? 'Produto cadastrado com sucesso!' : 'Produto atualizado com sucesso!');
 
@@ -169,7 +170,7 @@ formNovoProduto.addEventListener('submit', async function (event) {
         } else {
             alert('Erro ao salvar produto, verifique os dados e tente novamente.');
         }
-    } catch (erro){
+    } catch (erro) {
         console.error("Erro na conexão: " + erro);
         alert('Erro de conexão com o servidor, tente novamente mais tarde.');
     }
