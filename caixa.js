@@ -2,27 +2,37 @@
 // IDENTIFICAÇÃO DO OPERADOR (LOCALSTORAGE)
 // ==========================================
 let operadorString = localStorage.getItem('usuarioLogado');
-let nomeOperador = 'Lauanda';
-let idOperador = 2; // ID padrão se for a Lauanda
+let nomeOperador = 'Lauanda'; // Nome Padrão se der erro
+let idOperador = 2; // ID da Lauanda
 
-// O sistema tenta descobrir quem logou de verdade e pegar o ID
 if (operadorString) {
     try {
-        // Tenta ver se é um pacote JSON completo (ex: { id: 2, nome: 'Lauanda' })
+        // Tenta ver se é um JSON perfeito
         let dadosUsuario = JSON.parse(operadorString);
         if (dadosUsuario.nome) nomeOperador = dadosUsuario.nome;
         if (dadosUsuario.id) idOperador = dadosUsuario.id;
     } catch (erro) {
-        // Se a memória guardou só o texto do nome
-        nomeOperador = operadorString;
-        let nomeFormatado = nomeOperador.toLowerCase();
+        // Caiu aqui porque a tela de Login salvou apenas um texto (ex: email ou nome solto)
+        let textoSalvo = operadorString.toLowerCase().trim();
 
-        // Atribui o ID na marra caso a memória não tenha trago
-        if (nomeFormatado === 'junior') idOperador = 1;
-        else if (nomeFormatado === 'gilmar') idOperador = 3;
-        else idOperador = 2; // Lauanda
+        // O TRADUTOR DE CRACHÁS:
+        if (textoSalvo.includes('lauanda')) {
+            nomeOperador = 'Lauanda';
+            idOperador = 2;
+        } else if (textoSalvo.includes('junior')) {
+            nomeOperador = 'Junior';
+            idOperador = 1;
+        } else if (textoSalvo.includes('gilmar') || textoSalvo === 'gilmarsousa717@gmail.com') {
+            nomeOperador = 'Gilmar (Admin)';
+            idOperador = 3; // O seu ID que tá lá no banco de dados!
+        } else {
+            // Se for alguém totalmente desconhecido, mostra o que tá na memória e joga pro ID 1
+            nomeOperador = operadorString;
+            idOperador = 1;
+        }
     }
 }
+// Atualiza na tela do caixa!
 document.getElementById('nome-operador').innerText = nomeOperador;
 
 // Pega o campo onde a pessoa digita o ID (ou bipa o leitor)
