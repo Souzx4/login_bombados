@@ -38,8 +38,8 @@ function renderizarTabela(vendas) {
         linha.style.borderBottom = '1px solid #333';
 
         // descobre a forma de pagamento que teve valor
-        let formaPagamento = "Dinheiro";
-        let corTag = "#4CAF50";
+        let formaPagamento = "Fiado 📝";
+        let corTag = "#e91e63";
 
         if (venda.valorCartao > 0) {
             formaPagamento = "Cartão";
@@ -47,6 +47,9 @@ function renderizarTabela(vendas) {
         } else if (venda.valorPix > 0) {
             formaPagamento = "Pix";
             corTag = "#00BCD4";
+        } else if (venda.ValorDinheiro > 0) {
+            formaPagamento = "Dinheiro 💵";
+            corTag = "#4caf50";
         }
 
         // formata a tada e hora

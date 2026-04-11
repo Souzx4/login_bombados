@@ -24,6 +24,8 @@ document.getElementById('login-form').addEventListener('submit', async function 
 
             const nivelDoUsuario = await resposta.text();
 
+            localStorage.setItem('usuarioLogado', usuarioDigitado);
+
             // redireciona para a página certa dependendo do nível do usuário
             if (nivelDoUsuario.trim().toUpperCase() === 'ADMIN') {
                 alert("Bem-vindo, Admin! Redirecionando para a página de administração...");
