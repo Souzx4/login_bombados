@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historico</title>
     <link rel="stylesheet" href="painel.css">
 </head>
+
 <body>
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="logo">
-                <img src="img/logo1.png" alt="Logo da empresa" style="max-width: 150px; margin-bottom: 20px; display: flex; margin-left: auto; margin-right: auto;">
+                <img src="img/logo1.png" alt="Logo da empresa"
+                    style="max-width: 150px; margin-bottom: 20px; display: flex; margin-left: auto; margin-right: auto;">
             </div>
 
             <nav class="menu">
@@ -18,7 +21,7 @@
                 <a href="estoque.html" class="menu-item"><span>📦</span> Estoque & Produtos</a>
                 <a href="caixa.html" class="menu-item"><span>💵</span> Caixa</a>
                 <a href="vendas.html" class="menu-item"><span>💰</span> Histórico de Vendas</a>
-                <a href="#" class="menu-item"><span>👥</span> Usuários</a>
+                <a href="usuarios.html" class="menu-item"><span>👥</span> Usuários</a>
                 <a href="#" class="menu-item"><span>⚙️</span> Configurações</a>
             </nav>
 
@@ -31,29 +34,48 @@
             <header class="header">
                 <div class="title">
                     <h2>Histórico Geral de Vendas</h2>
+                    <p style="color: #aaa; font-size: 14px;">Acompanhe o fluxo de caixa e as comissões por período.</p>
                 </div>
-
-                <div class="user-info">
-                    <span class="status-dot"></span>
-                    <span>Olá, <strong>Junior</strong></span>
-                </div>
-
             </header>
 
-            <div style="margin-top: 30px; margin-bottom: 20px;">
-                <h3 style="color: white;">Todas as vendas Registradas</h3>
-                <p style="color: #aaa; font-size: 14px;">Acompanhe o fluxo de caixa detalhado da loja.</p>
+            <div
+                style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #333; margin-top: 20px; display: flex; gap: 15px; align-items: flex-end;">
+                <div>
+                    <label style="color: #aaa; font-size: 14px; display: block; margin-bottom: 5px;">Data
+                        Inicial:</label>
+                    <input type="date" id="filtro-inicio"
+                        style="padding: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 5px; cursor: pointer;">
+                </div>
+                <div>
+                    <label style="color: #aaa; font-size: 14px; display: block; margin-bottom: 5px;">Data Final:</label>
+                    <input type="date" id="filtro-fim"
+                        style="padding: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 5px; cursor: pointer;">
+                </div>
+                <button id="btn-filtrar"
+                    style="background-color: #ff9900; color: #1a1a1a; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                    🔍 Filtrar Período
+                </button>
+                <button id="btn-limpar"
+                    style="background-color: #444; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                    Limpar Filtro
+                </button>
             </div>
 
-            <section class="table-container" style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #333;">
+            <div id="painel-comissoes" style="display: flex; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
+
+            </div>
+
+            <section class="table-container"
+                style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #333; margin-top: 20px;">
                 <table style="width: 100%; text-align: left; border-collapse: collapse; color: white;">
                     <thead>
                         <tr style="border-bottom: 2px solid #ff9900;">
                             <th style="padding: 15px 10px;">ID VENDA</th>
                             <th style="padding: 15px 10px;">DATA E HORA</th>
                             <th style="padding: 15px 10px;">CLIENTE</th>
-                            <th style="padding: 15px 10px;">TOTAL</th>
+                            <th style="padding: 15px 10px;">VENDEDOR(A)</th>
                             <th style="padding: 15px 10px;">FORMA DE PAGAMENTO</th>
+                            <th style="padding: 15px 10px;">TOTAL</th>
                         </tr>
                     </thead>
                     <tbody id="tabela-vendas-body">
@@ -66,4 +88,5 @@
 
     <script src="vendas.js"></script>
 </body>
+
 </html>

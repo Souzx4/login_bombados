@@ -1,53 +1,122 @@
 // =================================================
-// Função para buscar e desenhar o Histórico de Vendas
+// Função para buscar vendas com ou sem filtro
 // =================================================
-async function carregarHistoricoVendas() {
+async function buscarVendas() {
+
+    const dataInicio = document.getElementById('filtro-inicio').value;
+    const dataFim = document.getElementById('filtro-fim').value;
+
+    let url = 'http://localhost:8080/api/vendas/todas';
+
+    // se o usuario preencheu as duas datas, mude a rota para o do filtro
+    if (dataInicio && dataFim) {
+        url = `http://localhost:8080/api/vendas/filtro?inicio=${dataInicio}&fim=${dataFim}`;
+    }
+
     try {
-        const resposta = await fetch('http://localhost:8080/api/vendas/todas');
-
-        if (resposta.ok){
+        const resposta = await fetch(url);
+        if (resposta.ok) {
             const vendas = await resposta.json();
-            const tbody = document.getElementById('tabela-vendas-body');
-            tbody.innerHTML = ''; // limpa a tabela
-
-            vendas.forEach(venda => {
-                const linha = document.createElement('tr');
-                linha.style.borderBottom = '1px solid #333'; // Adiciona borda inferior a cada linha
-
-                // descobrindo como o cliente pagou
-                let formaPagamento = '';
-                if (venda.valorDinheiro > 0) formaPagamento = `<span style="color: #4CAF50;">💵 Dinheiro</span>`;
-                else if (venda.valorPix > 0) formaPagamento = `<span style="color: #00BCD4;">💠 Pix</span>`;
-                else if (venda.valorCartao > 0) formaPagamento = `<span style="color: #FFC107;">💳 Cartão</span>`;
-                else formaPagamento = `<span>⚠️ Outro</span>`;
-
-                // arrumando a data
-                let dataFormatada = venda.dataHora;
-                if (venda.dataHora){
-                    const partes = venda.dataHora.split(" ");
-                    if (partes.length === 2){
-                        const data = partes[0].split("-");
-                        const hora = partes[1].substring(0, 5); // Pega só HH:mm
-                        dataFormatada = `${data[2]}/${data[1]}/${data[0]} as ${hora}`;
-                    }
-                }
-                // Desenhando a linha na tabela
-                linha.innerHTML = `
-                    <td style="padding: 15px 10px; color: #ff9900; font-weight: bold;">#${venda.id}</td>
-                    <td style="padding: 15px 10px;">${dataFormatada}</td>
-                    <td style="padding: 15px 10px;"><strong>${venda.cliente || "Consumidor Final"}</strong></td>
-                    <td style="padding: 15px 10px; font-weight: bold;">R$ ${venda.valorTotal.toFixed(2).replace('.', ',')}</td>
-                    <td style="padding: 15px 10px;">${formaPagamento}</td>
-                `;
-
-                tbody.appendChild(linha);
-            });
+            renderizarTabela(vendas);
+            calcularComissoes(vendas); // calcula o dinheiro de cada um
+        } else {
+            console.error('Erro ao buscar as vendas');
         }
-    } catch (erro){
-        console.error('Erro ao carregar histórico de vendas:', erro);
-        document.getElementById('tabela-vendas-body').innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Erro ao carregar os dados.</td></tr>`;
+    } catch (erro) {
+        console.error('Falha de conexão com o servidor', erro);
+    }
+}
+// =================================================
+// RENDERIZAR A TABELA
+// =================================================
+function renderizarTabela(vendas) {
+    const tbody = document.getElementById('tabela-vendas-body');
+    tbody.innerHTML = '';
+
+    vendas.forEach(venda => {
+        const linha = document.createElement('tr');
+        linha.style.borderBottom = '1px solid #333';
+
+        // descobre a forma de pagamento que teve valor
+        let formaPagamento = "Dinheiro";
+        let corTag = "#4CAF50";
+
+        if (venda.valorCartao > 0) {
+            formaPagamento = "Cartão";
+            corTag = "#2196F3"
+        } else if (venda.valorPix > 0) {
+            formaPagamento = "Pix";
+            corTag = "#00BCD4";
+        }
+
+        // formata a tada e hora
+        const dataFormatada = new Date(venda.dataHora).toLocaleString('pt-BR');
+
+        // garante que se o nome for vazio, mostre " Admin (antigo)"
+        const nomeVendedor = venda.nomeVendedor ? venda.nomeVendedor : "Admin (antigo)";
+
+        linha.innerHTML = `
+            <td style="padding: 15px 10px; color: #ff9900; font-weight: bold;">#${venda.id}</td>
+            <td style="padding: 15px 10px;">${dataFormatada}</td>
+            <td style="padding: 15px 10px;">${venda.cliente}</td>
+            <td style="padding: 15px 10px; font-weight: bold;">👤 ${nomeVendedor}</td>
+            <td style="padding: 15px 10px;">
+                <span style="color: ${corTag}; font-weight: bold;">💳 ${formaPagamento}</span>
+            </td>
+            <td style="padding: 15px 10px; font-weight: bold;">R$ ${venda.valorTotal.toFixed(2).replace('.', ',')}</td>
+        `;
+        tbody.appendChild(linha);
+    });
+}
+
+// =================================================
+// CALCULAR COMISSÕES E TOTAIS
+// =================================================
+function calcularComissoes(vendas) {
+    const painel = document.getElementById('painel-comissoes');
+    painel.innerHTML = ''; // limpa os cards antigos
+
+    let faturamentoTotal = 0;
+    const totaisPorVendedor = {}; // vai guardar { "Lauanda": 500.00, "Junior": 1200.00 }
+
+    vendas.forEach(venda => {
+        faturamentoTotal += venda.valorTotal;
+
+        const nome = venda.nomeVendedor ? venda.nomeVendedor : "Admin (antigo)";
+        if (!totaisPorVendedor[nome]) {
+            totaisPorVendedor[nome] = 0;
+        }
+        totaisPorVendedor[nome] += venda.valorTotal;
+    });
+
+    // 1. cria um card de faturamento total
+    painel.innerHTML += `
+        <div style="flex: 1; min-width: 200px; background: #222; padding: 20px; border-radius: 8px; border-left: 5px solid #ff9900;">
+            <h3 style="color: #aaa; margin-bottom: 10px; font-size: 14px;">Total no Período</h3>
+            <h2 style="color: white; font-size: 24px;">R$ ${faturamentoTotal.toFixed(2).replace('.', ',')}</h2>
+        </div>
+    `;
+
+    // 2. cria um card dinamico para cada vendedor encontrado na linha
+    for (const [vendedor, total] of Object.entries(totaisPorVendedor)) {
+        painel.innerHTML += `
+            <div style="flex: 1; min-width: 200px; background: #222; padding: 20px; border-radius: 8px; border-left: 5px solid #4CAF50;">
+                <h3 style="color: #aaa; margin-bottom: 10px; font-size: 14px;">Vendido por: ${vendedor}</h3>
+                <h2 style="color: white; font-size: 24px;">R$ ${total.toFixed(2).replace('.', ',')}</h2>
+            </div>
+        `;
     }
 }
 
-// inicia a função assim que carrega a pagina
-carregarHistoricoVendas();
+// =================================================
+// AÇÕES DOS BOTÕES DE FILTRO
+// =================================================
+document.getElementById('btn-filtrar').addEventListener('click', buscarVendas);
+
+document.getElementById('btn-limpar').addEventListener('click', () => {
+    document.getElementById('filtro-inicio').value = '';
+    document.getElementById('filtro-fim').value = '';
+    buscarVendas();
+});
+
+buscarVendas();
