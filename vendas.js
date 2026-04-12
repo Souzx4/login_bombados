@@ -37,25 +37,26 @@ function renderizarTabela(vendas) {
         const linha = document.createElement('tr');
         linha.style.borderBottom = '1px solid #333';
 
-        // descobre a forma de pagamento que teve valor
+        // 1. O PADRÃO É FIADO 
         let formaPagamento = "Fiado 📝";
-        let corTag = "#e91e63";
+        let corTag = "#e91e63"; // Rosa
 
+        // 2. VERIFICA AS GAVETAS COM CUIDADO (A letra maiúscula é vital!)
         if (venda.valorCartao > 0) {
-            formaPagamento = "Cartão";
-            corTag = "#2196F3"
+            formaPagamento = "Cartão 💳";
+            corTag = "#2196F3"; // Azul
         } else if (venda.valorPix > 0) {
-            formaPagamento = "Pix";
-            corTag = "#00BCD4";
-        } else if (venda.ValorDinheiro > 0) {
+            formaPagamento = "Pix 💠";
+            corTag = "#00BCD4"; // Ciano
+        } else if (venda.valorDinheiro > 0) { // <-- OLHA A GAVETA DO DINHEIRO AQUI!
             formaPagamento = "Dinheiro 💵";
-            corTag = "#4caf50";
+            corTag = "#4CAF50"; // Verde
         }
 
-        // formata a tada e hora
+        // Formata a data e hora
         const dataFormatada = new Date(venda.dataHora).toLocaleString('pt-BR');
 
-        // garante que se o nome for vazio, mostre " Admin (antigo)"
+        // Garante que se o nome for vazio, mostre "Admin"
         const nomeVendedor = venda.nomeVendedor ? venda.nomeVendedor : "Admin (antigo)";
 
         linha.innerHTML = `
@@ -64,7 +65,7 @@ function renderizarTabela(vendas) {
             <td style="padding: 15px 10px;">${venda.cliente}</td>
             <td style="padding: 15px 10px; font-weight: bold;">👤 ${nomeVendedor}</td>
             <td style="padding: 15px 10px;">
-                <span style="color: ${corTag}; font-weight: bold;">💳 ${formaPagamento}</span>
+                <span style="color: ${corTag}; font-weight: bold;">${formaPagamento}</span>
             </td>
             <td style="padding: 15px 10px; font-weight: bold;">R$ ${venda.valorTotal.toFixed(2).replace('.', ',')}</td>
         `;
