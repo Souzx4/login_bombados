@@ -2,6 +2,8 @@
 // IDENTIFICAÇÃO DO OPERADOR (LOCALSTORAGE)
 // ==========================================
 let operadorString = localStorage.getItem('usuarioLogado');
+// Avisa o sistema que a tela do caixa foi aberta e está operando!
+localStorage.setItem('caixa_lauanda_status', 'ABERTO');
 let nomeOperador = 'Lauanda'; // Nome Padrão se der erro
 let idOperador = 2; // ID da Lauanda
 

@@ -159,7 +159,37 @@ function fecharModalEstoqueBaixo() {
     document.getElementById('modal-estoque-baixo').style.display = 'none';
 }
 
+// =================================================
+// VERIFICAR STATUS DO CAIXA DA LAUANDA
+// =================================================
+function verificarStatusCaixa() {
+    const statusCaixa = document.getElementById('status-caixa');
+    const operadorCaixa = document.getElementById('operador-caixa');
+
+    // O Painel não olha mais quem está logado, ele olha direto pro status do Caixa Frontal
+    let statusCaixaFrontal = localStorage.getItem('caixa_lauanda_status');
+
+    if (statusCaixaFrontal === 'ABERTO') {
+        // A Lauanda abriu a tela do Caixa!
+        if (statusCaixa) {
+            statusCaixa.innerText = "Aberto";
+            statusCaixa.style.color = "#4CAF50"; // Verde!
+        }
+        if (operadorCaixa) operadorCaixa.innerText = "Operador: Lauanda";
+
+    } else {
+        // A tela do caixa não foi aberta ou ela encerrou o turno
+        if (statusCaixa) {
+            statusCaixa.innerText = "Fechado";
+            statusCaixa.style.color = "#e91e63"; // Vermelho!
+        }
+        if (operadorCaixa) operadorCaixa.innerText = "Caixa Inativo";
+    }
+}
+
+
 // manda os codigos rodaren assim que o chefe abrir a tela
+verificarStatusCaixa();
 carregarFaturamento();
 carregarEstoqueBaixo();
 carregarUltimasVendas();
