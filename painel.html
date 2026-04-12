@@ -17,10 +17,11 @@
             </div>
 
             <nav class="menu">
-                <a href="painel.html" class="menu-item active"><span>📊</span> Dashboard</a>
+                <a href="painel.html" class="menu-item active style= color: #e91e63;"><span>📊</span> Dashboard</a>
                 <a href="estoque.html" class="menu-item"><span>📦</span> Estoque & Produtos</a>
                 <a href="caixa.html" class="menu-item"><span>💵</span> Caixa</a>
                 <a href="vendas.html" class="menu-item"><span>💰</span> Histórico de Vendas</a>
+                <a href="fiados.html" class="menu-item ">📒 Contas a Receber</a>
                 <a href="usuarios.html" class="menu-item"><span>👥</span> Usuários</a>
                 <a href="#" class="menu-item"><span>⚙️</span> Configurações</a>
             </nav>
@@ -43,18 +44,22 @@
             <section class="cards-grid">
 
                 <div class="card">
-                    <h3>Vendas Hoje</h3>
-                    <p class="card-value laranja" id="faturamento-total">R$ 0,00</p>
-                    <span class="card-info" id="kpi-faturamento">12% em relação a ontem</span>
+                    <a href="vendas.html" style="text-decoration: none;">
+                        <h3>Vendas Hoje</h3>
+                        <p class="card-value laranja" id="faturamento-total">R$ 0,00</p>
+                        <span class="card-info" id="kpi-faturamento">12% em relação a ontem</span>
+                    </a>
                 </div>
 
                 <div class="card">
-                    <h3>Produtos no Estoque</h3>
-                    <p class="card-value" id="total-produtos">0</p>
-                    <span class="card-info">Itens registrados</span>
+                    <a href="estoque.html" style="text-decoration: none;">
+                        <h3>Produtos no Estoque</h3>
+                        <p class="card-value" id="total-produtos">0</p>
+                        <span class="card-info">Itens registrados</span>
+                    </a>
                 </div>
 
-                <div class="card alerta-estoque">
+                <div class="card alerta-estoque" style="cursor: pointer;" onclick="abrirModalEstoqueBaixo()">
                     <h3>Estoque Baixo</h3>
                     <p class="card-value" id="valor-estoque-baixo">0</p>
                     <span class="card-info">Produtos precisam de reposição</span>
@@ -87,6 +92,33 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <div id="modal-estoque-baixo"
+        style="display: 
+    none; position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 9999; align-items: center; justify-content: center;">
+        <div
+            style="background-color: #1a1a1a; padding: 30px; border-radius: 8px; border: 2px solid #e91e63; width: 600px; max-width: 90%;">
+            <h2 style="color: #e91e63; margin-bottom: 5px;">⚠️ Relatório de Reposição</h2>
+            <p style="color: #aaa; margin-bottom: 20px;">Estes produtos atingiram o estoque mínimo.</p>
+
+            <table style="width: 100%; text-align: left; border-collapse: collapse; color: white; margin-bottom: 20px;">
+                <thead>
+                    <tr style="border-bottom: 1px solid #444;">
+                        <th style="padding: 10px;">PRODUTO</th>
+                        <th style="padding: 10px; text-align: center;">MÍNIMO</th>
+                        <th style="padding: 10px; text-align: center; color: #e91e63;">ATUAL</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-relatorio-baixo">
+
+                </tbody>
+            </table>
+            <div style="text-align: right;">
+                <button onclick="fecharModalEstoqueBaixo()"
+                    style="background-color: #444; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Fechar</button>
+            </div>
+        </div>
     </div>
 
     <script src="painel.js"></script>

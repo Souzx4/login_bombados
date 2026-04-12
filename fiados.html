@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contas a Receber</title>
+    <link rel="stylesheet" href="painel.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="img/logo1.png" alt="Logo da empresa"
+                    style="max-width: 150px; margin-bottom: 20px; display: flex; margin-left: auto; margin-right: auto;">
+            </div>
+            <nav class="menu">
+                <a href="painel.html" class="menu-item">📊 Dashboard</a>
+                <a href="estoque.html" class="menu-item">📦 Estoque & Produtos</a>
+                <a href="caixa.html" class="menu-item">💵 Caixa</a>
+                <a href="vendas.html" class="menu-item">💰 Histórico de Vendas</a>
+                <a href="fiados.html" class="menu-item active" style="color: #e91e63;">📒 Contas a Receber</a>
+                <a href="usuarios.html" class="menu-item">👥 Usuários</a>
+                <a href="#" class="menu-item">⚙️ Configurações</a>
+            </nav>
+            <div class="logout-area">
+                <a href="login.html" class="btn-sair">Sair do Sistema</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div class="title">
+                    <h2 style="color: #e91e63">Contas a Receber 📝</h2>
+                    <p style="color: #aaa; font-size: 14px;">Gerencie os clientes que compraram fiado e dê baixa nos
+                        pagamentos.</p>
+                </div>
+            </header>
+
+            <section class="table-container"
+                style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #333; margin-top: 20px;">
+                <table style="width: 100%; text-align: left; border-collapse: collapse; color: white;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #e91e63;">
+                            <th style="padding: 15px 10px;">ID VENDA</th>
+                            <th style="padding: 15px 10px;">DATA E HORA</th>
+                            <th style="padding: 15px 10px;">CLIENTE</th>
+                            <th style="padding: 15px 10px;">VALOR DA DÍVIDA</th>
+                            <th style="padding: 15px 10px;">COMO VAI PAGAR?</th>
+                            <th style="padding: 15px 10px;">AÇÃO</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-fiados-body">
+
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+    <script src="fiados.js"></script>
+</body>
+
+</html>

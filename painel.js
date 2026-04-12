@@ -125,6 +125,40 @@ async function carregarTotalProdutos() {
     }
 }
 
+
+// =================================================
+// MODAL DE ESTOQUE BAIXO NO DASHBOARD
+// =================================================
+async function abrirModalEstoqueBaixo() {
+    try {
+        const resposta = await fetch('http://localhost:8080/api/estoque/relatorio-baixo');
+        if (resposta.ok) {
+            const produtos = await resposta.json();
+            const tbody = document.getElementById('tabela-relatorio-baixo');
+            tbody.innerHTML = '';
+
+            produtos.forEach(p => {
+                tbody.innerHTML += `
+                    <tr style="border-bottom: 1px solid #333;">
+                        <td style="padding: 10px; font-weight: bold;">${p.nome}</td>
+                        <td style="padding: 10px; text-align: center;">${p.estoqueMinimo} un.</td>
+                        <td style="padding: 10px; text-align: center; color: #e91e63; font-weight: bold; font-size: 16px;">${p.qtd_estoque} un.</td>
+                    </tr>
+                `;
+            });
+
+            // mostra o modal na tela
+            document.getElementById('modal-estoque-baixo').style.display = 'flex';
+        }
+    } catch (erro) {
+        console.error("Erro ao buscar relatorio", erro);
+    }
+}
+
+function fecharModalEstoqueBaixo() {
+    document.getElementById('modal-estoque-baixo').style.display = 'none';
+}
+
 // manda os codigos rodaren assim que o chefe abrir a tela
 carregarFaturamento();
 carregarEstoqueBaixo();

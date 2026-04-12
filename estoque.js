@@ -21,6 +21,8 @@ async function carregarTodosProdutos() {
                 const linha = document.createElement('tr');
                 linha.style.borderBottom = '1px solid #333'; // Adiciona borda inferior
 
+                // 🚨 LÓGICA DE ALERTA: Se o estoque for menor ou igual ao mínimo, fica vermelho!
+                let corEstoque = produto.qtd_estoque <= produto.estoqueMinimo ? "#e91e63" : "#4CAF50";
 
                 // "onclick" nos botões passando o ID do produto!
                 linha.innerHTML = `
@@ -28,6 +30,11 @@ async function carregarTodosProdutos() {
                     <td style="padding: 12px 10px;">${produto.codigoBarras}</td>
                     <td style="padding: 12px 10px;"><strong>${produto.nome}</strong> <br><small style="color: #aaa;">${produto.sabor} | ${produto.tamanhoPeso}</small></td>
                     <td style="padding: 12px 10px;">${produto.categoria}</td>
+                    
+                    <td style="padding: 12px 10px; font-weight: bold; color: ${corEstoque};">
+                        ${produto.qtd_estoque} un.
+                    </td>
+
                     <td style="padding: 12px 10px;">R$ ${produto.precoCusto.toFixed(2).replace('.', ',')}</td>
                     <td style="padding: 12px 10px;">R$ ${produto.precoVenda.toFixed(2).replace('.', ',')}</td>
                     <td style="padding: 12px 10px; text-align: center;">
@@ -92,9 +99,11 @@ function prepararEdicao(id) {
         document.getElementById('cad-venda').value = produto.precoVenda;
         document.getElementById('cad-estoque-minimo').value = produto.estoqueMinimo;
 
+        // 🐛 CORREÇÃO: Agora carrega a Quantidade também para o Lápis Azul!
+        document.getElementById('cad-quantidade').value = produto.qtd_estoque;
+
         // abre a janela
         modalProduto.style.display = 'block';
-
     }
 }
 
@@ -175,3 +184,4 @@ formNovoProduto.addEventListener('submit', async function (event) {
         alert('Erro de conexão com o servidor, tente novamente mais tarde.');
     }
 });
+

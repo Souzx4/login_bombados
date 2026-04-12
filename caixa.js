@@ -57,10 +57,29 @@ inputCodigo.addEventListener('keypress', async function (event) {
         if (idDigitado === "") return;
 
         try {
-            const resposta = await fetch('http://localhost:8080/api/produtos/' + idDigitado);
+
+            let urlServidor = '';
+
+            // se tiver 4 numeros ou mais e js sabe que é codigo de barra
+            if (idDigitado.length >= 4) {
+                urlServidor = 'http://localhost:8080/api/produtos/barras/' + idDigitado;
+            } else {
+                //se for um numero ex 5 ele busca pelo id normal
+                urlServidor = 'http://localhost:8080/api/produtos/' + idDigitado;
+            }
+
+
+            const resposta = await fetch(urlServidor);
 
             if (resposta.ok) {
                 const produto = await resposta.json();
+
+                // trava de segurança
+                if (produto.qtd_estoque <= 0) {
+                    alert(`⚠️ Venda Bloqueada!\nO produto "${produto.nome}" está ESGOTADO no estoque!`);
+                    inputCodigo.value = '';
+                    return;
+                }
 
                 contadorItens++;
                 const quantidadeBipada = 1;
@@ -237,15 +256,35 @@ inputPesquisaNome.addEventListener('input', async function () {
             produtos.forEach(produto => {
                 const linha = document.createElement('tr');
 
+                let textoEstoque = "";
+                let corEstoque = "";
+                let podeVender = true;
+
+                if (produto.qtd_estoque > 0) {
+                    textoEstoque = `✅ ${produto.qtd_estoque} un.`;
+                    corEstoque = "#4caf50"
+                } else {
+                    textoEstoque = `❌ Esgotado`;
+                    corEstoque = "#e91e63";
+                    podeVender = false;
+                }
+
                 linha.onclick = function () {
-                    adicionarProdutoNoCaixa(produto);
+                    if (podeVender) {
+                        adicionarProdutoNoCaixa(produto);
+                    } else {
+                        alert(`⚠️ Este produto está esgotado e não pode ser vendido!`);
+                    }
                 };
 
+                // muda a setinha caso esteja bloqueado
+                linha.style.cursor = podeVender ? 'pointer' : 'not-allowed';
+
                 linha.innerHTML = `
-                    <td>00${produto.id}</td>
-                    <td><strong>${produto.nome}</strong></td>
-                    <td>✅ Disp.</td>
-                    <td>R$ ${produto.precoVenda.toFixed(2).replace('.', ',')}</td>
+                    <td style="padding: 10px;">00${produto.id}</td>
+                    <td style="padding: 10px;"><strong>${produto.nome}</strong></td>
+                    <td style="padding: 10px; color: ${corEstoque}; font-weight: bold;">${textoEstoque}</td>
+                    <td style="padding: 10px;">R$ ${produto.precoVenda.toFixed(2).replace('.', ',')}</td>
                 `;
                 tbodyPesquisa.appendChild(linha);
             });
