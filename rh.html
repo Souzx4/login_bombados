@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RH e Comissões</title>
+    <link rel="stylesheet" href="painel.css">
+</head>
+<body>
+    <div class="dashboard-container">
+
+        <aside class="sidebar">
+            <div class="logo-area">
+                <img src="img/logo1.png" alt="Bombado Logo">
+            </div>
+
+            <nav class="menu">
+                <a href="painel.html" class="menu-item"><span>📊</span> Dashboard</a>
+                <a href="estoque.html" class="menu-item"><span>📦</span> Estoque & Produtos</a>
+                <a href="caixa.html" class="menu-item"><span>💵</span> Caixa</a>
+                <a href="vendas.html" class="menu-item"><span>💰</span> Histórico de Vendas</a>
+                <a href="fiados.html" class="menu-item ">📒 Contas a Receber</a>
+                <a href="usuarios.html" class="menu-item"><span>👥</span> Usuários</a>
+                <a href="rh.html" class="menu-item active" style="color: #ff9900;"><span>📈</span> RH & Comissões</a>
+            </nav>
+
+            <div class="logout-area">
+                <a href="login.html" class="btn-sair">Sair do Sistema</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div class="title">
+                    <h2 style="color:#ff9900;">Fechamento de Comissões 📈</h2>
+                    <p style="color: #aaa; font-size: 14px;">Calcule o pagamento dos vendedores pelas metas de 10k, 20k e 30k.</p>
+                </div>
+            </header>
+
+            <div class="filter-section" style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #333; margin-top: 20px; display: flex; gap: 15px; align-items: flex-end;">
+                <div>
+                    <label style="color: #aaa; font-size: 14px; display: block; margin-bottom: 5px;">Data Inicial:</label>
+                    <input type="date" id="data-inicio" style="padding: 10px; border-radius: 4px; background: #222; color: white; border: 1px solid #444; outline: none;">
+                </div>
+                <div>
+                    <label style="color: #aaa; font-size: 14px; display: block; margin-bottom: 5px;">Data Final:</label>
+                    <input type="date" id="data-fim" style="padding: 10px; border-radius: 4px; background: #222; color: white; border: 1px solid #444; outline: none;">
+                </div>
+                <button onclick="calcularFechamento()" style="background-color: #ff9900; color: #111; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Calcular Folha de Pagamento</button>
+            </div>
+
+            <section style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #333; margin-top: 20px;">
+                <table style="width: 100%; text-align: left; border-collapse: collapse; color: white;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #ff9900;">
+                            <th style="padding: 15px 10px;">VENDEDOR(A)</th>
+                            <th style="padding: 15px 10px;">TOTAL VENDIDO</th>
+                            <th style="padding: 15px 10px;">META ATINGIDA</th>
+                            <th style="padding: 15px 10px;">VALOR A PAGAR</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-rh-body">
+                        <tr>
+                            <td colspan="4" style="text-align: center; padding: 20px; color: #888;">Selecione as datas e clique em Calcular.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+    <script src="rh.js"></script>
+</body>
+</html>
