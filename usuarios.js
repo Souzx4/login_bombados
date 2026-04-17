@@ -22,20 +22,36 @@ async function carregarTodosUsuarios() {
 
                 let corNivel = usuario.nivelAcesso === 'ADMIN' ? '#ff9900' : '#4CAF50';
                 let corTexto = usuario.nivelAcesso === 'ADMIN' ? '#000' : '#fff';
+                let statusAtual = usuario.statusConta || usuario.status_conta;
+                let isAtivo = statusAtual === 'ATIVO';
 
-                // 👉 OLHA O BOTÃO AZUL DE EDITAR ADICIONADO AQUI:
+                // Se estiver inativo, deixa a linha com transparência (50%)
+                linha.style.opacity = isAtivo ? '1' : '0.5';
+
+                let labelInativo = isAtivo ? '' : '<span style="color: #f44336; font-size: 12px; margin-left: 10px;">(BLOQUEADO)</span>';
+
+                if (isAtivo) {
+                    botoesHtml = `
+                        <button onclick="prepararEdicao(${usuario.id})" title="Editar Usuário" style="background: #2196F3; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; margin-right: 5px;">✏️</button>
+                        <button onclick="excluirUsuario(${usuario.id}, '${usuario.nome}')" title="Bloquear Acesso" style="background: #f44336; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">🗑️</button>
+                    `;
+                } else {
+                    botoesHtml = `
+                        <button onclick="reativarUsuario(${usuario.id}, '${usuario.nome}')" title="Reativar Acesso" style="background: #4CAF50; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;">♻️ Reativar</button>
+                    `;
+                }
+
                 linha.innerHTML = `
                     <td style="padding: 15px 10px; color: #ff9900; font-weight: bold;">00${usuario.id}</td>
-                    <td style="padding: 15px 10px;"><strong>${usuario.nome}</strong></td>
+                    <td style="padding: 15px 10px;"><strong>${usuario.nome}</strong> ${labelInativo}</td>
                     <td style="padding: 15px 10px;">${usuario.login}</td>
                     <td style="padding: 15px 10px;">
                         <span style="background: ${corNivel}; color: ${corTexto}; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px;">
-                            ${usuario.nivelAcesso}
+                            ${usuario.nivelAcesso || usuario.nivel_acesso}
                         </span>
                     </td>
                     <td style="padding: 15px 10px; text-align: center;">
-                        <button onclick="prepararEdicao(${usuario.id})" title="Editar Usuário" style="background: #2196F3; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; margin-right: 5px;">✏️</button>
-                        <button onclick="excluirUsuario(${usuario.id}, '${usuario.nome}')" title="Bloquear Acesso" style="background: #f44336; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">🗑️</button>
+                        ${botoesHtml}
                     </td>
                 `;
                 tbody.appendChild(linha);
@@ -109,10 +125,12 @@ formUsuario.addEventListener('submit', async function (event) {
     event.preventDefault();
 
     const dadosUsuario = {
+        id: 0,
         nome: document.getElementById('cad-usuario-nome').value,
         login: document.getElementById('cad-usuario-login').value,
         senha: document.getElementById('cad-usuario-senha').value,
-        nivelAcesso: document.getElementById('cad-usuario-nivel').value
+        nivelAcesso: document.getElementById('cad-usuario-nivel').value,
+        statusConta: "ATIVA"
     };
 
     try {
@@ -161,6 +179,28 @@ async function excluirUsuario(id, nome) {
             }
         } catch (erro) {
             alert('Erro de conexão com o servidor do RH.');
+        }
+    }
+}
+
+// =================================================
+// REATIVAR USUÁRIO (O Botão Verde ♻️)
+// =================================================
+async function reativarUsuario(id, nome) {
+    if (confirm(`♻️ Deseja reativar o acesso de: ${nome}?`)) {
+        try {
+            const resposta = await fetch(`http://localhost:8080/api/usuarios/${id}/reativar`, {
+                method: 'PUT'
+            });
+
+            if (resposta.ok) {
+                alert('Acesso reativado com sucesso! O usuário já pode logar.');
+                carregarTodosUsuarios(); // Atualiza a tabela na mesma hora
+            } else {
+                alert('Erro ao tentar reativar o usuário no banco de dados.');
+            }
+        } catch (erro) {
+            alert('Erro de conexão com o servidor Java.');
         }
     }
 }

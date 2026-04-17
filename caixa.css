@@ -25,6 +25,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 80px;
 }
 
 .logo-texto {
@@ -57,9 +58,9 @@ body {
 /* ======= CONTAINER PRINCIPAL ======= */
 .pdv-container {
     display: flex;
-    flex: 1;
     padding: 20px;
     gap: 20px;
+    height: calc(100vh - 80px);
 }
 
 /* ========= LADO ESQUERDO ========== */
@@ -69,6 +70,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    overflow: hidden;
 }
 
 .area-leitor {
@@ -110,16 +112,32 @@ body {
     flex: 1;
     border-radius: 8px;
     border: 1px solid #222;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.tabela-scroll-container {
+    flex: 1;
     overflow-y: auto;
+    /* Cria a barra de rolagem aqui! */
+}
+
+.tabela-itens {
+    width: 100%;
+    border-collapse: collapse;
 }
 
 .tabela-itens th {
     background-color: #1a1a1a;
+    position: sticky;
+    top: 0px;
     color: #aaa;
     text-align: left;
     padding: 15px;
     border-bottom: 2px solid #333;
     font-size: 0.9rem;
+    z-index: 2;
+    /* Fica em cima dos produtos que sobem */
 }
 
 .tabela-itens td {
@@ -132,13 +150,33 @@ body {
     background-color: #111;
 }
 
+/* Customização da barra de rolagem */
+.tabela-scroll-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.tabela-scroll-container::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+.tabela-scroll-container::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+}
+
+.tabela-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #ff9900;
+}
+
 /* ========== LADO DIREITO ========== */
 .painel-direito {
     flex: 1;
     /* Ocupa 1/3 da tela */
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    justify-content: space-between;
+    height: 100%;
+    overflow: hidden;
 }
 
 .areaDoCliente {
@@ -196,7 +234,6 @@ body {
     background-color: #111;
     padding: 20px;
     border-radius: 8px;
-    flex: 1;
 }
 
 .area-pagamento h3 {

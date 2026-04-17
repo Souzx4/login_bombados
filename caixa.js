@@ -54,7 +54,8 @@ let formaPagamentoAtual = 'Dinheiro';
 inputCodigo.addEventListener('keypress', async function (event) {
     if (event.key === 'Enter') {
         event.preventDefault();
-        const idDigitado = inputCodigo.value.trim();
+        const idDigitadoBruto = inputCodigo.value.trim();
+        const idDigitado = idDigitadoBruto.replace(/[^0-9]/g, '');
 
         if (idDigitado === "") return;
 
@@ -76,9 +77,17 @@ inputCodigo.addEventListener('keypress', async function (event) {
             if (resposta.ok) {
                 const produto = await resposta.json();
 
+                let qtdJaNoCarrinho = 0;
+
+                carrinho.forEach(item => {
+                    if (item.idProduto === produto.id) {
+                        qtdJaNoCarrinho += item.quantidade;
+                    }
+                });
+
                 // trava de segurança
-                if (produto.qtd_estoque <= 0) {
-                    alert(`⚠️ Venda Bloqueada!\nO produto "${produto.nome}" está ESGOTADO no estoque!`);
+                if (produto.qtd_estoque <= 0 || (qtdJaNoCarrinho + 1) > produto.qtd_estoque) {
+                    alert(`⚠️ Estoque Insuficiente!\nVocê está tentando adicionar "${produto.nome}", mas só existem ${produto.qtd_estoque} un. disponíveis no estoque!`);
                     inputCodigo.value = '';
                     return;
                 }
