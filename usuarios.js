@@ -1,3 +1,5 @@
+const API_URL = 'https://sistema-bombados-backend.onrender.com';
+
 // =================================================
 // VARIÁVEIS GLOBAIS
 // =================================================
@@ -9,7 +11,7 @@ let usuarioEditandoId = null; // Memória para saber se estamos Criando ou Edita
 // =================================================
 async function carregarTodosUsuarios() {
     try {
-        const resposta = await fetch('http://localhost:8080/api/usuarios');
+        const resposta = await fetch(`${API_URL}/api/usuarios`);
 
         if (resposta.ok) {
             listaDeUsuarios = await resposta.json();
@@ -134,12 +136,12 @@ formUsuario.addEventListener('submit', async function (event) {
     };
 
     try {
-        let url = 'http://localhost:8080/api/usuarios';
+        let url = `${API_URL}/api/usuarios`;
         let metodoHTTP = 'POST';
 
         // Se tiver ID, estamos EDITANDO!
         if (usuarioEditandoId !== null) {
-            url = `http://localhost:8080/api/usuarios/${usuarioEditandoId}`;
+            url = `${API_URL}/api/usuarios/${usuarioEditandoId}`;
             metodoHTTP = 'PUT';
         }
 
@@ -167,7 +169,7 @@ formUsuario.addEventListener('submit', async function (event) {
 async function excluirUsuario(id, nome) {
     if (confirm(`⚠️ Tem certeza que deseja bloquear o acesso de: ${nome}?`)) {
         try {
-            const resposta = await fetch(`http://localhost:8080/api/usuarios/${id}`, {
+            const resposta = await fetch(`${API_URL}/api/usuarios/${id}`, {
                 method: 'DELETE'
             });
 
@@ -189,7 +191,7 @@ async function excluirUsuario(id, nome) {
 async function reativarUsuario(id, nome) {
     if (confirm(`♻️ Deseja reativar o acesso de: ${nome}?`)) {
         try {
-            const resposta = await fetch(`http://localhost:8080/api/usuarios/${id}/reativar`, {
+            const resposta = await fetch(`${API_URL}/api/usuarios/${id}/reativar`, {
                 method: 'PUT'
             });
 

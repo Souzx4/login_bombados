@@ -1,3 +1,5 @@
+const API_URL = 'https://sistema-bombados-backend.onrender.com';
+
 // ==========================================
 // IDENTIFICAÇÃO DO OPERADOR (LOCALSTORAGE)
 // ==========================================
@@ -65,10 +67,10 @@ inputCodigo.addEventListener('keypress', async function (event) {
 
             // se tiver 4 numeros ou mais e js sabe que é codigo de barra
             if (idDigitado.length >= 4) {
-                urlServidor = 'http://localhost:8080/api/produtos/barras/' + idDigitado;
+                urlServidor = `${API_URL}/api/produtos/barras/` + idDigitado;
             } else {
                 //se for um numero ex 5 ele busca pelo id normal
-                urlServidor = 'http://localhost:8080/api/produtos/' + idDigitado;
+                urlServidor = `${API_URL}/api/produtos/` + idDigitado;
             }
 
 
@@ -170,7 +172,7 @@ btnFinalizar.addEventListener('click', async function () {
     dadosVenda.append('itens', JSON.stringify(carrinho));
 
     try {
-        const resposta = await fetch('http://localhost:8080/api/vendas', {
+        const resposta = await fetch(`${API_URL}/api/vendas`, {
             method: 'POST',
             body: dadosVenda
         });
@@ -258,7 +260,7 @@ inputPesquisaNome.addEventListener('input', async function () {
     }
 
     try {
-        const resposta = await fetch(`http://localhost:8080/api/produtos/pesquisa/nome?nome=${termo}`);
+        const resposta = await fetch(`${API_URL}/api/produtos/pesquisa/nome?nome=${termo}`);
 
         if (resposta.ok) {
             const produtos = await resposta.json();

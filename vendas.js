@@ -1,3 +1,5 @@
+const API_URL = 'https://sistema-bombados-backend.onrender.com';
+
 // =================================================
 // Função para buscar vendas com ou sem filtro
 // =================================================
@@ -6,11 +8,11 @@ async function buscarVendas() {
     const dataInicio = document.getElementById('filtro-inicio').value;
     const dataFim = document.getElementById('filtro-fim').value;
 
-    let url = 'http://localhost:8080/api/vendas/todas';
+    let url = `${API_URL}/api/vendas/todas`;
 
     // se o usuario preencheu as duas datas, mude a rota para o do filtro
     if (dataInicio && dataFim) {
-        url = `http://localhost:8080/api/vendas/filtro?inicio=${dataInicio}&fim=${dataFim}`;
+        url = `${API_URL}/api/vendas/filtro?inicio=${dataInicio}&fim=${dataFim}`;
     }
 
     try {

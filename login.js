@@ -1,3 +1,6 @@
+// 1. Crie esta variável logo no topo, assim o endereço fica guardado!
+const API_URL = 'https://sistema-bombados-backend.onrender.com';
+
 document.getElementById('login-form').addEventListener('submit', async function (event) {
 
     // impede que a pagina seja recarregada e colocada o ponto de interrogação
@@ -13,8 +16,7 @@ document.getElementById('login-form').addEventListener('submit', async function 
     dados.append('senha', senhaDigitada);
 
     try {
-        // bate na porta 8080 do servidor e manda os dados
-        const resposta = await fetch('http://localhost:8080/api/login', {
+        const resposta = await fetch(`${API_URL}/api/login`, {
             method: 'POST',
             body: dados
         });

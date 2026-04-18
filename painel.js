@@ -1,9 +1,11 @@
+const API_URL = 'https://sistema-bombados-backend.onrender.com';
+
 // Função que vai buscar o dinheiro no Java
 async function carregarFaturamento() {
     try {
         // 1. Liga pro Java e pede os dois valores ao mesmo tempo!
-        const respHoje = await fetch('http://localhost:8080/api/faturamento');
-        const respOntem = await fetch('http://localhost:8080/api/faturamento/ontem');
+        const respHoje = await fetch(`${API_URL}/api/faturamento`);
+        const respOntem = await fetch(`${API_URL}/api/faturamento/ontem`);
 
         if (respHoje.ok && respOntem.ok) {
 
@@ -48,7 +50,7 @@ async function carregarFaturamento() {
 
 async function carregarEstoqueBaixo() {
     try {
-        const resposta = await fetch('http://localhost:8080/api/estoque/baixo');
+        const resposta = await fetch(`${API_URL}/api/estoque/baixo`);
 
         if (resposta.ok) {
             const quantidade = await resposta.text();
@@ -68,7 +70,7 @@ async function carregarEstoqueBaixo() {
 
 async function carregarUltimasVendas() {
     try {
-        const resposta = await fetch('http://localhost:8080/api/vendas/recentes');
+        const resposta = await fetch(`${API_URL}/api/vendas/recentes`);
 
         if (resposta.ok) {
             const vendas = await resposta.json();
@@ -112,7 +114,7 @@ async function carregarUltimasVendas() {
 // =================================================
 async function carregarTotalProdutos() {
     try {
-        const resposta = await fetch('http://localhost:8080/api/estoque/total');
+        const resposta = await fetch(`${API_URL}/api/estoque/total`);
 
         if (resposta.ok) {
             const total = await resposta.text();
@@ -131,7 +133,7 @@ async function carregarTotalProdutos() {
 // =================================================
 async function abrirModalEstoqueBaixo() {
     try {
-        const resposta = await fetch('http://localhost:8080/api/estoque/relatorio-baixo');
+        const resposta = await fetch(`${API_URL}/api/estoque/relatorio-baixo`);
         if (resposta.ok) {
             const produtos = await resposta.json();
             const tbody = document.getElementById('tabela-relatorio-baixo');

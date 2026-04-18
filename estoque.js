@@ -1,3 +1,5 @@
+const API_URL = 'https://sistema-bombados-backend.onrender.com';
+
 // =================================================
 // VARIÁVEIS GLOBAIS (A Memória da Tela)
 // =================================================
@@ -9,7 +11,7 @@ let listaDeProdutos = []; // Guarda os produtos na memória para facilitar a edi
 // =================================================
 async function carregarTodosProdutos() {
     try {
-        const resposta = await fetch('http://localhost:8080/api/estoque/produtos');
+        const resposta = await fetch(`${API_URL}/api/estoque/produtos`);
 
         if (resposta.ok) {
             listaDeProdutos = await resposta.json(); // Guarda na memória global
@@ -115,7 +117,7 @@ async function excluirProduto(id, nomeProduto) {
     // pergunta de segurança para não apagar sem querer
     if (confirm(`⚠️ Tem certeza que deseja excluir DEFINITIVAMENTE o produto:\n${nomeProduto}?`)) {
         try {
-            const resposta = await fetch(`http://localhost:8080/api/produtos/${id}`, {
+            const resposta = await fetch(`${API_URL}/api/produtos/${id}`, {
                 method: 'DELETE'
             });
 
@@ -151,12 +153,12 @@ formNovoProduto.addEventListener('submit', async function (event) {
     };
 
     try {
-        let url = 'http://localhost:8080/api/produtos';
+        let url = `${API_URL}/api/produtos`;
         let metodoHTTP = 'POST'; // cadastrar (novo)
 
         // se o produtoEditandoId não for null, significa que é uma edição!
         if (produtoEditandoId !== null) {
-            url = `http://localhost:8080/api/produtos/${produtoEditandoId}`;
+            url = `${API_URL}/api/produtos/${produtoEditandoId}`;
             metodoHTTP = 'PUT'; // atualiza o editar
         }
 

@@ -1,10 +1,12 @@
+const API_URL = 'https://sistema-bombados-backend.onrender.com';
+
 // =================================================
 // 1. BUSCAR FIADOS NO JAVA
 // =================================================
 async function carregarFiados() {
     try {
         // pede a lista de quem está devendo
-        const resposta = await fetch('http://localhost:8080/api/fiados');
+        const resposta = await fetch(`${API_URL}/api/fiados`);
 
         if (resposta.ok) {
             const fiados = await resposta.json();
@@ -86,7 +88,7 @@ async function quitarDivida(idVenda) {
 
         try {
             // bate na porta do java dizendo que a divida foi paga
-            const resposta = await fetch(`http://localhost:8080/api/fiados/${idVenda}/pagar`, {
+            const resposta = await fetch(`${API_URL}/api/fiados/${idVenda}/pagar`, {
                 method: 'PUT',
                 body: dados
             });

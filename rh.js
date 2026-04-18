@@ -1,3 +1,5 @@
+const API_URL = 'https://sistema-bombados-backend.onrender.com';
+
 async function calcularFechamento() {
     const dataInicio = document.getElementById('data-inicio').value;
     const dataFim = document.getElementById('data-fim').value;
@@ -10,7 +12,7 @@ async function calcularFechamento() {
 
     try {
         // Bate na porta do Java pedindo a folha de pagamento
-        const resposta = await fetch(`http://localhost:8080/api/rh/comissoes?inicio=${dataInicio}&fim=${dataFim}`);
+        const resposta = await fetch(`${API_URL}/api/rh/comissoes?inicio=${dataInicio}&fim=${dataFim}`);
 
         if (resposta.ok) {
             const folha = await resposta.json();
