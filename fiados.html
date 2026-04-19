@@ -11,7 +11,8 @@
 <body>
     <div class="dashboard-container">
 
-        <aside class="sidebar">
+        <aside class="sidebar" id="menu-lateral">
+            <button id="fechar-menu" class="btn-fechar-menu">✖ Fechar Menu</button>
             <div class="logo-area">
                 <img src="img/logo1.png" alt="Bombado Logo">
             </div>
@@ -32,7 +33,8 @@
         </aside>
 
         <main class="main-content">
-            <header class="header">
+            <header class="topbar">
+                <button id="abrir-menu" class="btn-abrir-menu">☰</button>
                 <div class="title">
                     <h2 style="color: #e91e63">Contas a Receber 📝</h2>
                     <p style="color: #aaa; font-size: 14px;">Gerencie os clientes que compraram fiado e dê baixa nos
@@ -42,7 +44,8 @@
 
             <section class="table-container"
                 style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #333; margin-top: 20px;">
-                <table style="width: 100%; text-align: left; border-collapse: collapse; color: white;">
+                <table class="tabela-pesquisa"
+                    style="width: 100%; text-align: left; border-collapse: collapse; color: white;">
                     <thead>
                         <tr style="border-bottom: 2px solid #e91e63;">
                             <th style="padding: 15px 10px;">ID VENDA</th>
@@ -54,12 +57,12 @@
                         </tr>
                     </thead>
                     <tbody id="tabela-fiados-body">
-
                     </tbody>
                 </table>
             </section>
         </main>
     </div>
+
     <script src="fiados.js"></script>
 </body>
 

@@ -389,6 +389,12 @@ body {
 /* ================================================= */
 
 @media screen and (max-width: 768px) {
+
+    body {
+        height: auto;
+        overflow-y: auto;
+    }
+
     .pdv-header {
         flex-direction: column;
         text-align: center;

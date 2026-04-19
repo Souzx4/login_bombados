@@ -206,3 +206,19 @@ async function reativarUsuario(id, nome) {
         }
     }
 }
+
+// =================================================
+// RESPONSIVIDADE: ABRIR E FECHAR MENU MOBILE
+// =================================================
+const btnAbrirMenu = document.getElementById('abrir-menu');
+const btnFecharMenu = document.getElementById('fechar-menu');
+const menuLateral = document.getElementById('menu-lateral');
+
+if (btnAbrirMenu && btnFecharMenu && menuLateral) {
+    btnAbrirMenu.addEventListener('click', () => {
+        menuLateral.classList.add('menu-aberto');
+    });
+    btnFecharMenu.addEventListener('click', () => {
+        menuLateral.classList.remove('menu-aberto');
+    });
+}

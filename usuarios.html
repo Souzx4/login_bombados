@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestão</title>
+    <title>Gestão de Usuários</title>
     <link rel="stylesheet" href="painel.css">
 </head>
 
 <body>
     <div class="dashboard-container">
 
-        <aside class="sidebar">
+        <aside class="sidebar" id="menu-lateral">
+            <button id="fechar-menu" class="btn-fechar-menu">✖ Fechar Menu</button>
             <div class="logo-area">
                 <img src="img/logo1.png" alt="Bombado Logo">
             </div>
@@ -32,12 +33,12 @@
         </aside>
 
         <main class="main-content">
-            <header class="header">
+            <header class="topbar">
+                <button id="abrir-menu" class="btn-abrir-menu">☰</button>
                 <div class="title">
                     <h2>Gestão de Usuários (RH)</h2>
                     <p style="color: #aaa; font-size: 14px;">Gerencie quem tem acesso ao sistema da loja.</p>
                 </div>
-
             </header>
 
             <div style="display: flex; justify-content: flex-end; margin-bottom: 20px; margin-top: 20px;">
@@ -48,7 +49,8 @@
 
             <section class="table-container"
                 style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #333;">
-                <table style="width: 100%; text-align: left; border-collapse: collapse; color: white;">
+                <table class="tabela-pesquisa"
+                    style="width: 100%; text-align: left; border-collapse: collapse; color: white;">
                     <thead>
                         <tr style="border-bottom: 2px solid #ff9900;">
                             <th style="padding: 15px 10px;">ID</th>
@@ -67,8 +69,8 @@
 
     <div id="modal-usuario"
         style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000;">
-        <div
-            style="background: #1a1a1a; width: 400px; margin: 10% auto; padding: 20px; border-radius: 8px; border: 2px solid #ff9900; color: white; position: relative;">
+        <div class="modal-content"
+            style="background: #1a1a1a; margin: 10% auto; padding: 20px; border-radius: 8px; border: 2px solid #ff9900; color: white; position: relative; max-width: 95%;">
             <span id="fechar-modal-usuario"
                 style="position: absolute; right: 20px; top: 15px; font-size: 20px; cursor: pointer; color: #aaa;">&times;</span>
             <h3 style="color: #ff9900; margin-bottom: 20px;">Cadastrar Novo Usuário</h3>

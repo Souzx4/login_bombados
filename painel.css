@@ -349,6 +349,17 @@ body {
 }
 
 @media screen and (max-width: 768px) {
+
+    #modal-produto {
+        height: auto;
+        overflow-y: auto;
+    }
+
+    #modal-estoque-baixo {
+        height: auto;
+        overflow-y: auto;
+    }
+
     .modal-content {
         width: 95% !important;
         margin: 10% auto !important;
@@ -361,5 +372,14 @@ body {
 
     .span-2 {
         grid-column: span 1 !important;
+    }
+
+    .filtro-vendas {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+
+    .filtro-vendas button {
+        padding: 15px !important;
     }
 }
