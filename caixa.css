@@ -383,3 +383,94 @@ body {
     background-color: #2a2a2a;
     cursor: pointer;
 }
+
+/* ================================================= */
+/* CAIXA MOBILE (RESPONSIVIDADE)                     */
+/* ================================================= */
+
+@media screen and (max-width: 768px) {
+    .pdv-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+        padding: 15px;
+        height: auto;
+    }
+
+    div.logo-texto,
+    div.info-operador {
+        font-size: 14px;
+    }
+
+    .pdv-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: auto;
+        padding: 10px;
+    }
+
+    .painel-esquerdo,
+    .painel-direito {
+        width: 100%;
+        border-right: none;
+    }
+
+    .tabela-scroll-container {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid #333;
+        border-radius: 8px;
+    }
+
+    .tabela-itens {
+        min-width: 500px;
+    }
+
+    .tabela-itens th,
+    .tabela-itens td {
+        white-space: nowrap;
+    }
+
+    .botoes-pagamento {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .btn-pgto {
+        width: 100%;
+        margin-bottom: 0px;
+        font-size: 14px;
+        padding: 12px 5px;
+    }
+
+    .area-acoes {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-finalizar,
+    .btn-cancelar {
+        width: 100%;
+        font-size: 16px;
+        padding: 15px;
+    }
+
+    .modal-conteudo {
+        width: 95% !important;
+        margin: 10% auto !important;
+        padding: 15px !important;
+    }
+
+    .tabela-pesquisa-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .tabela-pesquisa {
+        min-width: 400px;
+    }
+}

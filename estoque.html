@@ -11,14 +11,16 @@
 <body>
     <div class="dashboard-container">
 
-        <aside class="sidebar">
+        <aside class="sidebar" id="menu-lateral">
+            <button id="fechar-menu" class="btn-fechar-menu">✖ Fechar Menu</button>
             <div class="logo-area">
                 <img src="img/logo1.png" alt="Bombado Logo">
             </div>
 
             <nav class="menu">
                 <a href="painel.html" class="menu-item"><span>📊</span> Dashboard</a>
-                <a href="estoque.html" class="menu-item active" style="color: #ff9900;"><span>📦</span> Estoque & Produtos</a>
+                <a href="estoque.html" class="menu-item active" style="color: #ff9900;"><span>📦</span> Estoque &
+                    Produtos</a>
                 <a href="caixa.html" class="menu-item"><span>💵</span> Caixa</a>
                 <a href="vendas.html" class="menu-item"><span>💰</span> Histórico de Vendas</a>
                 <a href="fiados.html" class="menu-item ">📒 Contas a Receber</a>
@@ -32,11 +34,10 @@
         </aside>
 
         <main class="main-content">
-            <header class="header">
-                <div class="title">
-                    <h2>Gestão de Estoque</h2>
-                </div>
-                <div class="user-info">
+            <header class="topbar">
+                <button id="abrir-menu" class="btn-abrir-menu">☰</button>
+                <h2>Gestão de Estoque</h2>
+                <div class="user-profile">
                     <span class="status-dot"></span>
                     <span>Olá, <strong>Junior</strong></span>
                 </div>
@@ -52,7 +53,8 @@
 
             <section class="table-container"
                 style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #333;">
-                <table style="width: 100%; text-align: left; border-collapse: collapse; color: white;">
+                <table class="tabela-pesquisa"
+                    style="width: 100%; text-align: left; border-collapse: collapse; color: white;">
                     <thead>
                         <tr style="border-bottom: 2px solid #ff9900;">
                             <th style="padding: 15px 10px;">ID</th>
@@ -75,19 +77,20 @@
 
     <div id="modal-produto"
         style="display: none; position: fixed; z-index: 1000; left: 0px; top: 0px; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8);">
-        <div
-            style="background-color: #1a1a1a; margin: 5% auto; padding: 30px; border: 1px solid #ff9900; border-radius: 8px; width: 50%; color: white;">
+
+        <div class="modal-content"
+            style="background-color: #1a1a1a; margin: 5% auto; padding: 30px; border: 1px solid #ff9900; border-radius: 8px; color: white;">
 
             <div
-                style="display: flex; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px;">
+                style="display: flex; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px; justify-content: space-between;">
                 <h3 style="color: #ff9900;">Cadastrar Novo Produto</h3>
                 <span id="fechar-modal-produto"
-                    style="color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; color: red;">&times;</span>
+                    style="font-size: 28px; font-weight: bold; cursor: pointer; color: red;">&times;</span>
             </div>
 
-            <form id="form-novo-produto" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <form id="form-novo-produto" class="form-grid">
 
-                <div style="grid-column: span 2;">
+                <div class="span-2">
                     <label>Nome do Produto:</label><br>
                     <input type="text" id="cad-nome" required
                         style="width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 4px;">
@@ -129,19 +132,19 @@
                         style="width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 4px;">
                 </div>
 
-                <div style="grid-column: span 2;">
+                <div class="span-2">
                     <label>Alerta de Estoque Baixo:</label><br>
                     <input type="number" id="cad-estoque-minimo" value="5" required
                         style="width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 4px;">
                 </div>
 
-                <div style="flex: 1;">
+                <div>
                     <label>Quantidade Inicial:</label>
                     <input type="number" id="cad-quantidade" value="0" required
-                        style="width: 100%; padding: 8px; margin-top: 5px; background: #222; border: 1px solid #444; color: white;">
+                        style="width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 4px;">
                 </div>
 
-                <div style="grid-column: span 2; text-align: right; margin-top: 15px;">
+                <div class="span-2" style="text-align: right; margin-top: 15px;">
                     <button type="submit"
                         style="background-color: #4CAF50; color: white; padding: 12px 25px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 16px;">💾
                         Salvar Produto</button>
