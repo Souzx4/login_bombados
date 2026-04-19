@@ -189,6 +189,25 @@ function verificarStatusCaixa() {
     }
 }
 
+// =================================================
+// RESPONSIVIDADE: ABRIR E FECHAR MENU MOBILE
+// =================================================
+const btnAbrirMenu = document.getElementById('abrir-menu');
+const btnFecharMenu = document.getElementById('fechar-menu');
+const menuLateral = document.getElementById('menu-lateral');
+
+if (btnAbrirMenu && btnFecharMenu && menuLateral) {
+    // Quando clicar no ☰, adiciona a classe que traz o menu pra tela
+    btnAbrirMenu.addEventListener('click', () => {
+        menuLateral.classList.add('menu-aberto');
+    });
+
+    // Quando clicar no ✖, remove a classe e o menu volta a se esconder
+    btnFecharMenu.addEventListener('click', () => {
+        menuLateral.classList.remove('menu-aberto');
+    });
+}
+
 
 // manda os codigos rodaren assim que o chefe abrir a tela
 verificarStatusCaixa();

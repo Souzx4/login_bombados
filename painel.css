@@ -1,10 +1,97 @@
 @charset "UTF-8";
+
 /* reset básico */
 * {
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ================================================= */
+/* MENU MOBILE (RESPONSIVIDADE)                      */
+/* ================================================= */
+
+/* Esconde os botões no Computador */
+.btn-abrir-menu {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #ff9900;
+    /* Cor laranja do Bombado */
+    font-size: 28px;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.btn-fechar-menu {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #f44336;
+    /* Vermelho */
+    font-size: 16px;
+    cursor: pointer;
+    text-align: right;
+    padding: 15px;
+    width: 100%;
+    font-weight: bold;
+}
+
+/* --- REGRAS SÓ PARA CELULAR (Telas menores que 768px) --- */
+@media screen and (max-width: 768px) {
+
+    /* 1. Mostra os botões */
+    .btn-abrir-menu,
+    .btn-fechar-menu {
+        display: block;
+    }
+
+    /* 2. Alinha o topo para o botão caber do lado do título */
+    .topbar {
+        display: flex;
+        align-items: center;
+    }
+
+    .topbar h2 {
+        font-size: 16px;
+        /* Diminui um pouco a letra no celular */
+    }
+
+    /* 3. Esconde o menu para a esquerda e prepara a animação */
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        width: 260px;
+        /* Largura do menu no celular */
+        z-index: 1000;
+        background-color: #0a0a0a;
+        /* Fundo preto sólido */
+        transform: translateX(-100%);
+        /* Joga ele pra fora da tela */
+        transition: transform 0.3s ease-in-out;
+        /* Efeito de deslizar */
+        box-shadow: 2px 0 15px rgba(0, 0, 0, 0.8);
+    }
+
+    /* 4. A classe que o JavaScript vai usar para trazer o menu de volta */
+    .sidebar.menu-aberto {
+        transform: translateX(0);
+    }
+
+    /* 5. Empilha os cartões de faturamento (para não ficarem espremidos) */
+    .cards-grid {
+        display: flex;
+        flex-direction: column;
+        /* Coloca um embaixo do outro */
+        gap: 15px;
+    }
+
+    .card {
+        width: 100%;
+    }
 }
 
 /* fundo escuro total para a pagina*/
@@ -119,7 +206,7 @@ body {
 
 .topbar h2 {
     color: #eee;
-    font-weight: 600px;
+    font-weight: 600;
 }
 
 .user-profile {
@@ -196,7 +283,7 @@ body {
     border-bottom: 3px solid #ff9900;
 }
 
-/* ========  ÁREA DE TABELA =========== */
+/* ========  ÁREA DE TABELA (ATUALIZADA) =========== */
 
 .recent-activity {
     background-color: #111;
@@ -210,12 +297,31 @@ body {
     color: #ccc;
 }
 
+/* A caixa mágica que vira um trilho no celular */
 .table-container {
     background-color: #0a0a0a;
-    padding: 40px;
+    padding: 20px;
     border-radius: 8px;
-    text-align: center;
+    text-align: left;
     border: 1px dashed #370504;
+
+    /* Configurações de Rolagem Horizontal */
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Trava de segurança para a tabela não amassar */
+.tabela-pesquisa {
+    width: 100%;
+    min-width: 500px;
+    border-collapse: collapse;
+}
+
+/* Proíbe as letras de caírem para a linha de baixo */
+.tabela-pesquisa th,
+.tabela-pesquisa td {
+    white-space: nowrap;
 }
 
 .placeholder-text {
