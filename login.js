@@ -25,15 +25,17 @@ document.getElementById('login-form').addEventListener('submit', async function 
         if (resposta.ok) {
 
             const nivelDoUsuario = await resposta.text();
+            const nivelFormatado = nivelDoUsuario.trim().toUpperCase();
 
-            localStorage.setItem('usuarioLogado', usuarioDigitado);
+            sessionStorage.setItem('usuarioLogado', JSON.stringify({
+                nome: usuarioDigitado,
+                nivel: nivelFormatado
+            }));
 
             // redireciona para a página certa dependendo do nível do usuário
-            if (nivelDoUsuario.trim().toUpperCase() === 'ADMIN') {
-                alert("Bem-vindo, Admin! Redirecionando para a página de administração...");
+            if (nivelFormatado === 'ADMIN') {
                 window.location.href = 'painel.html';
             } else {
-                alert("Bem-vindo, Abrindo o caixa...");
                 window.location.href = 'caixa.html';
             }
         } else {

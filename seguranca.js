@@ -16,6 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const botoesSair = document.querySelectorAll('.btn-sair');
 
     botoesSair.forEach(botao => {
-        boi
-    })
-})
+        botao.addEventListener('click', (evento) => {
+            evento.preventDefault(); // impede do butao de só mudar de pagina
+
+            sessionStorage.removeItem('usuarioLogado');
+            sessionStorage.clear();
+
+            window.location.replace('login.hrml');
+        });
+    });
+});
