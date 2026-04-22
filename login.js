@@ -24,11 +24,12 @@ document.getElementById('login-form').addEventListener('submit', async function 
         // analisa a resposta do java
         if (resposta.ok) {
 
-            const nivelDoUsuario = await resposta.text();
-            const nivelFormatado = nivelDoUsuario.trim().toUpperCase();
+            const dadosUsuario = await resposta.json();
+            const nivelFormatado = dadosUsuario.nivel.trim().toUpperCase();
 
             sessionStorage.setItem('usuarioLogado', JSON.stringify({
-                nome: usuarioDigitado,
+                id: dadosUsuario.id,
+                nome: dadosUsuario.nome,
                 nivel: nivelFormatado
             }));
 
