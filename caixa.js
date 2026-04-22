@@ -3,11 +3,11 @@ const API_URL = 'https://sistema-bombados-backend.onrender.com';
 // ==========================================
 // IDENTIFICAÇÃO DO OPERADOR (LOCALSTORAGE)
 // ==========================================
-let operadorString = localStorage.getItem('usuarioLogado');
+let operadorString = sessionStorage.getItem('usuarioLogado');
 // Avisa o sistema que a tela do caixa foi aberta e está operando!
-localStorage.setItem('caixa_lauanda_status', 'ABERTO');
-let nomeOperador = 'Lauanda'; // Nome Padrão se der erro
-let idOperador = 2; // ID da Lauanda
+localStorage.setItem('caixa_status', 'ABERTO');
+let nomeOperador = 'Desconhecido'; // Nome Padrão se der erro
+let idOperador = 1; // ID da Lauanda
 
 if (operadorString) {
     try {
