@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sessionStorage.removeItem('usuarioLogado');
             sessionStorage.clear();
 
-            window.location.replace('login.hrml');
+            window.location.replace('login.html');
         });
     });
 });
