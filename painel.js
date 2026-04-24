@@ -1,5 +1,90 @@
 const API_URL = 'https://sistema-bombados-backend.onrender.com';
 
+// =================================================
+//  ALERTA DE PRODUTOS VENCENDO
+// =================================================
+
+// 1. Busca o número pro painel inicial
+async function carregarAlertaValidade() {
+    try {
+        const resposta = await fetch(`${API_URL}/api/estoque/vencendo/total`);
+        if (resposta.ok) {
+            const quantidadeVencendo = await resposta.text();
+            document.getElementById('valor-vencendo').innerText = quantidadeVencendo;
+        }
+    } catch (erro) {
+        console.error("Erro ao buscar alerta de validade: ", erro);
+        document.getElementById('valor-vencendo').innerText = "!";
+    }
+}
+
+// 2. Abre a janela Modal com a lista dos produtos
+async function abrirModalVencimento() {
+    try {
+        const resposta = await fetch(`${API_URL}/api/estoque/vencendo/lista`);
+        if (resposta.ok) {
+            const produtos = await resposta.json();
+            const tbody = document.getElementById('tabela-relatorio-vencimento');
+            tbody.innerHTML = '';
+
+            produtos.forEach(p => {
+                // Matemática básica pra calcular dias
+                let dataVencimento = new Date(p.dataValidade);
+                let dataHoje = new Date();
+                let diferencaTempo = dataVencimento.getTime() - dataHoje.getTime();
+                let diasParaVencer = Math.ceil(diferencaTempo / (1000 * 3600 * 24));
+
+                let statusCor = "";
+                let textoDias = "";
+                let sugestao = "";
+
+                if (diasParaVencer < 0) {
+                    statusCor = "#f44336"; // Vermelho forte
+                    textoDias = `VENCIDO HÁ ${Math.abs(diasParaVencer)} DIAS!`;
+                    sugestao = "Descartar Produto 🗑️";
+                } else if (diasParaVencer <= 30) {
+                    statusCor = "#ff5722"; // Laranja escuro
+                    textoDias = `Vence em ${diasParaVencer} dias`;
+                    sugestao = "Promoção Urgente 🔥";
+                } else {
+                    statusCor = "#ffeb3b"; // Amarelo
+                    textoDias = `Vence em ${diasParaVencer} dias`;
+                    sugestao = "Fazer Kit / Combo 📦";
+                }
+
+                // Converte de Ano-Mes-Dia para Dia/Mes/Ano pro Junior ler
+                let dataSeparada = p.dataValidade.split("-");
+                let dataBr = `${dataSeparada[2]}/${dataSeparada[1]}/${dataSeparada[0]}`;
+
+                tbody.innerHTML += `
+                    <tr style="border-bottom: 1px solid #333;">
+                        <td style="padding: 10px;">
+                            <strong>${p.nome}</strong><br>
+                            <small style="color: #aaa;">Válido até: ${dataBr}</small>
+                        </td>
+                        <td style="padding: 10px; text-align: center; color: ${statusCor}; font-weight: bold;">
+                            ${textoDias}
+                        </td>
+                        <td style="padding: 10px; text-align: right; color: #fff;">
+                            ${sugestao}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // Mostra o modal na tela
+            document.getElementById('modal-vencimento').style.display = 'flex';
+        }
+    } catch (erro) {
+        console.error("Erro ao buscar relatório de vencimento", erro);
+    }
+}
+
+// 3. Função para fechar o Modal
+function fecharModalVencimento() {
+    document.getElementById('modal-vencimento').style.display = 'none';
+}
+
 // Função que vai buscar o dinheiro no Java
 async function carregarFaturamento() {
     try {
@@ -215,3 +300,4 @@ carregarFaturamento();
 carregarEstoqueBaixo();
 carregarUltimasVendas();
 carregarTotalProdutos();
+carregarAlertaValidade();
