@@ -100,9 +100,8 @@ function prepararEdicao(id) {
         document.getElementById('cad-custo').value = produto.precoCusto;
         document.getElementById('cad-venda').value = produto.precoVenda;
         document.getElementById('cad-estoque-minimo').value = produto.estoqueMinimo;
-
-        // 🐛 CORREÇÃO: Agora carrega a Quantidade também para o Lápis Azul!
         document.getElementById('cad-quantidade').value = produto.qtd_estoque;
+        document.getElementById('cad-validade').value = produto.dataValidade || '';
 
         // abre a janela
         modalProduto.style.display = 'block';
@@ -139,6 +138,13 @@ async function excluirProduto(id, nomeProduto) {
 formNovoProduto.addEventListener('submit', async function (event) {
     event.preventDefault(); // evita o envio tradicional do formulario
 
+    // pega a data e verifica se eles não esqueceram
+    const dataDigitada = document.getElementById('cad-validade').value;
+    if (!dataDigitada) {
+        alert("⚠️ Atenção! A Data de Validade é obrigatória para salvar o produto!");
+        return;
+    }
+
     // empacota os dados digitados na tela
     const dadosProduto = {
         nome: document.getElementById('cad-nome').value,
@@ -149,7 +155,8 @@ formNovoProduto.addEventListener('submit', async function (event) {
         precoCusto: document.getElementById('cad-custo').value,
         precoVenda: document.getElementById('cad-venda').value,
         estoqueMinimo: document.getElementById('cad-estoque-minimo').value,
-        qtd_estoque: document.getElementById('cad-quantidade').value
+        qtd_estoque: document.getElementById('cad-quantidade').value,
+        dataValidade: dataDigitada
     };
 
     try {
