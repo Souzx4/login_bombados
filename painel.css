@@ -227,6 +227,11 @@ body {
     border-radius: 50%;
 }
 
+#modal-vencimento {
+    height: auto;
+    overflow-y: auto;
+}
+
 /* ========== CARDS DE RESUMO ========== */
 
 .cards-grid {
@@ -356,6 +361,11 @@ body {
     }
 
     #modal-estoque-baixo {
+        height: auto;
+        overflow-y: auto;
+    }
+
+    #modal-vencimento {
         height: auto;
         overflow-y: auto;
     }
