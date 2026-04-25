@@ -38,6 +38,8 @@ if (operadorString) {
 }
 // Atualiza na tela do caixa!
 document.getElementById('nome-operador').innerText = nomeOperador;
+// salva o nome do operador para o painel ler
+localStorage.setItem('caixa_operador', nomeOperador);
 
 // Pega o campo onde a pessoa digita o ID (ou bipa o leitor)
 const inputCodigo = document.getElementById('codigoBarras');

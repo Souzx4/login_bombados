@@ -253,8 +253,11 @@ function verificarStatusCaixa() {
     const statusCaixa = document.getElementById('status-caixa');
     const operadorCaixa = document.getElementById('operador-caixa');
 
-    // O Painel não olha mais quem está logado, ele olha direto pro status do Caixa Frontal
-    let statusCaixaFrontal = localStorage.getItem('caixa_lauanda_status');
+    // O Painel lê a chave com o nome
+    let statusCaixaFrontal = localStorage.getItem('caixa_status');
+
+    // lendo quem é o operador
+    let nomeOperadorFrontal = localStorage.getItem('caixa_operador') || 'Desconhecido';
 
     if (statusCaixaFrontal === 'ABERTO') {
         // A Lauanda abriu a tela do Caixa!
@@ -262,7 +265,7 @@ function verificarStatusCaixa() {
             statusCaixa.innerText = "Aberto";
             statusCaixa.style.color = "#4CAF50"; // Verde!
         }
-        if (operadorCaixa) operadorCaixa.innerText = "Operador: Lauanda";
+        if (operadorCaixa) operadorCaixa.innerText = "Operador: " + nomeOperadorFrontal;
 
     } else {
         // A tela do caixa não foi aberta ou ela encerrou o turno
