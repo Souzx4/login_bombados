@@ -69,7 +69,7 @@ function renderizarTabela(vendas) {
             <td style="padding: 15px 10px;">
                 <span style="color: ${corTag}; font-weight: bold;">${formaPagamento}</span>
             </td>
-            <td style="padding: 15px 10px; font-weight: bold;">R$ ${venda.valorTotal.toFixed(2).replace('.', ',')}</td>
+            <td style="padding: 15px 10px; font-weight: bold;">R$ ${venda.valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
         `;
         tbody.appendChild(linha);
     });
@@ -99,7 +99,7 @@ function calcularComissoes(vendas) {
     painel.innerHTML += `
         <div style="flex: 1; min-width: 200px; background: #222; padding: 20px; border-radius: 8px; border-left: 5px solid #ff9900;">
             <h3 style="color: #aaa; margin-bottom: 10px; font-size: 14px;">Total no Período</h3>
-            <h2 style="color: white; font-size: 24px;">R$ ${faturamentoTotal.toFixed(2).replace('.', ',')}</h2>
+            <h2 style="color: white; font-size: 24px;">R$ ${faturamentoTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
         </div>
     `;
 
@@ -108,7 +108,7 @@ function calcularComissoes(vendas) {
         painel.innerHTML += `
             <div style="flex: 1; min-width: 200px; background: #222; padding: 20px; border-radius: 8px; border-left: 5px solid #4CAF50;">
                 <h3 style="color: #aaa; margin-bottom: 10px; font-size: 14px;">Vendido por: ${vendedor}</h3>
-                <h2 style="color: white; font-size: 24px;">R$ ${total.toFixed(2).replace('.', ',')}</h2>
+                <h2 style="color: white; font-size: 24px;">R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
             </div>
         `;
     }
