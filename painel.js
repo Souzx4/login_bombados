@@ -115,9 +115,9 @@ async function carregarFaturamento() {
 
             // 5. Pinta de verde, vermelho ou cinza
             if (porcentagem > 0) {
-                kpiSpan.innerHTML = `🟢 <span style="color: #4CAF50; font-weight: bold;">+${porcentagem.toFixed(1).replace('.', ',')}%</span> em relação a ontem`;
+                kpiSpan.innerHTML = `🟢 <span style="color: #4CAF50; font-weight: bold;">+${porcentagem.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</span> em relação a ontem`;
             } else if (porcentagem < 0) {
-                kpiSpan.innerHTML = `🔴 <span style="color: #f44336; font-weight: bold;">${porcentagem.toFixed(1).replace('.', ',')}%</span> em relação a ontem`;
+                kpiSpan.innerHTML = `🔴 <span style="color: #f44336; font-weight: bold;">${porcentagem.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</span> em relação a ontem`;
             } else {
                 kpiSpan.innerHTML = `⚪ <span style="color: #999; font-weight: bold;">0%</span> em relação a ontem`;
             }
@@ -183,7 +183,7 @@ async function carregarUltimasVendas() {
                             <td style="padding: 10px; color: #ff9900;">#00${venda.id}</td>
                             <td style="padding: 10px;">${dataBr} às ${hora}</td>
                             <td style="padding: 10px;">${formaPgto}</td>
-                            <td style="padding: 10px;"><strong>R$ ${venda.valorTotal.toFixed(2).replace('.', ',')}</strong></td>
+                            <td style="padding: 10px;"><strong>R$ ${venda.valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
                         `;
                 tbody.appendChild(linha);
 
