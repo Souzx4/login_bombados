@@ -113,12 +113,12 @@ inputCodigo.addEventListener('keypress', async function (event) {
                     <td>00${contadorItens}</td>
                     <td>${produto.nome}</td>
                     <td>${quantidadeBipada}</td>
-                    <td>R$ ${produto.precoVenda.toFixed(2).replace('.', ',')}</td>
-                    <td>R$ ${subtotal.toFixed(2).replace('.', ',')}</td>
+                    <td>R$ ${produto.precoVenda.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td>R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                 `;
 
                 tbodyItens.appendChild(novaLinha);
-                displayTotal.innerText = `R$ ${totalCompra.toFixed(2).replace('.', ',')}`;
+                displayTotal.innerText = `R$ ${totalCompra.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
                 inputCodigo.value = '';
 
             } else {
@@ -299,7 +299,7 @@ inputPesquisaNome.addEventListener('input', async function () {
                     <td style="padding: 10px;">00${produto.id}</td>
                     <td style="padding: 10px;"><strong>${produto.nome}</strong></td>
                     <td style="padding: 10px; color: ${corEstoque}; font-weight: bold;">${textoEstoque}</td>
-                    <td style="padding: 10px;">R$ ${produto.precoVenda.toFixed(2).replace('.', ',')}</td>
+                    <td style="padding: 10px;">R$ ${produto.precoVenda.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                 `;
                 tbodyPesquisa.appendChild(linha);
             });
@@ -331,11 +331,11 @@ function adicionarProdutoNoCaixa(produto) {
         <td>00${contadorItens}</td>
         <td>${produto.nome}</td>
         <td>${quantidadeBipada}</td>
-        <td>R$ ${produto.precoVenda.toFixed(2).replace('.', ',')}</td>
-        <td>R$ ${subtotal.toFixed(2).replace('.', ',')}</td>
+        <td>R$ ${produto.precoVenda.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td>R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
     `;
     tbodyItens.appendChild(novaLinha);
-    displayTotal.innerText = `R$ ${totalCompra.toFixed(2).replace('.', ',')}`;
+    displayTotal.innerText = `R$ ${totalCompra.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
     inputCodigo.focus();
 }

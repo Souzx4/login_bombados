@@ -53,7 +53,7 @@ function renderizarTabelaFiados(fiados) {
             <td style="padding: 15px 10px;">${dataFormatada}</td>
             <td style="padding: 15px 10px; font-weight: bold; color: #ff9900;">👤 ${nomeCliente}</td>
             <td style="padding: 15px 10px; font-weight: bold; font-size: 16px; color: white;">
-                R$ ${venda.valorTotal.toFixed(2).replace('.', ',')}
+                R$ ${venda.valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </td>
             <td style="padding: 15px 10px;">
                 <select id="pagamento-${venda.id}" style="padding: 8px; border-radius: 4px; background: #222; color: white; border: 1px solid #444; outline: none;">

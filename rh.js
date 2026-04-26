@@ -35,9 +35,9 @@ async function calcularFechamento() {
                 tbody.innerHTML += `
                     <tr style="border-bottom: 1px solid #333;">
                         <td style="padding: 15px 10px; font-weight: bold; font-size: 16px;">👤 ${linha.vendedor}</td>
-                        <td style="padding: 15px 10px;">R$ ${linha.totalVendido.toFixed(2).replace('.', ',')}</td>
+                        <td style="padding: 15px 10px;">R$ ${linha.totalVendido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                         <td style="padding: 15px 10px; font-weight: bold; color: ${corMeta};">${textoMeta}</td>
-                        <td style="padding: 15px 10px; font-weight: bold; font-size: 18px; color: #4CAF50;">R$ ${linha.comissaoFinal.toFixed(2).replace('.', ',')}</td>
+                        <td style="padding: 15px 10px; font-weight: bold; font-size: 18px; color: #4CAF50;">R$ ${linha.comissaoFinal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     </tr>
                 `;
             });
