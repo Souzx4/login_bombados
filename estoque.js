@@ -37,8 +37,8 @@ async function carregarTodosProdutos() {
                         ${produto.qtd_estoque} un.
                     </td>
 
-                    <td style="padding: 12px 10px;">R$ ${produto.precoCusto.toFixed(2).replace('.', ',')}</td>
-                    <td style="padding: 12px 10px;">R$ ${produto.precoVenda.toFixed(2).replace('.', ',')}</td>
+                    <td style="padding: 12px 10px;">R$ ${produto.precoCusto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style="padding: 12px 10px;">R$ ${produto.precoVenda.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td style="padding: 12px 10px; text-align: center;">
                         <button onclick="prepararEdicao(${produto.id})" title="Editar" style="background: #2196F3; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; margin-right: 5px;">✏️</button>
                         <button onclick="excluirProduto(${produto.id}, '${produto.nome}')" title="Excluir" style="background: #f44336; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">🗑️</button>

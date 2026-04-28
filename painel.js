@@ -259,8 +259,9 @@ function verificarStatusCaixa() {
     // lendo quem é o operador
     let nomeOperadorFrontal = localStorage.getItem('caixa_operador') || 'Desconhecido';
 
-    if (statusCaixaFrontal === 'ABERTO') {
-        // A Lauanda abriu a tela do Caixa!
+    // Só abre se o status for ABERTO *E* o operador for reconhecido
+    if (statusCaixaFrontal === 'ABERTO' && nomeOperadorFrontal !== 'Desconhecido') {
+
         if (statusCaixa) {
             statusCaixa.innerText = "Aberto";
             statusCaixa.style.color = "#4CAF50"; // Verde!
@@ -268,7 +269,7 @@ function verificarStatusCaixa() {
         if (operadorCaixa) operadorCaixa.innerText = "Operador: " + nomeOperadorFrontal;
 
     } else {
-        // A tela do caixa não foi aberta ou ela encerrou o turno
+        // Se for Desconhecido ou fechado, trava no vermelho!
         if (statusCaixa) {
             statusCaixa.innerText = "Fechado";
             statusCaixa.style.color = "#e91e63"; // Vermelho!
