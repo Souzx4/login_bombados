@@ -103,7 +103,8 @@ inputCodigo.addEventListener('keypress', async function (event) {
                 carrinho.push({
                     idProduto: produto.id,
                     quantidade: quantidadeBipada,
-                    subtotal: subtotal
+                    subtotal: subtotal,
+                    categoriaProduto: produto.categoria
                 });
 
                 totalCompra += subtotal;
@@ -344,7 +345,8 @@ function adicionarProdutoNoCaixa(produto) {
     carrinho.push({
         idProduto: produto.id,
         quantidade: quantidadeBipada,
-        subtotal: subtotal
+        subtotal: subtotal,
+        categoriaProduto: produto.categoria
     });
 
     totalCompra += subtotal;
