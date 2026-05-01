@@ -82,12 +82,19 @@ function calcularComissoes(vendas) {
     const painel = document.getElementById('painel-comissoes');
     painel.innerHTML = ''; // limpa os cards antigos
 
-    let faturamentoTotal = 0;
+    // variaveis para somar o grande total
+    let totalGeral = 0;
+    let somaGeralPix = 0;
+    let somaGeralCartao = 0;
+    let somaGeralDinheiro = 0;
+
+    // metre 
     const totaisPorVendedor = {}; // vai guardar { "Lauanda": 500.00, "Junior": 1200.00 }
 
     vendas.forEach(venda => {
-        faturamentoTotal += venda.valorTotal;
+        totalGeral += venda.valorTotal;
 
+        somaGeralPix += venda.valorPix
         const nome = venda.nomeVendedor ? venda.nomeVendedor : "Admin (antigo)";
         if (!totaisPorVendedor[nome]) {
             totaisPorVendedor[nome] = 0;
