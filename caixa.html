@@ -24,8 +24,17 @@
         <section class="painel-esquerdo">
 
             <div class="area-leitor">
-                <label for="codigoBarras">CÓDIGO DE BARRAS / PESQUISA (F2) </label>
-                <input type="text" id="codigoBarras" placeholder="Passe o leitor no produto..." autofocus>
+                <!-- ISSO APARECE NO PC -->
+                <div class="leitor-desktop">
+                    <label for="codigoBarras">CÓDIGO DE BARRAS / PESQUISA (F2) </label>
+                    <input type="text" id="codigoBarras" placeholder="Passe o leitor no produto..." autofocus>
+                </div>
+
+                <!-- ISSO APARECE NO CELULAR -->
+                <div class="leitor-mobile">
+                    <label>PESQUISAR PRODUTO MANUALMENTE</label>
+                    <button id="btn-pesquisa-mobile" class="btn-pesquisa-mobile">🔍 Tocar para Buscar Produto</button>
+                </div>
             </div>
 
             <div class="area-cupom">

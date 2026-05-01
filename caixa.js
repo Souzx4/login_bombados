@@ -228,6 +228,18 @@ const modalPesquisa = document.getElementById('modal-pesquisa');
 const inputPesquisaNome = document.getElementById('input-pesquisa-nome');
 const btnFecharModal = document.getElementById('fechar-modal');
 
+// ==========================================
+// ABRIR PESQUISA PELO CELULAR (BOTÃO MOBILE)
+// ==========================================
+const btnPesquisaMobile = document.getElementById('btn-pesquisa-mobile');
+
+if (btnPesquisaMobile) {
+    btnPesquisaMobile.addEventListener('click', function () {
+        modalPesquisa.style.display = 'block';
+        inputPesquisaNome.focus();
+    });
+}
+
 document.addEventListener('keydown', function (event) {
     if (event.key === 'F2') {
         event.preventDefault();
@@ -310,6 +322,17 @@ inputPesquisaNome.addEventListener('input', async function () {
 });
 
 function adicionarProdutoNoCaixa(produto) {
+    let qtdJaNoCarrinho = 0;
+    carrinho.forEach(item => {
+        if (item.idProduto === produto.id) {
+            qtdJaNoCarrinho += item.quantidade;
+        }
+    });
+    if (produto.qtd_estoque <= 0 || (qtdJaNoCarrinho + 1) > produto.qtd_estoque) {
+        alert(`⚠️ Estoque Insuficiente!\nVocê está tentando adicionar "${produto.nome}", mas só existem ${produto.qtd_estoque} un. disponíveis no estoque!`);
+        return;
+    }
+
     modalPesquisa.style.display = 'none';
     inputPesquisaNome.value = '';
     tbodyPesquisa.innerHTML = '';

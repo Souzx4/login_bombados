@@ -388,7 +388,37 @@ body {
 /* CAIXA MOBILE (RESPONSIVIDADE)                     */
 /* ================================================= */
 
+.leitor-mobile {
+    display: none;
+}
+
+.btn-pesquisa-mobile {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    background-color: #ff9800;
+    color: #111;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.btn-pesquisa-mobile:active {
+    background-color: #e68a00;
+}
+
 @media screen and (max-width: 768px) {
+
+    .leitor-desktop {
+        display: none;
+    }
+
+    .leitor-mobile {
+        display: block;
+    }
 
     body {
         height: auto;
