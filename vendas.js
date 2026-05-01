@@ -93,29 +93,68 @@ function calcularComissoes(vendas) {
 
     vendas.forEach(venda => {
         totalGeral += venda.valorTotal;
+        somaGeralPix += venda.valorPix || 0;
+        somaGeralCartao += venda.valorCartao || 0;
+        somaGeralDinheiro += venda.valorDinheiro || 0;
 
-        somaGeralPix += venda.valorPix
         const nome = venda.nomeVendedor ? venda.nomeVendedor : "Admin (antigo)";
+
         if (!totaisPorVendedor[nome]) {
-            totaisPorVendedor[nome] = 0;
+            totaisPorVendedor[nome] = { total: 0, pix: 0, cartao: 0, dinheiro: 0 };
         }
-        totaisPorVendedor[nome] += venda.valorTotal;
+
+        // 3. Guarda os valores nas gavetas certas do vendedor
+        totaisPorVendedor[nome].total += venda.valorTotal;
+        totaisPorVendedor[nome].pix += venda.valorPix || 0;
+        totaisPorVendedor[nome].cartao += venda.valorCartao || 0;
+        totaisPorVendedor[nome].dinheiro += venda.valorDinheiro || 0;
+
     });
 
     // 1. cria um card de faturamento total
     painel.innerHTML += `
-        <div style="flex: 1; min-width: 200px; background: #222; padding: 20px; border-radius: 8px; border-left: 5px solid #ff9900;">
-            <h3 style="color: #aaa; margin-bottom: 10px; font-size: 14px;">Total no Período</h3>
-            <h2 style="color: white; font-size: 24px;">R$ ${faturamentoTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
+        <div style="flex: 1; min-width: 280px; background: #222; padding: 20px; border-radius: 8px; border-left: 5px solid #ff9900; box-shadow: 0px 4px 10px rgba(0,0,0,0.5);">
+            <h3 style="color: #aaa; margin-bottom: 5px; font-size: 14px; text-transform: uppercase;">Total no Período</h3>
+            <h2 style="color: #ff9900; font-size: 28px; font-weight: 900; margin-bottom: 15px;">R$ ${totalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; background: #1a1a1a; padding: 10px; border-radius: 5px; border: 1px solid #333;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: #4CAF50;">💵 Dinheiro:</span> 
+                    <strong>R$ ${somaGeralDinheiro.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: #2196F3;">💳 Cartão:</span> 
+                    <strong>R$ ${somaGeralCartao.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: #00BCD4;">💠 Pix:</span> 
+                    <strong>R$ ${somaGeralPix.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+                </div>
+            </div>
         </div>
     `;
 
     // 2. cria um card dinamico para cada vendedor encontrado na linha
-    for (const [vendedor, total] of Object.entries(totaisPorVendedor)) {
+    for (const [vendedor, dados] of Object.entries(totaisPorVendedor)) {
         painel.innerHTML += `
-            <div style="flex: 1; min-width: 200px; background: #222; padding: 20px; border-radius: 8px; border-left: 5px solid #4CAF50;">
-                <h3 style="color: #aaa; margin-bottom: 10px; font-size: 14px;">Vendido por: ${vendedor}</h3>
-                <h2 style="color: white; font-size: 24px;">R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
+            <div style="flex: 1; min-width: 250px; background: #222; padding: 20px; border-radius: 8px; border-left: 5px solid #4CAF50;">
+                <h3 style="color: #aaa; margin-bottom: 5px; font-size: 14px;">Vendido por: <strong>${vendedor}</strong></h3>
+                <h2 style="color: white; font-size: 24px; margin-bottom: 15px;">R$ ${dados.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
+                
+                <div style="display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: #ccc;">
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #444; padding-bottom: 2px;">
+                        <span>Dinheiro:</span> 
+                        <span style="color: #4CAF50;">R$ ${dados.dinheiro.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #444; padding-bottom: 2px;">
+                        <span>Cartão:</span> 
+                        <span style="color: #2196F3;">R$ ${dados.cartao.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Pix:</span> 
+                        <span style="color: #00BCD4;">R$ ${dados.pix.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
+                </div>
             </div>
         `;
     }
