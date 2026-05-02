@@ -298,6 +298,8 @@ if (btnAbrirMenu && btnFecharMenu && menuLateral) {
 }
 
 
+
+
 // manda os codigos rodaren assim que o chefe abrir a tela
 verificarStatusCaixa();
 carregarFaturamento();

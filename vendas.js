@@ -70,6 +70,9 @@ function renderizarTabela(vendas) {
                 <span style="color: ${corTag}; font-weight: bold;">${formaPagamento}</span>
             </td>
             <td style="padding: 15px 10px; font-weight: bold;">R$ ${venda.valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td style="padding: 15px 10px;">
+                <button onclick="abrirDetalhesVenda(${venda.id})" style="background-color: #2196F3; color: white; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Detalhes</button>
+            </td>
         `;
         tbody.appendChild(linha);
     });
@@ -188,3 +191,60 @@ if (btnAbrirMenu && btnFecharMenu && menuLateral) {
         menuLateral.classList.remove('menu-aberto');
     });
 }
+
+// =================================================
+// VER DETALHES DOS PRODUTOS DA VENDA (MODAL)
+// =================================================
+async function abrirDetalhesVenda(idVenda) {
+    const modal = document.getElementById('modal-detalhes');
+    const tbody = document.getElementById('tabela-detalhes-body');
+    const tituloId = document.getElementById('detalhe-id-venda');
+
+    //limpa a tabela e mostra o modal carregando
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;">⏳ Buscando produtos...</td></tr>';
+    tituloId.innerHTML = `#${idVenda}`;
+    modal.style.display = 'block';
+
+    try {
+        // vai no java buscar os itens especificos desta venda
+        const resposta = await fetch(`${API_URL}/api/vendas/${idVenda}/itens`);
+
+        if (resposta.ok) {
+            const itens = await resposta.json();
+            tbody.innerHTML = '';
+
+            if (itens.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px; color: #ff4444;">Nenhum produto detalhado encontrado (Venda Antiga).</td></tr>';
+                return;
+            }
+
+            //desenha o produto na tela
+            itens.forEach(item => {
+                const categoriaFormatada = item.categoriaProduto ? item.categoriaProduto : '<span style="color: #666;">Sem Categoria</span>';
+
+                tbody.innerHTML += `
+                    <tr style="border-bottom: 1px solid #333;">
+                        <td style="padding: 10px; font-weight: bold;">${item.nomeProduto}</td>
+                        <td style="padding: 10px; color: #00BCD4;">${categoriaFormatada}</td>
+                        <td style="padding: 10px; text-align: center;">${item.quantidade}x</td>
+                        <td style="padding: 10px;">R$ ${item.precoUnitario.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        <td style="padding: 10px; color: #4CAF50; font-weight: bold;">R$ ${item.subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    </tr>
+                `;
+            });
+        }
+    } catch (erro) {
+        console.error("Erro ao buscar detalhes da venda: ", erro);
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px; color: red;">Erro ao carregar detalhes.</td></tr>';
+    }
+}
+
+function fecharModalDetalhes() {
+    document.getElementById('modal-detalhes').style.display = 'none';
+}
+
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+        fecharModalDetalhes();
+    }
+});
