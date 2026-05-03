@@ -297,7 +297,52 @@ if (btnAbrirMenu && btnFecharMenu && menuLateral) {
     });
 }
 
+// =========================================================
+// CARREGAR RANKING DE CATEGORIAS (DASHBOARD)
+// =========================================================
+async function carregarRankingCategorias() {
+    try {
+        const resposta = await fetch(`${API_URL}/api/dashboard/ranking-categorias`);
 
+        if (resposta.ok) {
+            const ranking = await resposta.json();
+            const tbody = document.getElementById('tabela-ranking-categorias');
+            tbody.innerHTML = '';
+
+            if (ranking.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px; color: #aaa;">Nenhuma venda registrada ainda.</td></tr>';
+                return;
+            }
+
+            // desenha as categorias
+            ranking.forEach((item, index) => {
+                let posicao = `${index + 1}º`;
+                let corPosicao = "#888";
+                let fontWeight = "normal";
+
+                // distribuição de medalhas
+                if (index === 0) {
+                    posicao = "🥇 1º"; corPosicao = "#FFD700"; fontWeight = "bold";
+                } else if (index === 1) {
+                    posicao = "🥈 2º"; corPosicao = "#C0C0C0"; fontWeight = "bold";
+                } else if (index === 2) {
+                    posicao = "🥉 3º"; corPosicao = "#CD7F32"; fontWeight = "bold";
+                }
+
+                tbody.innerHTML += `
+                    <tr style="border-bottom: 1px solid #222; transition: 0.3s;" onmouseover="this.style.backgroundColor='#111'" onmouseout="this.style.backgroundColor='transparent'">
+                        <td style="padding: 15px 10px; font-size: 1.2rem; color: ${corPosicao}; font-weight: ${fontWeight};">${posicao}</td>
+                        <td style="padding: 15px 10px; font-weight: bold; color: white;">${item.categoria}</td>
+                        <td style="padding: 15px 10px; text-align: center; color: #4CAF50; font-weight: bold;">${item.quantidade}x</td>
+                        <td style="padding: 15px 10px; color: #ff9900; font-weight: bold;">R$ ${item.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    </tr>
+                `;
+            });
+        }
+    } catch (erro) {
+        console.error("Erro ao carregar o ranking de categorias", erro);
+    }
+}
 
 
 // manda os codigos rodaren assim que o chefe abrir a tela
@@ -307,3 +352,4 @@ carregarEstoqueBaixo();
 carregarUltimasVendas();
 carregarTotalProdutos();
 carregarAlertaValidade();
+carregarRankingCategorias();
