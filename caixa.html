@@ -58,28 +58,86 @@
 
         <aside class="painel-direito">
 
+            <!-- 1. ÁREA DE TOTAIS -->
             <div class="area-total">
-                <h2>TOTAL DA COMPRA</h2>
+                <h3 style="color: #aaa; font-size: 1rem; margin-bottom: 5px;">SUBTOTAL: <span id="valor-subtotal">R$
+                        0,00</span></h3>
+                <h2 style="margin-top: 5px;">TOTAL A PAGAR</h2>
                 <div class="valor-gigante" id="valor-total">R$ 0,00</div>
             </div>
 
+            <!-- 2. FECHAMENTO DA CONTA (MISTO E DESCONTO) -->
             <div class="area-pagamento">
-                <h3>FORMA DE PAGAMENTO</h3>
-                <div class="botoes-pagamento">
-                    <button class="btn-pgto" id="btn-dinheiro">💵 Dinheiro (F3)</button>
-                    <button class="btn-pgto" id="btn-cartao">💳 Cartão (F4)</button>
-                    <button class="btn-pgto" id="btn-pix">📱 PIX (F5)</button>
-                    <button class="btn-pgto fiado" id="btn-fiado">📝 Fiado (F6)</button>
+                <h3 style="margin-bottom: 15px; text-align: center; font-size: 14px; color: #ccc;">FECHAMENTO DA CONTA
+                </h3>
+
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <!-- DESCONTO -->
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #ff9800;">
+                        <label style="color: #ff9800; font-weight: bold;">Desconto (R$):</label>
+                        <input type="number" id="input-desconto" placeholder="0.00"
+                            style="width: 100px; padding: 5px; font-size: 1.1rem; text-align: right; background: #111; color: #ff9800; border: 1px solid #555; border-radius: 4px;"
+                            min="0" step="0.01">
+                    </div>
+
+                    <!-- DINHEIRO -->
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #4CAF50;">
+                        <label style="color: #4CAF50; font-weight: bold;">💵 Dinheiro (F3):</label>
+                        <input type="number" id="input-dinheiro" placeholder="0.00"
+                            style="width: 100px; padding: 5px; font-size: 1.1rem; text-align: right; background: #111; color: #4CAF50; border: 1px solid #555; border-radius: 4px;"
+                            min="0" step="0.01">
+                    </div>
+
+                    <!-- CARTÃO -->
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #2196F3;">
+                        <label style="color: #2196F3; font-weight: bold;">💳 Cartão (F4):</label>
+                        <input type="number" id="input-cartao" placeholder="0.00"
+                            style="width: 100px; padding: 5px; font-size: 1.1rem; text-align: right; background: #111; color: #2196F3; border: 1px solid #555; border-radius: 4px;"
+                            min="0" step="0.01">
+                    </div>
+
+                    <!-- PIX -->
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #00BCD4;">
+                        <label style="color: #00BCD4; font-weight: bold;">📱 PIX (F5):</label>
+                        <input type="number" id="input-pix" placeholder="0.00"
+                            style="width: 100px; padding: 5px; font-size: 1.1rem; text-align: right; background: #111; color: #00BCD4; border: 1px solid #555; border-radius: 4px;"
+                            min="0" step="0.01">
+                    </div>
+
+                    <!-- FIADO -->
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #e91e63;">
+                        <label style="color: #e91e63; font-weight: bold;">📝 Fiado (F6):</label>
+                        <input type="number" id="input-fiado" placeholder="0.00"
+                            style="width: 100px; padding: 5px; font-size: 1.1rem; text-align: right; background: #111; color: #e91e63; border: 1px solid #555; border-radius: 4px;"
+                            min="0" step="0.01">
+                    </div>
+                </div>
+
+                <!-- 3. STATUS DO PAGAMENTO (MATEMÁTICA EM TEMPO REAL) -->
+                <div
+                    style="margin-top: 15px; padding: 10px; background: #111; border-radius: 5px; text-align: center; border: 1px dashed #666;">
+                    <h4 style="margin: 0; color: #aaa; font-size: 14px;">Status do Caixa</h4>
+                    <div id="status-troco"
+                        style="font-size: 1.2rem; font-weight: bold; color: #ff4444; margin-top: 5px;">Falta: R$ 0,00
+                    </div>
                 </div>
             </div>
 
-            <div class="areaDoCliente">
-                <label class="nomeDoCliente">👤 Nome do Cliente:</label>
-                <input type="text" class="btnNome" id="nome-cliente" autocomplete="off">
+            <!-- 4. DADOS DO CLIENTE E FINALIZAÇÃO -->
+            <div class="areaDoCliente" style="margin-top: 15px;">
+                <label class="nomeDoCliente" style="font-weight: bold; margin-bottom: 5px; display: block;">👤 Nome do
+                    Cliente:</label>
+                <input type="text" class="btnNome" id="nome-cliente" autocomplete="off"
+                    style="width: 100%; box-sizing: border-box; padding: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 5px;">
             </div>
 
             <div class="area-acoes">
-                <button class="btn-finalizar">✅ Finalizar Compra (Enter)</button>
+                <button class="btn-finalizar" id="btn-finalizar">✅ Finalizar Compra (Enter)</button>
                 <button class="btn-cancelar" id="botao-cancelar">❌ Cancelar Compra (Esc)</button>
             </div>
         </aside>
