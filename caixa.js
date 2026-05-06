@@ -4,22 +4,17 @@ const API_URL = 'https://sistema-bombados-backend.onrender.com';
 // IDENTIFICAÇÃO DO OPERADOR (LOCALSTORAGE)
 // ==========================================
 let operadorString = sessionStorage.getItem('usuarioLogado');
-// Avisa o sistema que a tela do caixa foi aberta e está operando!
 localStorage.setItem('caixa_status', 'ABERTO');
-let nomeOperador = 'Desconhecido'; // Nome Padrão se der erro
-let idOperador = 1; // ID da Lauanda
+let nomeOperador = 'Desconhecido';
+let idOperador = 1;
 
 if (operadorString) {
     try {
-        // Tenta ver se é um JSON perfeito
         let dadosUsuario = JSON.parse(operadorString);
         if (dadosUsuario.nome) nomeOperador = dadosUsuario.nome;
         if (dadosUsuario.id) idOperador = dadosUsuario.id;
     } catch (erro) {
-        // Caiu aqui porque a tela de Login salvou apenas um texto (ex: email ou nome solto)
         let textoSalvo = operadorString.toLowerCase().trim();
-
-        // O TRADUTOR DE CRACHÁS:
         if (textoSalvo.includes('lauanda')) {
             nomeOperador = 'Lauanda';
             idOperador = 2;
@@ -28,29 +23,77 @@ if (operadorString) {
             idOperador = 1;
         } else if (textoSalvo.includes('gilmar') || textoSalvo === 'gilmarsousa717@gmail.com') {
             nomeOperador = 'Gilmar (Admin)';
-            idOperador = 3; // O seu ID que tá lá no banco de dados!
+            idOperador = 3;
         } else {
-            // Se for alguém totalmente desconhecido, mostra o que tá na memória e joga pro ID 1
             nomeOperador = operadorString;
             idOperador = 1;
         }
     }
 }
-// Atualiza na tela do caixa!
 document.getElementById('nome-operador').innerText = nomeOperador;
-// salva o nome do operador para o painel ler
 localStorage.setItem('caixa_operador', nomeOperador);
 
-// Pega o campo onde a pessoa digita o ID (ou bipa o leitor)
+// ==========================================
+// ELEMENTOS DA TELA
+// ==========================================
 const inputCodigo = document.getElementById('codigoBarras');
 const tbodyItens = document.getElementById('tabela-itens-body');
+const displaySubtotal = document.getElementById('valor-subtotal');
 const displayTotal = document.getElementById('valor-total');
+const statusTroco = document.getElementById('status-troco');
 
-// Variáveis para controlar a venda
+const inputDesconto = document.getElementById('input-desconto');
+const inputDinheiro = document.getElementById('input-dinheiro');
+const inputCartao = document.getElementById('input-cartao');
+const inputPix = document.getElementById('input-pix');
+const inputFiado = document.getElementById('input-fiado');
+
 let totalCompra = 0.0;
 let contadorItens = 0;
 let carrinho = [];
-let formaPagamentoAtual = 'Dinheiro';
+
+// ==========================================
+// MATEMÁTICA EM TEMPO REAL (MISTO E DESCONTO)
+// ==========================================
+function atualizarValoresDaTela() {
+    let desconto = parseFloat(inputDesconto.value) || 0;
+
+    // O total que o cliente realmente vai pagar
+    let totalComDesconto = totalCompra - desconto;
+    if (totalComDesconto < 0) totalComDesconto = 0;
+
+    // Atualiza os letreiros grandes
+    displaySubtotal.innerText = `R$ ${totalCompra.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+    displayTotal.innerText = `R$ ${totalComDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+
+    // Pega o que o operador digitou nas gavetas
+    let valDinheiro = parseFloat(inputDinheiro.value) || 0;
+    let valCartao = parseFloat(inputCartao.value) || 0;
+    let valPix = parseFloat(inputPix.value) || 0;
+    let valFiado = parseFloat(inputFiado.value) || 0;
+
+    let totalPago = valDinheiro + valCartao + valPix + valFiado;
+    let diferenca = totalPago - totalComDesconto;
+
+    if (totalCompra === 0) {
+        statusTroco.innerText = "Caixa Livre";
+        statusTroco.style.color = "#aaa";
+    } else if (diferenca < 0) {
+        statusTroco.innerText = `Falta: R$ ${Math.abs(diferenca).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        statusTroco.style.color = "#ff4444"; // Vermelho
+    } else if (diferenca > 0) {
+        statusTroco.innerText = `Troco: R$ ${diferenca.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        statusTroco.style.color = "#4CAF50"; // Verde
+    } else {
+        statusTroco.innerText = "Conta Exata!";
+        statusTroco.style.color = "#2196F3"; // Azul
+    }
+}
+
+// Coloca "espiões" em todas as caixinhas. Se digitar, recalcula na hora!
+[inputDesconto, inputDinheiro, inputCartao, inputPix, inputFiado].forEach(input => {
+    input.addEventListener('input', atualizarValoresDaTela);
+});
 
 // ==========================================
 // 1. ESCUTAR O LEITOR DE CÓDIGO DE BARRAS
@@ -64,32 +107,16 @@ inputCodigo.addEventListener('keypress', async function (event) {
         if (idDigitado === "") return;
 
         try {
-
-            let urlServidor = '';
-
-            // se tiver 4 numeros ou mais e js sabe que é codigo de barra
-            if (idDigitado.length >= 4) {
-                urlServidor = `${API_URL}/api/produtos/barras/` + idDigitado;
-            } else {
-                //se for um numero ex 5 ele busca pelo id normal
-                urlServidor = `${API_URL}/api/produtos/` + idDigitado;
-            }
-
+            let urlServidor = idDigitado.length >= 4
+                ? `${API_URL}/api/produtos/barras/${idDigitado}`
+                : `${API_URL}/api/produtos/${idDigitado}`;
 
             const resposta = await fetch(urlServidor);
 
             if (resposta.ok) {
                 const produto = await resposta.json();
+                let qtdJaNoCarrinho = carrinho.filter(i => i.idProduto === produto.id).reduce((acc, i) => acc + i.quantidade, 0);
 
-                let qtdJaNoCarrinho = 0;
-
-                carrinho.forEach(item => {
-                    if (item.idProduto === produto.id) {
-                        qtdJaNoCarrinho += item.quantidade;
-                    }
-                });
-
-                // trava de segurança
                 if (produto.qtd_estoque <= 0 || (qtdJaNoCarrinho + 1) > produto.qtd_estoque) {
                     alert(`⚠️ Estoque Insuficiente!\nVocê está tentando adicionar "${produto.nome}", mas só existem ${produto.qtd_estoque} un. disponíveis no estoque!`);
                     inputCodigo.value = '';
@@ -97,12 +124,11 @@ inputCodigo.addEventListener('keypress', async function (event) {
                 }
 
                 contadorItens++;
-                const quantidadeBipada = 1;
-                const subtotal = produto.precoVenda * quantidadeBipada;
+                const subtotal = produto.precoVenda * 1;
 
                 carrinho.push({
                     idProduto: produto.id,
-                    quantidade: quantidadeBipada,
+                    quantidade: 1,
                     subtotal: subtotal,
                     categoriaProduto: produto.categoria
                 });
@@ -113,20 +139,18 @@ inputCodigo.addEventListener('keypress', async function (event) {
                 novaLinha.innerHTML = `
                     <td>00${contadorItens}</td>
                     <td>${produto.nome}</td>
-                    <td>${quantidadeBipada}</td>
-                    <td>R$ ${produto.precoVenda.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td>R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td>1</td>
+                    <td>R$ ${produto.precoVenda.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                    <td>R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
                 `;
 
                 tbodyItens.appendChild(novaLinha);
-                displayTotal.innerText = `R$ ${totalCompra.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                atualizarValoresDaTela(); // <--- CHAMA O RECALCULO
                 inputCodigo.value = '';
-
             } else {
                 alert('Produto não encontrado! Verifique o código digitado ou bipa novamente.');
                 inputCodigo.value = '';
             }
-
         } catch (erro) {
             console.error(erro);
             alert('Erro ao conectar com o servidor. Verifique se o backend está rodando e tente novamente.');
@@ -134,44 +158,58 @@ inputCodigo.addEventListener('keypress', async function (event) {
     }
 });
 
-
 // ==========================================
 // 2. FINALIZAR COMPRA
 // ==========================================
-const btnFinalizar = document.querySelector('.btn-finalizar');
+const btnFinalizar = document.getElementById('btn-finalizar');
 
 btnFinalizar.addEventListener('click', async function () {
-
     if (totalCompra === 0) {
-        alert('O carrinho está vazio! coloque um produto antes de finalizar.')
+        alert('O carrinho está vazio! coloque um produto antes de finalizar.');
         return;
     }
 
+    let desconto = parseFloat(inputDesconto.value) || 0;
+    let totalComDesconto = totalCompra - desconto;
+
+    let valDinheiro = parseFloat(inputDinheiro.value) || 0;
+    let valCartao = parseFloat(inputCartao.value) || 0;
+    let valPix = parseFloat(inputPix.value) || 0;
+    let valFiado = parseFloat(inputFiado.value) || 0;
+
+    let totalPago = valDinheiro + valCartao + valPix + valFiado;
+
+    // TRAVA: O operador não pode finalizar se estiver faltando dinheiro!
+    if (totalPago < totalComDesconto) {
+        alert('⚠️ ATENÇÃO: Está faltando dinheiro para fechar a conta!');
+        return;
+    }
+
+    // Se o cliente deu dinheiro a mais (troco), não podemos salvar esse troco como faturamento!
+    let troco = totalPago - totalComDesconto;
+    if (troco > 0 && valDinheiro >= troco) {
+        valDinheiro -= troco; // Tira o troco do dinheiro que vai pro banco
+    }
+
+    // Descobrir o nome da forma de pagamento (Para o Histórico)
+    let formaFinal = "Misto";
+    if (valDinheiro > 0 && valCartao === 0 && valPix === 0 && valFiado === 0) formaFinal = "Dinheiro";
+    else if (valCartao > 0 && valDinheiro === 0 && valPix === 0 && valFiado === 0) formaFinal = "Cartao";
+    else if (valPix > 0 && valDinheiro === 0 && valCartao === 0 && valFiado === 0) formaFinal = "Pix";
+    else if (valFiado > 0 && valDinheiro === 0 && valCartao === 0 && valPix === 0) formaFinal = "Fiado";
+
     const nomeCliente = document.getElementById('nome-cliente').value.trim();
 
-    // Empacotando os dados da venda 
     const dadosVenda = new URLSearchParams();
-    dadosVenda.append('total', totalCompra);
-    dadosVenda.append('formaPagamento', formaPagamentoAtual);
+    dadosVenda.append('total', totalComDesconto);
+    dadosVenda.append('formaPagamento', formaFinal);
     dadosVenda.append('cliente', nomeCliente);
-
-    // 🐛 CORREÇÃO 1: Mandando o ID exato de quem fez a venda!
     dadosVenda.append('usuarioId', idOperador);
 
-    // 🐛 CORREÇÃO 2: Distribuindo o dinheiro. Se for "Fiado", tudo fica ZERO!
-    let valorPix = 0;
-    let valorCartao = 0;
-    let valorDinheiro = 0;
-
-    if (formaPagamentoAtual === 'Pix') valorPix = totalCompra;
-    else if (formaPagamentoAtual === 'Cartao') valorCartao = totalCompra;
-    else if (formaPagamentoAtual === 'Dinheiro') valorDinheiro = totalCompra;
-
-    // Mandamos as gavetas separadas pro Java não se confundir
-    dadosVenda.append('valorPix', valorPix);
-    dadosVenda.append('valorCartao', valorCartao);
-    dadosVenda.append('valorDinheiro', valorDinheiro);
-
+    // Mandando as gavetas prontas e calculadas pro Java!
+    dadosVenda.append('valorPix', valPix);
+    dadosVenda.append('valorCartao', valCartao);
+    dadosVenda.append('valorDinheiro', valDinheiro);
     dadosVenda.append('itens', JSON.stringify(carrinho));
 
     try {
@@ -181,8 +219,7 @@ btnFinalizar.addEventListener('click', async function () {
         });
 
         if (resposta.ok) {
-            alert('Compra finalizada com sucesso!');
-            document.getElementById('nome-cliente').value = '';
+            alert('✅ Compra finalizada com sucesso!');
             window.location.reload();
         } else {
             alert('Erro ao finalizar a compra no Servidor.');
@@ -193,32 +230,17 @@ btnFinalizar.addEventListener('click', async function () {
 });
 
 // ==========================================
-// 3. ESCOLHER FORMA DE PAGAMENTO
+// 3. ATALHOS DO TECLADO (F2 a F6)
 // ==========================================
-function selecionarPagamento(tipo, nomeExibicao) {
-    formaPagamentoAtual = tipo;
-    btnFinalizar.innerText = `Finalizar no ${nomeExibicao}`;
-    console.log("Pagamento alterado para " + tipo);
-}
-
-document.getElementById('btn-dinheiro').addEventListener('click', () => selecionarPagamento('Dinheiro', 'DINHEIRO'));
-document.getElementById('btn-cartao').addEventListener('click', () => selecionarPagamento('Cartao', 'CARTÃO'));
-document.getElementById('btn-pix').addEventListener('click', () => selecionarPagamento('Pix', 'PIX'));
-document.getElementById('btn-fiado').addEventListener('click', () => selecionarPagamento('Fiado', 'FIADO'));
-
 document.addEventListener('keydown', function (event) {
     if (event.key === 'F3') {
-        event.preventDefault();
-        selecionarPagamento('Dinheiro', 'DINHEIRO');
+        event.preventDefault(); inputDinheiro.focus(); inputDinheiro.select();
     } else if (event.key === 'F4') {
-        event.preventDefault();
-        selecionarPagamento('Cartao', 'CARTAO');
+        event.preventDefault(); inputCartao.focus(); inputCartao.select();
     } else if (event.key === 'F5') {
-        event.preventDefault();
-        selecionarPagamento('Pix', 'PIX');
+        event.preventDefault(); inputPix.focus(); inputPix.select();
     } else if (event.key === 'F6') {
-        event.preventDefault();
-        selecionarPagamento('Fiado', 'FIADO');
+        event.preventDefault(); inputFiado.focus(); inputFiado.select();
     }
 });
 
@@ -228,12 +250,9 @@ document.addEventListener('keydown', function (event) {
 const modalPesquisa = document.getElementById('modal-pesquisa');
 const inputPesquisaNome = document.getElementById('input-pesquisa-nome');
 const btnFecharModal = document.getElementById('fechar-modal');
+const tbodyPesquisa = document.getElementById('resultado-pesquisa-body');
 
-// ==========================================
-// ABRIR PESQUISA PELO CELULAR (BOTÃO MOBILE)
-// ==========================================
 const btnPesquisaMobile = document.getElementById('btn-pesquisa-mobile');
-
 if (btnPesquisaMobile) {
     btnPesquisaMobile.addEventListener('click', function () {
         modalPesquisa.style.display = 'block';
@@ -264,71 +283,41 @@ btnFecharModal.addEventListener('click', function () {
     inputCodigo.focus();
 });
 
-const tbodyPesquisa = document.getElementById('resultado-pesquisa-body');
-
 inputPesquisaNome.addEventListener('input', async function () {
     const termo = inputPesquisaNome.value.trim();
-
-    if (termo.length === 0) {
-        tbodyPesquisa.innerHTML = '';
-        return;
-    }
+    if (termo.length === 0) { tbodyPesquisa.innerHTML = ''; return; }
 
     try {
         const resposta = await fetch(`${API_URL}/api/produtos/pesquisa/nome?nome=${termo}`);
-
         if (resposta.ok) {
             const produtos = await resposta.json();
             tbodyPesquisa.innerHTML = '';
-
             produtos.forEach(produto => {
                 const linha = document.createElement('tr');
+                let podeVender = produto.qtd_estoque > 0;
+                let textoEstoque = podeVender ? `✅ ${produto.qtd_estoque} un.` : `❌ Esgotado`;
+                let corEstoque = podeVender ? "#4caf50" : "#e91e63";
 
-                let textoEstoque = "";
-                let corEstoque = "";
-                let podeVender = true;
-
-                if (produto.qtd_estoque > 0) {
-                    textoEstoque = `✅ ${produto.qtd_estoque} un.`;
-                    corEstoque = "#4caf50"
-                } else {
-                    textoEstoque = `❌ Esgotado`;
-                    corEstoque = "#e91e63";
-                    podeVender = false;
-                }
-
-                linha.onclick = function () {
-                    if (podeVender) {
-                        adicionarProdutoNoCaixa(produto);
-                    } else {
-                        alert(`⚠️ Este produto está esgotado e não pode ser vendido!`);
-                    }
-                };
-
-                // muda a setinha caso esteja bloqueado
                 linha.style.cursor = podeVender ? 'pointer' : 'not-allowed';
+                linha.onclick = function () {
+                    if (podeVender) adicionarProdutoNoCaixa(produto);
+                    else alert(`⚠️ Este produto está esgotado e não pode ser vendido!`);
+                };
 
                 linha.innerHTML = `
                     <td style="padding: 10px;">00${produto.id}</td>
                     <td style="padding: 10px;"><strong>${produto.nome}</strong></td>
                     <td style="padding: 10px; color: ${corEstoque}; font-weight: bold;">${textoEstoque}</td>
-                    <td style="padding: 10px;">R$ ${produto.precoVenda.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style="padding: 10px;">R$ ${produto.precoVenda.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
                 `;
                 tbodyPesquisa.appendChild(linha);
             });
         }
-    } catch (erro) {
-        console.error("Erro na pesquisa: ", erro);
-    }
+    } catch (erro) { console.error("Erro na pesquisa: ", erro); }
 });
 
 function adicionarProdutoNoCaixa(produto) {
-    let qtdJaNoCarrinho = 0;
-    carrinho.forEach(item => {
-        if (item.idProduto === produto.id) {
-            qtdJaNoCarrinho += item.quantidade;
-        }
-    });
+    let qtdJaNoCarrinho = carrinho.filter(i => i.idProduto === produto.id).reduce((acc, i) => acc + i.quantidade, 0);
     if (produto.qtd_estoque <= 0 || (qtdJaNoCarrinho + 1) > produto.qtd_estoque) {
         alert(`⚠️ Estoque Insuficiente!\nVocê está tentando adicionar "${produto.nome}", mas só existem ${produto.qtd_estoque} un. disponíveis no estoque!`);
         return;
@@ -339,29 +328,21 @@ function adicionarProdutoNoCaixa(produto) {
     tbodyPesquisa.innerHTML = '';
 
     contadorItens++;
-    const quantidadeBipada = 1;
-    const subtotal = produto.precoVenda * quantidadeBipada;
+    const subtotal = produto.precoVenda * 1;
 
-    carrinho.push({
-        idProduto: produto.id,
-        quantidade: quantidadeBipada,
-        subtotal: subtotal,
-        categoriaProduto: produto.categoria
-    });
-
+    carrinho.push({ idProduto: produto.id, quantidade: 1, subtotal: subtotal, categoriaProduto: produto.categoria });
     totalCompra += subtotal;
 
     const novaLinha = document.createElement('tr');
     novaLinha.innerHTML = `
         <td>00${contadorItens}</td>
         <td>${produto.nome}</td>
-        <td>${quantidadeBipada}</td>
-        <td>R$ ${produto.precoVenda.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-        <td>R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td>1</td>
+        <td>R$ ${produto.precoVenda.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+        <td>R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
     `;
     tbodyItens.appendChild(novaLinha);
-    displayTotal.innerText = `R$ ${totalCompra.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-
+    atualizarValoresDaTela(); // <--- CHAMA O RECALCULO
     inputCodigo.focus();
 }
 
@@ -370,20 +351,18 @@ function adicionarProdutoNoCaixa(produto) {
 // ==========================================
 function cancelarCompra() {
     if (totalCompra === 0) return;
-
     if (confirm('⚠️ Tem certeza que deseja cancelar esta compra e limpar a tela?')) {
         carrinho = [];
         totalCompra = 0.0;
         contadorItens = 0;
         tbodyItens.innerHTML = '';
-        displayTotal.innerText = 'R$ 0,00';
-
-        const campoCliente = document.getElementById('nome-cliente');
-        if (campoCliente) {
-            campoCliente.value = '';
-        }
-
-        selecionarPagamento('Dinheiro', 'DINHEIRO');
+        inputDesconto.value = '';
+        inputDinheiro.value = '';
+        inputCartao.value = '';
+        inputPix.value = '';
+        inputFiado.value = '';
+        document.getElementById('nome-cliente').value = '';
+        atualizarValoresDaTela();
         inputCodigo.focus();
     }
 }
