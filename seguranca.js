@@ -1,28 +1,56 @@
-// =======================================================
-// VERIFICAÇÃO DE SESSÃO ATIVA
-// =======================================================
+// ==========================================
+// BLINDAGEM DO SISTEMA (CONTROLE DE ACESSO)
+// ==========================================
 
-// 1. verifica se a credencial existe na memoria curta do navegador
-const credencial = sessionStorage.getItem('usuarioLogado');
+// 1. pega o crachá do usuario na memoria do navegaador
+let operadorSec = sessionStorage.getItem('usuarioLogado');
 
-// se a credencial não existir, chuta o usuario para a tela de login
-if (!credencial) {
-    // replace faz a pessoa não conseguir usar a seta de voltar
-    window.location.replace('login.html');
+// se não tiver ninguem logado, chuta para a tela login
+if (!operadorSec && !window.location.pathname.includes('login.html')) {
+    window.location.href = 'login.html';
 }
 
-// 2. INtercepta todos os botoes de sair do sistema
-document.addEventListener('DOMContentLoaded', () => {
-    const botoesSair = document.querySelectorAll('.btn-sair');
+// 2. descobre quem é o operador logado
+let isLauanda = false;
+if (operadorSec) {
+    let textoSalvo = operadorSec.toLowerCase().trim();
+    if (textoSalvo.includes('lauanda') || textoSalvo.includes('"id":2')) {
+        isLauanda = true;
+    }
+}
 
-    botoesSair.forEach(botao => {
-        botao.addEventListener('click', (evento) => {
-            evento.preventDefault(); // impede do butao de só mudar de pagina
+// 3. paginas que a Lauanda pode acessar
+const paginasPermitidasLauanda = [
+    'caixa.html',
+    'estoque.html',
+    'fiados.html',
+    'despesas.html',
+    'login.html',
+    ''
+];
 
-            sessionStorage.removeItem('usuarioLogado');
-            sessionStorage.clear();
+// 4. bloqueio de URL para a Lauanda
+let paginaAtual = window.location.pathname.split('/').pop();
 
-            window.location.replace('login.html');
-        });
-    });
+if (isLauanda && paginaAtual) {
+    if (!paginasPermitidasLauanda.includes(paginaAtual)) {
+        alert('Acesso negado: Você não tem permissão para acessar esta página.');
+        window.location.href = 'estoque.html';
+    }
+}
+
+// 5. esconder os menus proibidos
+document.addEventListener("DOMContentLoaded", function () {
+    if (isLauanda) {
+        // Procura os links do menu e esconde um por um
+        let menuPainel = document.querySelector('a[href="painel.html"]');
+        let menuVendas = document.querySelector('a[href="vendas.html"]');
+        let menuUsuarios = document.querySelector('a[href="usuarios.html"]');
+        let menuRh = document.querySelector('a[href="rh.html"]');
+
+        if (menuPainel) menuPainel.style.display = 'none';
+        if (menuVendas) menuVendas.style.display = 'none';
+        if (menuUsuarios) menuUsuarios.style.display = 'none';
+        if (menuRh) menuRh.style.display = 'none';
+    }
 });

@@ -1,4 +1,5 @@
-const API_URL = 'https://sistema-bombados-backend.onrender.com';
+//const API_URL = 'https://sistema-bombados-backend.onrender.com';
+const API_URL = 'http://localhost:8080';
 
 // =================================================
 // 1. BUSCAR FIADOS NO JAVA
@@ -48,12 +49,19 @@ function renderizarTabelaFiados(fiados) {
         // se o cliente estiver vazio no banco, coloca um alerta
         const nomeCliente = venda.cliente && venda.cliente !== "Desconhecido" ? venda.cliente : "⚠️ Cliente Não Identificado";
 
+        let valorJaPago = (venda.valorDinheiro || 0) + (venda.valorCartao || 0) + (venda.valorPix || 0);
+        let dividaReal = venda.valorTotal - valorJaPago;
+
+        // Se o cliente deu alguma entrada, mostra um aviso em cinza claro
+        let textoEntrada = valorJaPago > 0 ? `<br><span style="font-size: 12px; color: #aaa; font-weight: normal;">(Já pagou R$ ${valorJaPago.toLocaleString('pt-BR', { minimumFractionDigits: 2 })})</span>` : '';
+
         linha.innerHTML = `
             <td style="padding: 15px 10px; color: #e91e63; font-weight: bold;">#${venda.id}</td>
             <td style="padding: 15px 10px;">${dataFormatada}</td>
             <td style="padding: 15px 10px; font-weight: bold; color: #ff9900;">👤 ${nomeCliente}</td>
             <td style="padding: 15px 10px; font-weight: bold; font-size: 16px; color: white;">
-                R$ ${venda.valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                R$ ${dividaReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                ${textoEntrada}
             </td>
             <td style="padding: 15px 10px;">
                 <select id="pagamento-${venda.id}" style="padding: 8px; border-radius: 4px; background: #222; color: white; border: 1px solid #444; outline: none;">
@@ -68,6 +76,7 @@ function renderizarTabelaFiados(fiados) {
                 </button>
             </td>
         `;
+
         tbody.appendChild(linha);
     });
 }

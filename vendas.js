@@ -39,20 +39,50 @@ function renderizarTabela(vendas) {
         const linha = document.createElement('tr');
         linha.style.borderBottom = '1px solid #333';
 
-        // 1. O PADRÃO É FIADO 
-        let formaPagamento = "Fiado 📝";
-        let corTag = "#e91e63"; // Rosa
+        // 1. MATEMÁTICA DAS GAVETAS (Versão 3.0)
+        let valDinheiro = venda.valorDinheiro || 0;
+        let valCartao = venda.valorCartao || 0;
+        let valPix = venda.valorPix || 0;
 
-        // 2. VERIFICA AS GAVETAS COM CUIDADO (A letra maiúscula é vital!)
-        if (venda.valorCartao > 0) {
-            formaPagamento = "Cartão 💳";
-            corTag = "#2196F3"; // Azul
-        } else if (venda.valorPix > 0) {
-            formaPagamento = "Pix 💠";
-            corTag = "#00BCD4"; // Ciano
-        } else if (venda.valorDinheiro > 0) { // <-- OLHA A GAVETA DO DINHEIRO AQUI!
-            formaPagamento = "Dinheiro 💵";
-            corTag = "#4CAF50"; // Verde
+        let totalPago = valDinheiro + valCartao + valPix;
+        let diferenca = venda.valorTotal - totalPago;
+
+        let metodosUsados = 0;
+        if (valDinheiro > 0) metodosUsados++;
+        if (valCartao > 0) metodosUsados++;
+        if (valPix > 0) metodosUsados++;
+
+        let formaPagamento = "";
+        let corTag = "";
+
+        // 2. O JUIZ: DECIDE QUAL É A ETIQUETA CORRETA
+        if (diferenca > 0.01) {
+            // Ficou devendo (É Fiado!)
+            if (totalPago === 0) {
+                formaPagamento = "Fiado 📝";
+                corTag = "#e91e63"; // Rosa
+            } else {
+                formaPagamento = "Misto (C/ Fiado) 📝";
+                corTag = "#ff9800"; // Laranja
+            }
+        } else {
+            // Pagou tudo certinho!
+            if (metodosUsados > 1) {
+                formaPagamento = "Misto 🔀";
+                corTag = "#9c27b0"; // Roxo (Cor nova para destacar!)
+            } else if (valCartao > 0) {
+                formaPagamento = "Cartão 💳";
+                corTag = "#2196F3"; // Azul
+            } else if (valPix > 0) {
+                formaPagamento = "Pix 💠";
+                corTag = "#00BCD4"; // Ciano
+            } else if (valDinheiro > 0) {
+                formaPagamento = "Dinheiro 💵";
+                corTag = "#4CAF50"; // Verde
+            } else {
+                formaPagamento = "Desconhecido";
+                corTag = "#aaa"; // Cinza
+            }
         }
 
         // Formata a data e hora
