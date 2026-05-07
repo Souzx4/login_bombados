@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Despesas da loja</title>
+    <link rel="stylesheet" href="painel.css">
+    <style>
+        .form-despesa {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex-grow: 1;
+        }
+
+        .input-group label {
+            color: #aaa;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            padding: 10px;
+            background: #111;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .btn-salvar {
+            background: #e91e63;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+        }
+    </style>
+    <script src="segranca.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="menu-lateral">
+            <button id="fechar-menu" class="btn-fechar-menu">✖ Fechar Menu</button>
+            <div class="logo-area">
+                <img src="img/logo1.png" alt="Bombado Logo">
+            </div>
+            <nav class="menu">
+                <a href="painel.html" class="menu-item"><span>📊</span> Dashboard</a>
+                <a href="estoque.html" class="menu-item"><span>📦</span> Estoque & Produtos</a>
+                <a href="caixa.html" class="menu-item"><span>💵</span> Caixa</a>
+                <a href="vendas.html" class="menu-item"><span>💰</span> Histórico de Vendas</a>
+                <a href="fiados.html" class="menu-item"><span>📒</span> Contas a Receber</a>
+                <a href="usuarios.html" class="menu-item"><span>👥</span> Usuários</a>
+                <a href="rh.html" class="menu-item"><span>📈</span> RH & Comissões</a>
+                <a href="despesas.html" class="menu-item active" style="color: #e91e63;"><span>💸</span> Despesas</a>
+            </nav>
+            <div class="logout-area">
+                <a href="login.html" class="btn-sair">Sair do Sistema</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <button id="abrir-menu" class="btn-abrir-menu">☰</button>
+                <h2>💸 Controle de Despesas</h2>
+                <div class="user-profile">
+                    <span class="status-dot" style="background-color: #e91e63;"></span>
+                    <p>Olá, <strong id="nome-operador">Carregando...</strong></p>
+                </div>
+            </header>
+
+            <section class="form-despesa">
+                <div class="input-group" style="flex-grow: 3;">
+                    <label>Descrição do Gasto (Ex: Conta de Energia, Internet)</label>
+                    <input type="text" id="desc-despesa" placeholder="O que foi pago?">
+                </div>
+                <div class="input-group">
+                    <label>Valor (R$)</label>
+                    <input type="number" id="valor-despesa" placeholder="0.00" step="0.01" min="0">
+                </div>
+                <div class="input-group">
+                    <label>Data</label>
+                    <input type="date" id="data-despesa">
+                </div>
+                <button class="btn-salvar" id="btn-registrar-despesa">➕ Registrar Saída</button>
+            </section>
+
+            <section class="recent-activity">
+                <h3>Últimas Despesas Registradas</h3>
+                <div class="table-container">
+                    <table class="tabela-pesquisa" style="width: 100%; text-align: left; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid #333; color: #aaa;">
+                                <th style="padding: 10px;">ID</th>
+                                <th style="padding: 10px;">DATA</th>
+                                <th style="padding: 10px;">DESCRIÇÃO</th>
+                                <th style="padding: 10px;">REGISTRADO POR</th>
+                                <th style="padding: 10px;">VALOR</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-despesas">
+
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="despesas.js"></script>
+</body>
+
+</html>
