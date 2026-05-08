@@ -95,12 +95,17 @@ body {
 .btn-sair {
     display: block; 
     text-align: center; 
-    background-color: #330000; 
-    color: #ff4444;
+    background-color: #ff9900; 
+    color: #000000;
     padding: 10px; 
     border-radius: 5px; 
     text-decoration: none; 
     border: 1px solid #ff4444;
+}
+
+.btn-sair:hover {
+    background-color: #ff4444;
+    color: #fff;
 }
 
 /* ======== CABEÇALHO ======== */
@@ -201,7 +206,9 @@ body {
     cursor: pointer;
     transition: 0.3s;
 }
-.btn-pesquisa-desk:hover { background: #e68a00; }
+.btn-pesquisa-desk:hover { 
+    background: #e68a00; 
+}
 
 /* Tabela Cupom Fiscal */
 .area-cupom {

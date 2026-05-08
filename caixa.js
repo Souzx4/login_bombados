@@ -252,9 +252,19 @@ const inputPesquisaNome = document.getElementById('input-pesquisa-nome');
 const btnFecharModal = document.getElementById('fechar-modal');
 const tbodyPesquisa = document.getElementById('resultado-pesquisa-body');
 
+// Ativa o botão no celular
 const btnPesquisaMobile = document.getElementById('btn-pesquisa-mobile');
 if (btnPesquisaMobile) {
     btnPesquisaMobile.addEventListener('click', function () {
+        modalPesquisa.style.display = 'block';
+        inputPesquisaNome.focus();
+    });
+}
+
+// Ativa o NOVO botão no PC (Lupa amarela)
+const btnPesquisaDesktop = document.getElementById('btn-pesquisa-desktop');
+if (btnPesquisaDesktop) {
+    btnPesquisaDesktop.addEventListener('click', function () {
         modalPesquisa.style.display = 'block';
         inputPesquisaNome.focus();
     });
@@ -368,3 +378,20 @@ function cancelarCompra() {
 }
 
 document.getElementById('botao-cancelar').addEventListener('click', cancelarCompra);
+
+// ==========================================
+// 6. MENU LATERAL (HAMBÚRGUER)
+// ==========================================
+const btnAbrirMenu = document.getElementById('abrir-menu');
+const btnFecharMenu = document.getElementById('fechar-menu');
+const menuLateral = document.getElementById('menu-lateral');
+
+if (btnAbrirMenu && btnFecharMenu && menuLateral) {
+    btnAbrirMenu.addEventListener('click', () => {
+        menuLateral.classList.add('menu-aberto');
+    });
+    btnFecharMenu.addEventListener('click', () => {
+        menuLateral.classList.remove('menu-aberto');
+        inputCodigo.focus();
+    });
+}
