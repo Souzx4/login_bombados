@@ -1,5 +1,4 @@
-//const API_URL = 'https://sistema-bombados-backend.onrender.com';
-const API_URL = 'http://localhost:8080'; // <--- Mudamos para o seu PC!
+const API_URL = 'https://sistema-bombados-backend.onrender.com';
 
 // 1. Identificar quem está usando a tela
 let operadorString = sessionStorage.getItem('usuarioLogado');
