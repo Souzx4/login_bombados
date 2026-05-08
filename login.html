@@ -57,19 +57,83 @@
         const canvas = document.getElementById('fundo-particulas');
         const ctx = canvas.getContext('2d');
 
-        // ajuste para o tamanho da tela
-        canvas.windth = window.innerWidth;
+        // Ajusta o tamanho pro tamanho da tela
+        canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
         let particulas = [];
-        const corParticulas = '#ff9900';
-        const quantidade = 80;
+        const corParticula = '#ff9900'; // Laranja Bombados!
+        const quantidade = 80; // Quantidade de bolinhas
 
-        class Particulas {
-            constructor(){
-                this.x = Math.random() * canvas.windth;
+        class Particula {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.tamanho = Math.random() * 2.5 + 1;
+                this.velocidadeX = (Math.random() * 1) - 0.5;
+                this.velocidadeY = (Math.random() * 1) - 0.5;
+            }
+
+            atualizar() {
+                // Move a bolinha
+                this.x += this.velocidadeX;
+                this.y += this.velocidadeY;
+
+                // Bate na parede e volta
+                if (this.x > canvas.width || this.x < 0) this.velocidadeX *= -1;
+                if (this.y > canvas.height || this.y < 0) this.velocidadeY *= -1;
+            }
+
+            desenhar() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.tamanho, 0, Math.PI * 2);
+                ctx.fillStyle = corParticula;
+                ctx.fill();
             }
         }
+
+        function iniciarParticulas() {
+            particulas = [];
+            for (let i = 0; i < quantidade; i++) {
+                particulas.push(new Particula());
+            }
+        }
+
+        function animar() {
+            requestAnimationFrame(animar);
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o quadro antigo
+
+            for (let i = 0; i < particulas.length; i++) {
+                particulas[i].atualizar();
+                particulas[i].desenhar();
+
+                // Conecta as linhas se chegarem perto umas das outras
+                for (let j = i; j < particulas.length; j++) {
+                    const dx = particulas[i].x - particulas[j].x;
+                    const dy = particulas[i].y - particulas[j].y;
+                    const distancia = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distancia < 120) { // Distância do "fio"
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(255, 153, 0, ${1 - distancia/120})`; // Opacidade diminui ao afastar
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particulas[i].x, particulas[i].y);
+                        ctx.lineTo(particulas[j].x, particulas[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // se o usuario redimensionar a tela, ajusta o canvas
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            iniciarParticulas(); // Reinicia as partículas para se adaptarem ao novo tamanho
+        });
+
+        iniciarParticulas();
+        animar();
     </script>
 
 </body>
