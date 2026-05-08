@@ -11,10 +11,96 @@
 body {
     background-color: #000;
     color: #fff;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-y: auto; /* Permite rolagem se a tela for menor que os componentes */
+}
+
+/* ==========================================
+   MENU LATERAL (HAMBÚRGUER)
+   ========================================== */
+.btn-abrir-menu-caixa {
+    background: #370504;
+    color: #ff9900;
+    border: 1px solid #ff9900;
+    font-size: 1rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-abrir-menu-caixa:hover {
+    background: #ff9900;
+    color: #000;
+}
+
+.sidebar {
+    position: fixed;
+    left: -250px;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #111;
+    border-right: 2px solid #333;
+    transition: 0.3s;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+}
+
+.sidebar.menu-aberto {
+    left: 0;
+}
+
+.btn-fechar-menu {
+    background: none;
+    border: none;
+    color: #ff4444;
+    font-size: 1rem;
+    text-align: right;
+    padding: 15px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.logo-area { 
+    text-align: center; 
+    padding: 10px; 
+    border-bottom: 1px solid #222; 
+}
+.logo-area img { 
+    width: 120px; 
+}
+.menu { 
+    display: flex; 
+    flex-direction: column; 
+    padding: 20px 0; flex-grow: 1; 
+}
+.menu-item {
+    padding: 15px 20px; color: #aaa; text-decoration: none; font-size: 1.1rem;
+    display: flex; align-items: center; gap: 10px; transition: 0.3s; border-left: 3px solid transparent;
+}
+.menu-item:hover { 
+    background-color: #222; 
+    color: white; 
+    border-left: 3px solid #ff9900; 
+}
+.logout-area { 
+    padding: 20px; 
+    border-top: 1px solid #222; 
+}
+.btn-sair {
+    display: block; 
+    text-align: center; 
+    background-color: #330000; 
+    color: #ff4444;
+    padding: 10px; 
+    border-radius: 5px; 
+    text-decoration: none; 
+    border: 1px solid #ff4444;
 }
 
 /* ======== CABEÇALHO ======== */
@@ -60,17 +146,15 @@ body {
     display: flex;
     padding: 20px;
     gap: 20px;
-    height: calc(100vh - 80px);
+    flex-grow: 1; /* Estica para preencher o resto da tela em vez de engessar a altura */
 }
 
 /* ========= LADO ESQUERDO ========== */
 .painel-esquerdo {
     flex: 2;
-    /* ocupa 2/3 da tela */
     display: flex;
     flex-direction: column;
     gap: 20px;
-    overflow: hidden;
 }
 
 .area-leitor {
@@ -106,20 +190,33 @@ body {
     box-shadow: 0px 0px 15px rgba(255, 153, 0, 0.3);
 }
 
+.btn-pesquisa-desk {
+    background: #ff9800;
+    color: #000;
+    border: none;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 0 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-pesquisa-desk:hover { background: #e68a00; }
+
 /* Tabela Cupom Fiscal */
 .area-cupom {
     background-color: #0a0a0a;
     flex: 1;
     border-radius: 8px;
     border: 1px solid #222;
+    display: flex;
     flex-direction: column;
-    overflow: hidden;
 }
 
 .tabela-scroll-container {
     flex: 1;
     overflow-y: auto;
-    /* Cria a barra de rolagem aqui! */
+    height: 100px; /* Hack flexbox para tabelas com scroll */
 }
 
 .tabela-itens {
@@ -137,7 +234,6 @@ body {
     border-bottom: 2px solid #333;
     font-size: 0.9rem;
     z-index: 2;
-    /* Fica em cima dos produtos que sobem */
 }
 
 .tabela-itens td {
@@ -151,36 +247,25 @@ body {
 }
 
 /* Customização da barra de rolagem */
-.tabela-scroll-container::-webkit-scrollbar {
-    width: 8px;
+.tabela-scroll-container::-webkit-scrollbar { 
+    width: 8px; 
 }
-
-.tabela-scroll-container::-webkit-scrollbar-track {
-    background: #0a0a0a;
+.tabela-scroll-container::-webkit-scrollbar-track { background: #0a0a0a; 
 }
-
-.tabela-scroll-container::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 4px;
+.tabela-scroll-container::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; 
 }
-
-.tabela-scroll-container::-webkit-scrollbar-thumb:hover {
-    background: #ff9900;
+.tabela-scroll-container::-webkit-scrollbar-thumb:hover { background: #ff9900; 
 }
 
 /* ========== LADO DIREITO ========== */
 .painel-direito {
     flex: 1;
-    /* Ocupa 1/3 da tela */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
-    overflow: hidden;
 }
 
 .areaDoCliente {
-    margin-bottom: 20px;
     background-color: #1a1a1a;
     padding: 15px;
     border-radius: 8px;
@@ -224,12 +309,10 @@ body {
 .valor-gigante {
     color: #ff9900;
     font-size: 3.5rem;
-    /* numero grandão */
     font-weight: 900px;
 }
 
 /* botão de pagamento */
-
 .area-pagamento {
     background-color: #111;
     padding: 20px;
@@ -241,37 +324,6 @@ body {
     margin-bottom: 15px;
     font-size: 1rem;
     text-align: center;
-}
-
-.botoes-pagamento {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-.btn-pgto {
-    background-color: #222;
-    color: #fff;
-    border: 1px solid #444;
-    padding: 20px 10px;
-    font-size: 1.1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-pgto:hover {
-    background-color: #333;
-    border-color: #fff;
-}
-
-.btn-pgto.fiado {
-    background-color: #370504;
-    border-color: #ff3333;
-}
-
-.btn-pgto.fiado:hover {
-    background-color: #5a0806;
 }
 
 /* ações finais */
@@ -309,20 +361,17 @@ body {
     transition: 0.3s;
 }
 
-.btn-cancelar:hover {
-    background-color: #330000;
+.btn-cancelar:hover { 
+    background-color: #330000; 
 }
 
 /* ==========================================
    JANELA DE PESQUISA (MODAL)
    ========================================== */
-
 .modal-oculto {
     display: none;
-    /* Esconde o modal por padrão */
     position: fixed;
     z-index: 999;
-    /* fica por cima de tudo */
     left: 0px;
     top: 0px;
     width: 100%;
@@ -333,7 +382,6 @@ body {
 .modal-conteudo {
     background-color: #121212;
     margin: 5% auto;
-    /* centraliza na tela */
     padding: 20px;
     border: 2px solid #ff9900;
     border-radius: 8px;
@@ -366,147 +414,145 @@ body {
     margin-bottom: 15px;
 }
 
-.tabela-pesquisa {
-    width: 100%;
-    border-collapse: collapse;
+.tabela-pesquisa { 
+    width: 100%; 
+    border-collapse: collapse; 
 }
-
-.tabela-pesquisa th,
-.tabela-pesquisa td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1 px solid #333;
+.tabela-pesquisa th, .tabela-pesquisa td { 
+    padding: 12px; 
+    text-align: left; 
+    border-bottom: 1px solid #333; 
 }
+.tabela-pesquisa tr:hover { 
+    background-color: #2a2a2a; 
+    cursor: pointer; }
 
-/* Efeito de brilho quando a Lauanda passar o mouse no produto */
-.tabela-pesquisa tr:hover {
-    background-color: #2a2a2a;
-    cursor: pointer;
+/* ================================================= */
+/* ANTI-ZOOM             */
+/* ================================================= */
+@media screen and (max-width: 1400px) {
+    .pdv-header { 
+        padding: 10px 20px; 
+        height: 60px; 
+    }
+    .logo-texto { 
+        font-size: 1.4rem; 
+    }
+    .info-operador { 
+        font-size: 0.9rem; 
+    }
+    .pdv-container { 
+        padding: 10px; 
+        gap: 10px; }
+    
+    /* Encolhe a lateral direita sutilmente */
+    .area-total { 
+        padding: 15px 10px; 
+    }
+    .valor-gigante { 
+        font-size: 2.2rem; 
+    }
+    .area-pagamento { 
+        padding: 10px; 
+    }
+    .area-pagamento input { 
+        padding: 3px; 
+        font-size: 1rem; 
+        width: 80px; 
+    }
+    .areaDoCliente { 
+        padding: 10px; 
+        margin-bottom: 10px; 
+        margin-top: 10px; }
+    .btn-finalizar { 
+        font-size: 1.2rem; 
+        padding: 12px; 
+    }
+    .btn-cancelar { 
+        padding: 10px; 
+        font-size: 1rem; 
+    }
+    
+    /* Encolhe a lateral esquerda sutilmente */
+    .tabela-itens td, .tabela-itens th { 
+        padding: 8px 10px; 
+        font-size: 0.95rem; 
+    }
+    .area-leitor { 
+        padding: 10px; 
+    }
+    .area-leitor input { 
+        padding: 10px; 
+        font-size: 1.2rem; 
+    }
+    .btn-pesquisa-desk { 
+        padding: 0 10px; 
+        font-size: 1rem; 
+    }
 }
 
 /* ================================================= */
-/* CAIXA MOBILE (RESPONSIVIDADE)                     */
+/* CAIXA MOBILE (RESPONSIVIDADE CELULAR)             */
 /* ================================================= */
-
-.leitor-mobile {
-    display: none;
-}
-
+.leitor-mobile { display: none; }
 .btn-pesquisa-mobile {
-    width: 100%;
-    padding: 15px;
-    font-size: 16px;
-    background-color: #ff9800;
-    color: #111;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 5px;
+    width: 100%; padding: 15px; font-size: 16px; background-color: #ff9800; color: #111;
+    border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 5px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
 }
-
-.btn-pesquisa-mobile:active {
-    background-color: #e68a00;
-}
+.btn-pesquisa-mobile:active { background-color: #e68a00; }
 
 @media screen and (max-width: 768px) {
-
-    .leitor-desktop {
-        display: none;
+    .leitor-desktop { 
+        display: none; 
     }
-
-    .leitor-mobile {
-        display: block;
+    .leitor-mobile { 
+        display: block; 
     }
-
-    body {
-        height: auto;
-        overflow-y: auto;
+    body { 
+        height: auto; 
+        overflow-y: auto; 
     }
-
-    .pdv-header {
-        flex-direction: column;
-        text-align: center;
-        gap: 10px;
-        padding: 15px;
-        height: auto;
+    .pdv-header { 
+        flex-direction: column; 
+        text-align: center; 
+        gap: 10px; 
+        padding: 15px; 
+        height: auto; 
     }
-
-    div.logo-texto,
-    div.info-operador {
-        font-size: 14px;
+    .pdv-container { 
+        flex-direction: column; 
+        height: auto; 
+        padding: 10px; 
     }
-
-    .pdv-container {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        height: auto;
-        padding: 10px;
+    .painel-esquerdo, .painel-direito { 
+        width: 100%; 
     }
-
-    .painel-esquerdo,
-    .painel-direito {
-        width: 100%;
-        border-right: none;
+    .tabela-scroll-container { 
+        width: 100%; 
+        overflow-x: auto; 
+        -webkit-overflow-scrolling: touch; 
+        border: 1px solid #333; 
+        border-radius: 8px; 
     }
-
-    .tabela-scroll-container {
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        border: 1px solid #333;
-        border-radius: 8px;
+    .tabela-itens { 
+        min-width: 500px; 
     }
-
-    .tabela-itens {
-        min-width: 500px;
+    .btn-finalizar, .btn-cancelar { 
+        width: 100%; 
+        font-size: 16px; 
+        padding: 15px; 
     }
-
-    .tabela-itens th,
-    .tabela-itens td {
-        white-space: nowrap;
+    .modal-conteudo { 
+        width: 95% !important; 
+        margin: 10% auto !important; 
+        padding: 15px !important; 
     }
-
-    .botoes-pagamento {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
+    .tabela-pesquisa-container { 
+        overflow-x: auto; 
+        -webkit-overflow-scrolling: touch; 
     }
-
-    .btn-pgto {
-        width: 100%;
-        margin-bottom: 0px;
-        font-size: 14px;
-        padding: 12px 5px;
-    }
-
-    .area-acoes {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .btn-finalizar,
-    .btn-cancelar {
-        width: 100%;
-        font-size: 16px;
-        padding: 15px;
-    }
-
-    .modal-conteudo {
-        width: 95% !important;
-        margin: 10% auto !important;
-        padding: 15px !important;
-    }
-
-    .tabela-pesquisa-container {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .tabela-pesquisa {
-        min-width: 400px;
+    .tabela-pesquisa { 
+        min-width: 400px; 
     }
 }

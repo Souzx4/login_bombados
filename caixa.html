@@ -10,9 +10,32 @@
 </head>
 
 <body>
+    <aside class="sidebar" id="menu-lateral">
+        <button id="fechar-menu" class="btn-fechar-menu">✖ Fechar Menu</button>
+        <div class="logo-area">
+            <img src="img/logo1.png" alt="Bombado Logo">
+        </div>
+        <nav class="menu">
+            <a href="painel.html" class="menu-item"><span>📊</span> Dashboard</a>
+            <a href="estoque.html" class="menu-item"><span>📦</span> Estoque & Produtos</a>
+            <a href="caixa.html" class="menu-item active" style="color: #ff9900;"><span>💵</span> Caixa</a>
+            <a href="vendas.html" class="menu-item"><span>💰</span> Histórico de Vendas</a>
+            <a href="fiados.html" class="menu-item"><span>📒</span> Contas a Receber</a>
+            <a href="despesas.html" class="menu-item"><span>💸</span> Despesas</a>
+            <a href="usuarios.html" class="menu-item"><span>👥</span> Usuários</a>
+            <a href="rh.html" class="menu-item"><span>📈</span> RH & Comissões</a>
+        </nav>
+        <div class="logout-area">
+            <a href="login.html" class="btn-sair">Sair do Sistema</a>
+        </div>
+    </aside>
+
     <header class="pdv-header">
-        <div class="logo-texto">
-            <span>BOMBADO</span> Esportes & Suplementos 🏆💪
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <button id="abrir-menu" class="btn-abrir-menu-caixa">☰</button>
+            <div class="logo-texto">
+                <span>BOMBADO</span> Esportes & Suplementos 🏆💪
+            </div>
         </div>
         <div class="info-operador">
             <span>Operador(a): <strong id="nome-operador">...</strong></span>
@@ -24,13 +47,14 @@
         <section class="painel-esquerdo">
 
             <div class="area-leitor">
-                <!-- ISSO APARECE NO PC -->
                 <div class="leitor-desktop">
-                    <label for="codigoBarras">CÓDIGO DE BARRAS / PESQUISA (F2) </label>
-                    <input type="text" id="codigoBarras" placeholder="Passe o leitor no produto..." autofocus>
+                    <label for="codigoBarras">CÓDIGO DE BARRAS / PESQUISA</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="codigoBarras" placeholder="Passe o leitor..." autofocus style="flex: 1;">
+                        <button id="btn-pesquisa-desktop" class="btn-pesquisa-desk">🔍 Pesquisar (F2)</button>
+                    </div>
                 </div>
 
-                <!-- ISSO APARECE NO CELULAR -->
                 <div class="leitor-mobile">
                     <label>PESQUISAR PRODUTO MANUALMENTE</label>
                     <button id="btn-pesquisa-mobile" class="btn-pesquisa-mobile">🔍 Tocar para Buscar Produto</button>
@@ -58,7 +82,6 @@
 
         <aside class="painel-direito">
 
-            <!-- 1. ÁREA DE TOTAIS -->
             <div class="area-total">
                 <h3 style="color: #aaa; font-size: 1rem; margin-bottom: 5px;">SUBTOTAL: <span id="valor-subtotal">R$
                         0,00</span></h3>
@@ -66,51 +89,40 @@
                 <div class="valor-gigante" id="valor-total">R$ 0,00</div>
             </div>
 
-            <!-- 2. FECHAMENTO DA CONTA (MISTO E DESCONTO) -->
             <div class="area-pagamento">
                 <h3 style="margin-bottom: 15px; text-align: center; font-size: 14px; color: #ccc;">FECHAMENTO DA CONTA
                 </h3>
 
                 <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <!-- DESCONTO -->
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #ff9800;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #ff9800;">
                         <label style="color: #ff9800; font-weight: bold;">Desconto (R$):</label>
                         <input type="number" id="input-desconto" placeholder="0.00"
                             style="width: 100px; padding: 5px; font-size: 1.1rem; text-align: right; background: #111; color: #ff9800; border: 1px solid #555; border-radius: 4px;"
                             min="0" step="0.01">
                     </div>
 
-                    <!-- DINHEIRO -->
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #4CAF50;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #4CAF50;">
                         <label style="color: #4CAF50; font-weight: bold;">💵 Dinheiro (F3):</label>
                         <input type="number" id="input-dinheiro" placeholder="0.00"
                             style="width: 100px; padding: 5px; font-size: 1.1rem; text-align: right; background: #111; color: #4CAF50; border: 1px solid #555; border-radius: 4px;"
                             min="0" step="0.01">
                     </div>
 
-                    <!-- CARTÃO -->
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #2196F3;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #2196F3;">
                         <label style="color: #2196F3; font-weight: bold;">💳 Cartão (F4):</label>
                         <input type="number" id="input-cartao" placeholder="0.00"
                             style="width: 100px; padding: 5px; font-size: 1.1rem; text-align: right; background: #111; color: #2196F3; border: 1px solid #555; border-radius: 4px;"
                             min="0" step="0.01">
                     </div>
 
-                    <!-- PIX -->
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #00BCD4;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #00BCD4;">
                         <label style="color: #00BCD4; font-weight: bold;">📱 PIX (F5):</label>
                         <input type="number" id="input-pix" placeholder="0.00"
                             style="width: 100px; padding: 5px; font-size: 1.1rem; text-align: right; background: #111; color: #00BCD4; border: 1px solid #555; border-radius: 4px;"
                             min="0" step="0.01">
                     </div>
 
-                    <!-- FIADO -->
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #e91e63;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #e91e63;">
                         <label style="color: #e91e63; font-weight: bold;">📝 Fiado (F6):</label>
                         <input type="number" id="input-fiado" placeholder="0.00"
                             style="width: 100px; padding: 5px; font-size: 1.1rem; text-align: right; background: #111; color: #e91e63; border: 1px solid #555; border-radius: 4px;"
@@ -118,17 +130,12 @@
                     </div>
                 </div>
 
-                <!-- 3. STATUS DO PAGAMENTO (MATEMÁTICA EM TEMPO REAL) -->
-                <div
-                    style="margin-top: 15px; padding: 10px; background: #111; border-radius: 5px; text-align: center; border: 1px dashed #666;">
+                <div style="margin-top: 15px; padding: 10px; background: #111; border-radius: 5px; text-align: center; border: 1px dashed #666;">
                     <h4 style="margin: 0; color: #aaa; font-size: 14px;">Status do Caixa</h4>
-                    <div id="status-troco"
-                        style="font-size: 1.2rem; font-weight: bold; color: #ff4444; margin-top: 5px;">Falta: R$ 0,00
-                    </div>
+                    <div id="status-troco" style="font-size: 1.2rem; font-weight: bold; color: #ff4444; margin-top: 5px;">Falta: R$ 0,00</div>
                 </div>
             </div>
 
-            <!-- 4. DADOS DO CLIENTE E FINALIZAÇÃO -->
             <div class="areaDoCliente" style="margin-top: 15px;">
                 <label class="nomeDoCliente" style="font-weight: bold; margin-bottom: 5px; display: block;">👤 Nome do
                     Cliente:</label>
@@ -142,6 +149,7 @@
             </div>
         </aside>
     </main>
+
     <div id="modal-pesquisa" class="modal-oculto">
         <div class="modal-conteudo">
             <div class="modal-header">
@@ -168,5 +176,4 @@
     </div>
     <script src="caixa.js"></script>
 </body>
-
 </html>
