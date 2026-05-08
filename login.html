@@ -7,6 +7,7 @@
     <title>Bombados Login</title>
     <link rel="stylesheet" href="style.css">
 </head>
+<canvas id="fundo-particulas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background-color: #0a0a0a;"></canvas>
 
 <body>
     <div class="login-container">
@@ -48,6 +49,28 @@
         </div>
     </div>
     <script src="login.js"></script>
+
+    <script>
+        // ==========================================
+        // EFEITO DE FUNDO: PARTÍCULAS CONECTADAS
+        // ==========================================
+        const canvas = document.getElementById('fundo-particulas');
+        const ctx = canvas.getContext('2d');
+
+        // ajuste para o tamanho da tela
+        canvas.windth = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particulas = [];
+        const corParticulas = '#ff9900';
+        const quantidade = 80;
+
+        class Particulas {
+            constructor(){
+                this.x = Math.random() * canvas.windth;
+            }
+        }
+    </script>
 
 </body>
 
