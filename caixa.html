@@ -18,12 +18,12 @@
         <nav class="menu">
             <a href="painel.html" class="menu-item"><span>📊</span> Dashboard</a>
             <a href="estoque.html" class="menu-item"><span>📦</span> Estoque & Produtos</a>
-            <a href="caixa.html" class="menu-item active" style="color: #ff9900;"><span>💵</span> Caixa</a>
+            <a href="caixa.html" class="menu-item active" style="color: #e91e63;"><span>💵</span> Caixa</a>
             <a href="vendas.html" class="menu-item"><span>💰</span> Histórico de Vendas</a>
             <a href="fiados.html" class="menu-item"><span>📒</span> Contas a Receber</a>
-            <a href="despesas.html" class="menu-item"><span>💸</span> Despesas</a>
             <a href="usuarios.html" class="menu-item"><span>👥</span> Usuários</a>
             <a href="rh.html" class="menu-item"><span>📈</span> RH & Comissões</a>
+            <a href="despesas.html" class="menu-item"><span>💸</span> Despesas</a>
         </nav>
         <div class="logout-area">
             <a href="login.html" class="btn-sair">Sair do Sistema</a>
@@ -94,35 +94,40 @@
                 </h3>
 
                 <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #ff9800;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #ff9800;">
                         <label style="color: #ff9800; font-weight: bold;">Desconto (R$):</label>
                         <input type="number" id="input-desconto" placeholder="0.00"
                             style="width: 100px; padding: 5px; font-size: 1.1rem; text-align: right; background: #111; color: #ff9800; border: 1px solid #555; border-radius: 4px;"
                             min="0" step="0.01">
                     </div>
 
-                    <div style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #4CAF50;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #4CAF50;">
                         <label style="color: #4CAF50; font-weight: bold;">💵 Dinheiro (F3):</label>
                         <input type="number" id="input-dinheiro" placeholder="0.00"
                             style="width: 100px; padding: 5px; font-size: 1.1rem; text-align: right; background: #111; color: #4CAF50; border: 1px solid #555; border-radius: 4px;"
                             min="0" step="0.01">
                     </div>
 
-                    <div style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #2196F3;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #2196F3;">
                         <label style="color: #2196F3; font-weight: bold;">💳 Cartão (F4):</label>
                         <input type="number" id="input-cartao" placeholder="0.00"
                             style="width: 100px; padding: 5px; font-size: 1.1rem; text-align: right; background: #111; color: #2196F3; border: 1px solid #555; border-radius: 4px;"
                             min="0" step="0.01">
                     </div>
 
-                    <div style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #00BCD4;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #00BCD4;">
                         <label style="color: #00BCD4; font-weight: bold;">📱 PIX (F5):</label>
                         <input type="number" id="input-pix" placeholder="0.00"
                             style="width: 100px; padding: 5px; font-size: 1.1rem; text-align: right; background: #111; color: #00BCD4; border: 1px solid #555; border-radius: 4px;"
                             min="0" step="0.01">
                     </div>
 
-                    <div style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #e91e63;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 10px; border-radius: 5px; border-left: 4px solid #e91e63;">
                         <label style="color: #e91e63; font-weight: bold;">📝 Fiado (F6):</label>
                         <input type="number" id="input-fiado" placeholder="0.00"
                             style="width: 100px; padding: 5px; font-size: 1.1rem; text-align: right; background: #111; color: #e91e63; border: 1px solid #555; border-radius: 4px;"
@@ -130,9 +135,12 @@
                     </div>
                 </div>
 
-                <div style="margin-top: 15px; padding: 10px; background: #111; border-radius: 5px; text-align: center; border: 1px dashed #666;">
+                <div
+                    style="margin-top: 15px; padding: 10px; background: #111; border-radius: 5px; text-align: center; border: 1px dashed #666;">
                     <h4 style="margin: 0; color: #aaa; font-size: 14px;">Status do Caixa</h4>
-                    <div id="status-troco" style="font-size: 1.2rem; font-weight: bold; color: #ff4444; margin-top: 5px;">Falta: R$ 0,00</div>
+                    <div id="status-troco"
+                        style="font-size: 1.2rem; font-weight: bold; color: #ff4444; margin-top: 5px;">Falta: R$ 0,00
+                    </div>
                 </div>
             </div>
 
@@ -176,4 +184,5 @@
     </div>
     <script src="caixa.js"></script>
 </body>
+
 </html>

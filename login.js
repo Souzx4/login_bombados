@@ -37,7 +37,7 @@ document.getElementById('login-form').addEventListener('submit', async function 
             if (nivelFormatado === 'ADMIN') {
                 window.location.href = 'painel.html';
             } else {
-                window.location.href = 'estoque.html';
+                window.location.href = 'caixa.html';
             }
         } else {
             alert("Acesso negado! Usuário ou senha incorretos.")

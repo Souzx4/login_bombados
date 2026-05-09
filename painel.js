@@ -165,26 +165,51 @@ async function carregarUltimasVendas() {
             // para cada venda encontrada desenhe uma linha
             vendas.forEach(venda => {
 
-                // descobre a forma de pagamento investigando o dinheiro recebido
+                // LÓGICA INTELIGENTE DE PAGAMENTO (Agora pega Fiado e Misto!)
                 let formaPgto = "💵 Dinheiro";
-                if (venda.valorPix > 0) formaPgto = "📱 PIX";
-                if (venda.valorCartao > 0) formaPgto = "💳 Cartão";
 
-                // formataão rapida da data
+                // Tenta ler o nome que vem do banco
+                if (venda.formaPagamento) {
+                    let nomeF = venda.formaPagamento.toLowerCase();
+                    if (nomeF === "misto") formaPgto = "🔄 Misto";
+                    else if (nomeF === "pix") formaPgto = "📱 PIX";
+                    else if (nomeF.includes("cart")) formaPgto = "💳 Cartão";
+                    else if (nomeF === "fiado") formaPgto = "📝 Fiado";
+                    else formaPgto = "💵 Dinheiro";
+                } else {
+                    // Se o banco não mandar o nome, a gente deduz pelas gavetas
+                    let metodosUsados = 0;
+                    if (venda.valorDinheiro > 0) metodosUsados++;
+                    if (venda.valorPix > 0) metodosUsados++;
+                    if (venda.valorCartao > 0) metodosUsados++;
 
+                    if (metodosUsados > 1) {
+                        formaPgto = "🔄 Misto";
+                    } else if (venda.valorPix > 0) {
+                        formaPgto = "📱 PIX";
+                    } else if (venda.valorCartao > 0) {
+                        formaPgto = "💳 Cartão";
+                    } else if (venda.valorDinheiro > 0) {
+                        formaPgto = "💵 Dinheiro";
+                    } else {
+                        formaPgto = "📝 Fiado"; // Se tudo zerado, foi pro caderninho!
+                    }
+                }
+
+                // formatação rapida da data
                 let dataSeparada = venda.dataHora.split(" ");
                 let dataBr = dataSeparada[0].split("-").reverse().join("/");
                 let hora = dataSeparada[1];
 
                 const linha = document.createElement('tr');
-                linha.style.borderBottom = '1px solid #ddd';
+                linha.style.borderBottom = '1px solid #222';
 
                 linha.innerHTML = `
-                            <td style="padding: 10px; color: #ff9900;">#00${venda.id}</td>
-                            <td style="padding: 10px;">${dataBr} às ${hora}</td>
-                            <td style="padding: 10px;">${formaPgto}</td>
-                            <td style="padding: 10px;"><strong>R$ ${venda.valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
-                        `;
+                    <td style="padding: 10px; color: #ff9900; font-weight: bold;">#00${venda.id}</td>
+                    <td style="padding: 10px;">${dataBr} às ${hora}</td>
+                    <td style="padding: 10px; font-weight: bold;">${formaPgto}</td>
+                    <td style="padding: 10px;"><strong>R$ ${venda.valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+                `;
                 tbody.appendChild(linha);
 
             });

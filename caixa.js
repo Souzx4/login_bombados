@@ -1,5 +1,4 @@
-//const API_URL = 'https://sistema-bombados-backend.onrender.com';
-const API_URL = 'http://localhost:8080';
+const API_URL = 'https://sistema-bombados-backend.onrender.com';
 
 // ==========================================
 // IDENTIFICAÇÃO DO OPERADOR (LOCALSTORAGE)
