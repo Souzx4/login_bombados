@@ -7,7 +7,8 @@
     <title>Bombados Login</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<canvas id="fundo-particulas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background-color: #0a0a0a;"></canvas>
+<canvas id="fundo-particulas"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background-color: #0a0a0a;"></canvas>
 
 <body>
     <div class="login-container">
@@ -48,7 +49,7 @@
             </form>
         </div>
     </div>
-    <script src="login.js"></script>
+    <script src="login.js?v=2"></script>
 
     <script>
         // ==========================================
@@ -115,7 +116,7 @@
 
                     if (distancia < 120) { // Distância do "fio"
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(255, 153, 0, ${1 - distancia/120})`; // Opacidade diminui ao afastar
+                        ctx.strokeStyle = `rgba(255, 153, 0, ${1 - distancia / 120})`; // Opacidade diminui ao afastar
                         ctx.lineWidth = 1;
                         ctx.moveTo(particulas[i].x, particulas[i].y);
                         ctx.lineTo(particulas[j].x, particulas[j].y);
