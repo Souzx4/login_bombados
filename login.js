@@ -35,9 +35,9 @@ document.getElementById('login-form').addEventListener('submit', async function 
 
             // redireciona para a página certa dependendo do nível do usuário
             if (nivelFormatado === 'ADMIN') {
-                window.location.href = 'painel.html';
+                window.location.href = '/painel';
             } else {
-                window.location.href = 'caixa.html';
+                window.location.href = '/caixa';
             }
         } else {
             alert("Acesso negado! Usuário ou senha incorretos.")
