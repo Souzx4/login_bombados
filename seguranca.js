@@ -6,7 +6,7 @@
 let operadorSec = sessionStorage.getItem('usuarioLogado');
 
 // se não tiver ninguem logado, chuta para a tela login
-if (!operadorSec && !window.location.pathname.includes('login.html')) {
+if (!operadorSec && !window.location.pathname.includes('login')) {
     window.location.href = 'login.html';
 }
 
@@ -19,34 +19,38 @@ if (operadorSec) {
     }
 }
 
-// 3. paginas que a Lauanda pode acessar
+// 3. paginas que a Lauanda pode acessar 
 const paginasPermitidasLauanda = [
-    'caixa.html',
-    'estoque.html',
-    'fiados.html',
-    'despesas.html',
-    'login.html',
+    'caixa',
+    'estoque',
+    'fiados',
+    'despesas',
+    'login',
     ''
 ];
 
 // 4. bloqueio de URL para a Lauanda
 let paginaAtual = window.location.pathname.split('/').pop();
 
+//Arranca o .html da palavra, unificando PC e Nuvem!
+paginaAtual = paginaAtual.replace('.html', '');
+
 if (isLauanda && paginaAtual) {
     if (!paginasPermitidasLauanda.includes(paginaAtual)) {
         alert('Acesso negado: Você não tem permissão para acessar esta página.');
-        window.location.href = 'estoque.html';
+        // Se ela tentar invadir outra tela, a punição é voltar pro Caixa!
+        window.location.href = 'caixa.html';
     }
 }
 
 // 5. esconder os menus proibidos
 document.addEventListener("DOMContentLoaded", function () {
     if (isLauanda) {
-        // Procura os links do menu e esconde um por um
-        let menuPainel = document.querySelector('a[href="painel.html"]');
-        let menuVendas = document.querySelector('a[href="vendas.html"]');
-        let menuUsuarios = document.querySelector('a[href="usuarios.html"]');
-        let menuRh = document.querySelector('a[href="rh.html"]');
+        // Usamos o *="palavra" para esconder o menu independentemente de ter .html no href ou não
+        let menuPainel = document.querySelector('a[href*="painel"]');
+        let menuVendas = document.querySelector('a[href*="vendas"]');
+        let menuUsuarios = document.querySelector('a[href*="usuarios"]');
+        let menuRh = document.querySelector('a[href*="rh"]');
 
         if (menuPainel) menuPainel.style.display = 'none';
         if (menuVendas) menuVendas.style.display = 'none';
