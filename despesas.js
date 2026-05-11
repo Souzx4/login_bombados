@@ -106,7 +106,16 @@ async function carregarDespesas() {
 const btnAbrirMenu = document.getElementById('abrir-menu');
 const btnFecharMenu = document.getElementById('fechar-menu');
 const menuLateral = document.getElementById('menu-lateral');
-if (btnAbrirMenu) btnAbrirMenu.addEventListener('click', () => menuLateral.style.left = '0');
-if (btnFecharMenu) btnFecharMenu.addEventListener('click', () => menuLateral.style.left = '-250px');
+
+if (btnAbrirMenu && btnFecharMenu && menuLateral) {
+    // Usa a classe padrão
+    btnAbrirMenu.addEventListener('click', () => {
+        menuLateral.classList.add('menu-aberto');
+    });
+
+    btnFecharMenu.addEventListener('click', () => {
+        menuLateral.classList.remove('menu-aberto');
+    });
+}
 
 carregarDespesas();
