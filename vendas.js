@@ -39,7 +39,7 @@ function renderizarTabela(vendas) {
         const linha = document.createElement('tr');
         linha.style.borderBottom = '1px solid #333';
 
-        // 1. MATEMÁTICA DAS GAVETAS (Versão 3.0)
+        // 1. MATEMÁTICA DAS GAVETAS
         let valDinheiro = venda.valorDinheiro || 0;
         let valCartao = venda.valorCartao || 0;
         let valPix = venda.valorPix || 0;
@@ -117,6 +117,7 @@ function calcularComissoes(vendas) {
 
     // variaveis para somar o grande total
     let totalGeral = 0;
+    let lucroGeral = 0;
     let somaGeralPix = 0;
     let somaGeralCartao = 0;
     let somaGeralDinheiro = 0;
@@ -126,6 +127,7 @@ function calcularComissoes(vendas) {
 
     vendas.forEach(venda => {
         totalGeral += venda.valorTotal;
+        lucroGeral += venda.lucro || 0;
         somaGeralPix += venda.valorPix || 0;
         somaGeralCartao += venda.valorCartao || 0;
         somaGeralDinheiro += venda.valorDinheiro || 0;
@@ -165,12 +167,18 @@ function calcularComissoes(vendas) {
                 </div>
             </div>
         </div>
+
+        <div style="flex: 1; min-width: 280px; background: #222; padding: 20px; border-radius: 8px; border-left: 5px solid #4CAF50; box-shadow: 0px 4px 10px rgba(0,0,0,0.5);">
+            
+            <h3 style="color: #aaa; margin-top: 40px; font-size: 14px; padding-left: 20px; text-transform: uppercase; border-bottom: 1px solid #444; padding-bottom: 15px;">Lucro Líquido no Período</h3>
+            <h2 style="color: #4CAF50; font-size: 28px; font-weight: 900; padding-left: 23px; margin-top: 15px; margin-bottom: 15px;">R$ ${lucroGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
+        </div>
     `;
 
     // 2. cria um card dinamico para cada vendedor encontrado na linha
     for (const [vendedor, dados] of Object.entries(totaisPorVendedor)) {
         painel.innerHTML += `
-            <div style="flex: 1; min-width: 250px; background: #222; padding: 20px; border-radius: 8px; border-left: 5px solid #4CAF50;">
+            <div style="flex: 1; min-width: 250px; background: #222; padding: 20px; border-radius: 8px; border-left: 5px solid #00BCD4;">
                 <h3 style="color: #aaa; margin-bottom: 5px; font-size: 14px;">Vendido por: <strong>${vendedor}</strong></h3>
                 <h2 style="color: white; font-size: 24px; margin-bottom: 15px;">R$ ${dados.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
                 
