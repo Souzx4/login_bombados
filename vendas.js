@@ -146,7 +146,13 @@ function calcularComissoes(vendas) {
 
     });
 
-    // 1. cria um card de faturamento total
+    // ==========================================
+    // Lógica para cor do Lucro (Verde ou Vermelho)
+    // ==========================================
+    let corLucro = lucroGeral >= 0 ? "#4CAF50" : "#f44336"; // Verde se positivo, Vermelho forte se negativo
+    let iconeLucro = lucroGeral >= 0 ? "📈" : "📉"; // Sobe se positivo, desce se negativo
+
+    // 1. cria um card de faturamento total e o NOVO CARD DE LUCRO LÍQUIDO
     painel.innerHTML += `
         <div style="flex: 1; min-width: 280px; background: #222; padding: 20px; border-radius: 8px; border-left: 5px solid #ff9900; box-shadow: 0px 4px 10px rgba(0,0,0,0.5);">
             <h3 style="color: #aaa; margin-bottom: 5px; font-size: 14px; text-transform: uppercase;">Total no Período</h3>
@@ -168,10 +174,9 @@ function calcularComissoes(vendas) {
             </div>
         </div>
 
-        <div style="flex: 1; min-width: 280px; background: #222; padding: 20px; border-radius: 8px; border-left: 5px solid #4CAF50; box-shadow: 0px 4px 10px rgba(0,0,0,0.5);">
-            
-            <h3 style="color: #aaa; margin-top: 40px; font-size: 14px; padding-left: 20px; text-transform: uppercase; border-bottom: 1px solid #444; padding-bottom: 15px;">Lucro Líquido no Período</h3>
-            <h2 style="color: #4CAF50; font-size: 28px; font-weight: 900; padding-left: 23px; margin-top: 15px; margin-bottom: 15px;">R$ ${lucroGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
+        <div style="flex: 1; min-width: 280px; background: #222; padding: 20px; border-radius: 8px; border-left: 5px solid ${corLucro}; box-shadow: 0px 4px 10px rgba(0,0,0,0.5);">
+            <h3 style="color: #aaa; margin-top: 40px; font-size: 14px; display: block; text-align: center; text-transform: uppercase; "border-bottom: 1px solid #444 padding-bottom: 15px;">Lucro Líquido no Período</h3>
+            <h2 style="color: ${corLucro}; font-size: 28px; font-weight: 900; display: block; text-align: center; margin-top: 15px; margin-bottom: 15px;">${iconeLucro} R$ ${lucroGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2> 
         </div>
     `;
 
